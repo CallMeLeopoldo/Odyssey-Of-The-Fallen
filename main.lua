@@ -52,7 +52,7 @@ function createBox(x,y)
 	end
 
 	function b:draw()
-		love.graphics.setColor(255,0,0)
+		love.graphics.setColor(0,255,0)
 		love.graphics.rectangle("fill", self.x, self.y, 64, 64)
 	end
 
