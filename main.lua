@@ -22,11 +22,12 @@ local Renderer = require("tools.renderer")
 local GameLoop = require("tools.gameLoop")
 local class = require("tools.middleclass")
 local tlm = require("tiles.tile_manager")
-
+local windfield = require("packages.windfield")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
+world = windfield.newWorld()
 
 -- Definição da tela de jogo
 -- TODO: ajustar a tela para um tamanho mais adequado
@@ -52,7 +53,7 @@ function createBox(x,y)
 	end
 
 	function b:draw()
-		love.graphics.setColor(0,255,0)
+		--love.graphics.setColor(0,255,0)
 		love.graphics.rectangle("fill", self.x, self.y, 64, 64)
 	end
 
@@ -79,10 +80,12 @@ end
 function love.update(dt)
 	g_GameTime = g_GameTime + dt
 	gameLoop:update(dt)
+	world:update(dt)
 end
 
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
 function love.draw()
 	renderer:draw()
+	world:draw()
 end
