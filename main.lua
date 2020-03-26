@@ -6,7 +6,7 @@ io.stdout:setvbuf("no")
 
 
 -- Renderer:
--- Carrega todos os objetose e prepra-os para serem desenhados assim que love:draw() for chamado
+-- Carrega todos os objetos e prepara-os para serem desenhados assim que love:draw() for chamado
 
 -- GameLoop:
 -- Guarda todas ações (internas ou externas ao jogador) que possam ser repetidas durante o jogo
@@ -18,7 +18,7 @@ io.stdout:setvbuf("no")
 -- tlm:
 -- Tile Manager, responsável por manter uma tabela bidimensional que coloca as sprites pelo jogo, usados no desenho do nível, personagens, etc.
 
-local Renderer = require("tools.renderer")  
+local Renderer = require("tools.renderer")
 local GameLoop = require("tools.gameLoop")
 local class = require("tools.middleclass")
 local tlm = require("tiles.tile_manager")
@@ -66,15 +66,12 @@ end
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
-
 	r1 = createBox(64,64) -- Objeto de teste (TEMPORÁRIO)
 
 	r1:load()
 
 	gameLoop:addLoop(self)
 	tlm:load()
-
-
 end
 
 -- love:update(): Atualiza o estado de jogo após um período de tempo

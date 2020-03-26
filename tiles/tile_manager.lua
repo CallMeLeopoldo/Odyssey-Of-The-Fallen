@@ -1,7 +1,5 @@
 local tlm = {}
 
-
-
 --Definição do tamanho do tile manager ()
 local width = 128
 local height = 128
@@ -11,7 +9,6 @@ local size = 16 -- tamanho do tile
 -- Ou seja o Tile Manager trata de 128/16 = 8 tiles
 
 function tlm:load()
-
 	renderer:addRenderer(self)
 	gameLoop:addLoop(self)
 
@@ -21,7 +18,6 @@ function tlm:load()
 	for i = 1, height do
 		self.tiles[i] = {}
 	end
-
 end
 
 

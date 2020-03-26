@@ -14,13 +14,11 @@ function Renderer:create()
 	end
 
 	function renderer:addRenderer(obj, layer)
-
 		local l = layer or 0
 		insert(self.drawers[l], obj)
 	end
 
 	function renderer:draw()
-
 		for layer = 0, #self.drawers do
 			for draw = 0, #self.drawers[layer] do
 				local obj = self.drawers[layer][draw]
@@ -29,7 +27,6 @@ function Renderer:create()
 				end
 			end
 		end
-
 	end
 
 	return renderer

@@ -14,16 +14,12 @@ function GameLoop:create()
 	end
 
 	function gameLoop:update(dt)
-
 		for tickers = 0, #self.tickers do
-
 			local obj = self.tickers[tickers]
 			if obj ~= nil then
 				obj:tick(dt)
 			end
-
 		end
-
 	end
 
 	return gameLoop
