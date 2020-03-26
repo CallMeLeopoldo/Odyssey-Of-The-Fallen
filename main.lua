@@ -23,12 +23,15 @@ local GameLoop = require("tools.gameLoop")
 local tlm = require("tiles.tile_manager")
 local class = require("packages.middleclass")
 local windfield = require("packages.windfield")
+local anim8 = require("packages.anim8")
+local Person = require("objects.Person")
+local BasicEnemy = require("objects.BasicEnemy")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
 world = windfield.newWorld()
-anim8 = require("packages.anim8")
+
 
 -- Definição da tela de jogo
 -- TODO: ajustar a tela para um tamanho mais adequado
@@ -40,37 +43,15 @@ g_height= love.graphics.getHeight()
 g_GameTime = 0 --timer do jogo
 
 
--- Objeto de teste (apenas para verificar se todos os módulos do jogo estão operacionais)
+local person = Person:new(10,10,64,64)
+renderer:addRenderer(person,1)
 
-function createBox(x,y)
-	local b = {}
-
-	b.x = x or 0
-	b.y = y or 0
-
-	function b:load()
-		renderer:addRenderer(self)
-		gameLoop:addLoop(self)
-	end
-
-	function b:draw()
-		--love.graphics.setColor(0,255,0)
-		love.graphics.rectangle("fill", self.x, self.y, 64, 64)
-	end
-
-	function b:tick(dt)
-		print(dt, math.random()) -- Teste de print na consola (TEMPORÁRIO)
-	end	
-
-	return b
-end
+local basicEnemy = BasicEnemy:new(60,60,64,64)
+renderer:addRenderer(basicEnemy,1)
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
-	r1 = createBox(64,64) -- Objeto de teste (TEMPORÁRIO)
-
-	r1:load()
 
 	gameLoop:addLoop(self)
 	tlm:load()

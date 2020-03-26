@@ -1,13 +1,22 @@
 local vec2 = require("tools.vec2")
-local class = require("tools.middleclass")
+local class = require("packages.middleclass")
 
 local Person = class("Person")
 
 
 function Person:initialize(x,y,w,h)
-	self.x,self,y = x,y
+	self.x,self.y = x,y
+	self.w, self.h = w,h
 	self.health = 100
-	self.dmgdealing = 1 
+	self.dmgdealing = 1
 end
+
+
+function Person:draw()
+	love.graphics.setColor(255, 0, 0)
+	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+
+end
+
 
 return Person
