@@ -20,14 +20,15 @@ io.stdout:setvbuf("no")
 
 local Renderer = require("tools.renderer")
 local GameLoop = require("tools.gameLoop")
-local class = require("tools.middleclass")
 local tlm = require("tiles.tile_manager")
+local class = require("packages.middleclass")
 local windfield = require("packages.windfield")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
 world = windfield.newWorld()
+anim8 = require("packages.anim8")
 
 -- Definição da tela de jogo
 -- TODO: ajustar a tela para um tamanho mais adequado
