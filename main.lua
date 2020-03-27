@@ -37,6 +37,7 @@ world:setGravity(0, 100)
 world:addCollisionClass("Ground")
 world:addCollisionClass("Player")
 world:addCollisionClass("Attack")
+world:setQueryDebugDrawing(true)
 
 ground = world:newRectangleCollider(0, 550, 880, 50)
 ground:setType("static")

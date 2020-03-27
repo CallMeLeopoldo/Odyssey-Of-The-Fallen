@@ -9,6 +9,7 @@ function Player:initialize(x, y, w, h)
 	
 	Person:initialize(x, y, w, h, collider)
 	self.onAir = true
+	self.lastDirection = 1
 end
 
 function Player:load()
@@ -25,9 +26,11 @@ function Player:update(dt)
 
 	if love.keyboard.isDown("left") then
 		x = -1
+		self.lastDirection = -1
 	end
 	if love.keyboard.isDown("right") then
 		x = 1
+		self.lastDirection = 1
 	end
 	if not self.onAir and love.keyboard.isDown("a") then
 		self.collider:applyLinearImpulse(0, -250)
@@ -35,7 +38,7 @@ function Player:update(dt)
 	end
 	if love.keyboard.isDown("s") then
 		local px, py = self.collider:getPosition()
-		world:queryCircleArea(px, py, 80, {"Attack"})
+		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
 	end
 
 	local currentX = self.collider:getX()
@@ -43,8 +46,8 @@ function Player:update(dt)
 end
 
 function Player:draw()
-	px = self.collider:getX() - self.w / 2
-	py = self.collider:getY() - self.h / 2
+	local px = self.collider:getX() - self.w / 2
+	local py = self.collider:getY() - self.h / 2
 	
 	love.graphics.setColor(0, 0, 255)
 	love.graphics.rectangle("fill", px, py, self.w, self.h)
