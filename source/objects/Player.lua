@@ -7,7 +7,7 @@ function Player:initialize(x, y, w, h)
 	local collider = world:newRectangleCollider(x, y, w, h)
 	collider:setCollisionClass("Player")
 	
-	Person:initialize(x, y, w, h, collider)
+	Person.initialize(self,x, y, w, h, collider)
 	self.onAir = true
 	self.lastDirection = 1
 end
