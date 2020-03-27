@@ -21,7 +21,7 @@ function tlm:load()
 end
 
 
-function tlm:tick(dt)
+function tlm:update(dt)
 
 end
 

@@ -1,5 +1,5 @@
-local vec2 = require("tools.vec2")
-local class = require("packages.middleclass")
+local vec2 = require("source.tools.vec2")
+local class = require("source.packages.middleclass")
 
 local Person = class("Person")
 

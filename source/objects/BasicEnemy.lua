@@ -1,6 +1,6 @@
-local vec2 = require("tools.vec2")
-local class = require("packages.middleclass")
-local Person = require("objects.Person")
+local vec2 = require("source.tools.vec2")
+local class = require("source.packages.middleclass")
+local Person = require("source.objects.Person")
 
 local BasicEnemy = class("BasicEnemy", Person)
 
@@ -13,7 +13,7 @@ end
 function BasicEnemy:draw()
 	love.graphics.setColor(0, 255, 0)
 	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-
+	love.graphics.setColor(255,255,255)
 end
 
 

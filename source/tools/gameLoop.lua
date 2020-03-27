@@ -17,7 +17,8 @@ function GameLoop:create()
 		for tickers = 0, #self.tickers do
 			local obj = self.tickers[tickers]
 			if obj ~= nil then
-				obj:tick(dt)
+				print(obj)
+				obj:update(dt)
 			end
 		end
 	end

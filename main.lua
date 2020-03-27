@@ -18,20 +18,21 @@ io.stdout:setvbuf("no")
 -- tlm:
 -- Tile Manager, responsável por manter uma tabela bidimensional que coloca as sprites pelo jogo, usados no desenho do nível, personagens, etc.
 
-local Renderer = require("tools.renderer")
-local GameLoop = require("tools.gameLoop")
-local tlm = require("tiles.tile_manager")
-local class = require("packages.middleclass")
-local windfield = require("packages.windfield")
-local anim8 = require("packages.anim8")
-local Person = require("objects.Person")
-local BasicEnemy = require("objects.BasicEnemy")
+local Renderer = require("source.tools.renderer")
+local GameLoop = require("source.tools.gameLoop")
+local tlm = require("source.tiles.tile_manager")
+local class = require("source.packages.middleclass")
+local windfield = require("source.packages.windfield")
+local animation = require("source.objects.Animation")
+local Person = require("source.objects.Person")
+local BasicEnemy = require("source.objects.BasicEnemy")
+require("source.resources")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
 world = windfield.newWorld()
-
+anim8 = require("source.packages.anim8")
 
 -- Definição da tela de jogo
 -- TODO: ajustar a tela para um tamanho mais adequado
@@ -42,18 +43,18 @@ g_height= love.graphics.getHeight()
 
 g_GameTime = 0 --timer do jogo
 
-
-local person = Person:new(10,10,64,64)
-renderer:addRenderer(person,1)
-
-local basicEnemy = BasicEnemy:new(60,60,64,64)
-renderer:addRenderer(basicEnemy,1)
-
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
+	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
+	bit:load()
 
-	gameLoop:addLoop(self)
+	local person = Person:new(10,10,64,64)
+	renderer:addRenderer(person,1)
+
+	local basicEnemy = BasicEnemy:new(60,60,64,64)
+	renderer:addRenderer(basicEnemy,1)
+
 	tlm:load()
 end
 

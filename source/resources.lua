@@ -1,0 +1,1 @@
+bit_image = love.graphics.newImage("images/Bit.png")
