@@ -21,17 +21,27 @@ io.stdout:setvbuf("no")
 local Renderer = require("source.tools.renderer")
 local GameLoop = require("source.tools.gameLoop")
 local tlm = require("source.tiles.tile_manager")
-local class = require("source.packages.middleclass")
 local windfield = require("source.packages.windfield")
 local animation = require("source.objects.Animation")
 local Person = require("source.objects.Person")
 local BasicEnemy = require("source.objects.BasicEnemy")
+local Player = require("source.objects.Player")
 require("source.resources")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
+
 world = windfield.newWorld()
+world:setGravity(0, 100)
+world:addCollisionClass("Ground")
+world:addCollisionClass("Player")
+world:addCollisionClass("Attack")
+
+ground = world:newRectangleCollider(0, 550, 880, 50)
+ground:setType("static")
+ground:setCollisionClass("Ground")
+
 anim8 = require("source.packages.anim8")
 
 -- Definição da tela de jogo
@@ -49,11 +59,11 @@ function love.load()
 	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
 	bit:load()
 
-	local person = Person:new(10,10,64,64)
-	person:load()
-
 	local basicEnemy = BasicEnemy:new(400,10,64,64,15)
 	basicEnemy:load()
+
+	local player = Player:new(250, 50, 20, 64)
+	player:load()
 
 	tlm:load()
 end
