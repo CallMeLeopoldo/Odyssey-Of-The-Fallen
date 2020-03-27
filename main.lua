@@ -50,10 +50,10 @@ function love.load()
 	bit:load()
 
 	local person = Person:new(10,10,64,64)
-	renderer:addRenderer(person,1)
+	person:load()
 
-	local basicEnemy = BasicEnemy:new(60,60,64,64)
-	renderer:addRenderer(basicEnemy,1)
+	local basicEnemy = BasicEnemy:new(400,10,64,64,15)
+	basicEnemy:load()
 
 	tlm:load()
 end

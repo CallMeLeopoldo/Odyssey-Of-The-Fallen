@@ -18,5 +18,15 @@ function Person:draw()
 
 end
 
+function Person:update()
+
+end
+
+function Person:load()
+	renderer:addRenderer(self)
+	gameLoop:addLoop(self)
+
+end
+
 
 return Person
