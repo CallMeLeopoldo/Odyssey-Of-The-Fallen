@@ -2,6 +2,11 @@ local class = require("source.packages.middleclass")
 
 local Animation = class("Animation")
 
+-- Function used for initializing a new animation
+-- x, y -> top-left posititon where the image will be drawn
+-- w, h -> size of each sub-image on the grid of image
+-- collums, rows -> what are sub images to be used for the animation
+-- timeframe -> time until a new sub image of the grid is shown
 function Animation:initialize(x, y, image, w, h, columns, rows, timeframe)
 	self.x = x or 0
 	self.y = y or 0
