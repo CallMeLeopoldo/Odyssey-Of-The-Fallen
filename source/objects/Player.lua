@@ -15,6 +15,8 @@ function Player:initialize(x, y, w, h)
 	Person.initialize(self, x, y, w, h, collider, self.animations.walkRight)
 	self.lastDirection = 1
 	self.onAir = true
+	self.attackTimming = 2
+	self.lastAttack = 2
 end
 
 function Player:load()
@@ -24,7 +26,8 @@ end
 
 function Player:update(dt)
 	Person.update(self, dt)
-
+	self.lastAttack = self.lastAttack + dt
+	
 	if self.collider:enter("Ground") then
 		self.onAir = false
 	end
@@ -45,9 +48,11 @@ function Player:update(dt)
 		self.collider:applyLinearImpulse(0, -250)
 		self.onAir = true
 	end
-	if love.keyboard.isDown("s") then
+	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
+		-- Perform the rest of the attack
+		self.lastAttack = 0
 	end
 
 	local newX, currentY = self.collider:getX() + x*dt*20, self.collider:getY()
