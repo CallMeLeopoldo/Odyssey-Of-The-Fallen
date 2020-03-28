@@ -2,11 +2,13 @@ local vec2 = require("source.tools.vec2")
 local class = require("source.packages.middleclass")
 local Person = class("Person")
 
-function Person:initialize(x, y, w, h, collider, animation)
+function Person:initialize(x, y, w, h, r, collider, animation)
 	self.x, self.y = x, y
 	self.w, self.h = w, h
+	self.r = r
 	self.health = 100
-	self.dmgdealing = 1
+	self.baseDmg = 1
+	self.currentDmg = self.baseDmg
 	self.collider = collider
 	self.animation = animation
 end

@@ -26,11 +26,13 @@ local animation = require("source.objects.Animation")
 local Person = require("source.objects.Person")
 local BasicEnemy = require("source.objects.BasicEnemy")
 local Player = require("source.objects.Player")
+local BPM = require("source.tools.bpm")
 require("source.resources")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
+bpm = BPM:new(100)
 
 world = windfield.newWorld()
 world:setGravity(0, 100)
@@ -61,10 +63,10 @@ function love.load()
 	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
 	bit:load()
 
-	local basicEnemy = BasicEnemy:new(400,10,64,64,15)
+	local basicEnemy = BasicEnemy:new(400,10, 50, 50, 25,15)
 	basicEnemy:load()
 
-	local player = Player:new(250, 50, 20, 64)
+	local player = Player:new(250, 50, 20, 64, 20)
 	player:load()
 
 	tlm:load()
@@ -74,6 +76,7 @@ end
 
 function love.update(dt)
 	g_GameTime = g_GameTime + dt
+	--print(g_GameTime)
 	gameLoop:update(dt)
 	world:update(dt)
 end

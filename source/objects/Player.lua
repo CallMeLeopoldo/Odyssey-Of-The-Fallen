@@ -4,15 +4,15 @@ local animation = require("source.objects.Animation")
 
 local Player = class("Player", Person)
 
-function Player:initialize(x, y, w, h)
-	local collider = world:newRectangleCollider(x, y, w, h)
+function Player:initialize(x, y, w, h, r)
+	local collider = world:newCircleCollider(x, y, r)
 	collider:setCollisionClass("Player")
-
 	self.animations = {}
 	self.animations.walkRight = animation:new(x, y, player_image, w, h, 1, 1, 0.2)
 	self.animations.walkLeft = animation:new(x, y, player_image, w, h, 1, 2, 0.2)
 
-	Person.initialize(self, x, y, w, h, collider, self.animations.walkRight)
+	Person.initialize(self, x, y, w, h, r, collider, self.animations.walkRight)
+	self.accuracy = 1
 	self.lastDirection = 1
 	self.onAir = true
 	self.attackTimming = 2
@@ -49,6 +49,11 @@ function Player:update(dt)
 		self.onAir = true
 	end
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
+
+		Player:accuracy_calc()
+
+		self.currentDmg = self.baseDmg * self.accuracy
+
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
 		-- Perform the rest of the attack
@@ -58,7 +63,13 @@ function Player:update(dt)
 	local newX, currentY = self.collider:getX() + x*dt*20, self.collider:getY()
 	self.collider:setX(newX)
 
-	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
+	Person.setAnimationPos(self, newX - self.r/2, currentY - self.r/2 - self.h/2)
+end
+
+function Player:accuracy_calc()
+	local time_btw_beats = g_GameTime % bpm.spb
+	self.accuracy = time_btw_beats/bpm.spb
+	print(self.accuracy)
 end
 
 function Player:draw()

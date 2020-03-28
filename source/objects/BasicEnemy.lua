@@ -5,21 +5,21 @@ local animation = require("source.objects.Animation")
 
 local BasicEnemy = class("BasicEnemy", Person)
 
-function BasicEnemy:initialize(x, y, w, h, moveSpeed)
-	local collider = world:newRectangleCollider(x, y, w, h)
+function BasicEnemy:initialize(x, y, w, h, r, moveSpeed)
+	local collider = world:newCircleCollider(x, y, r)
 	collider:setCollisionClass("BasicEnemy")
 
-	local anim = animation:new(x, y, paintings, 64, 64, '1-3', 1, 0.5)
+	local anim = animation:new(x, y, paintings, w, h, '1-3', 1, 0.5)
 
-	Person.initialize(self, x, y, w, h, collider, anim)
+	Person.initialize(self, x, y, w, h, r, collider, anim)
 
 	self.accuracy = 1
 	self.moveSpeed = moveSpeed
 end
 
 function BasicEnemy:collider_pos_calc()
-	local vecx = self.collider:getX() - self.w / 2
-	local vecy = self.collider:getY() - self.h / 2
+	local vecx = self.collider:getX() - self.r / 2
+	local vecy = self.collider:getY() - self.r / 2
 
 	return vecx,vecy
 end
@@ -34,7 +34,7 @@ function BasicEnemy:update(dt)
 	local newX, currentY = self.collider:getX() - dt*self.moveSpeed, self.collider:getY()
 	self.collider:setX(newX)
 
-	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
+	Person.setAnimationPos(self, newX - self.r, currentY - self.r)
 end
 
 function BasicEnemy:draw()
