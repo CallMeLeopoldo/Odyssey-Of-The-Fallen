@@ -50,12 +50,14 @@ function Player:update(dt)
 	end
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
-		Player:accuracy_calc()
+		local beat, subbeat = music.music:getBeat()
 
-		self.currentDmg = self.baseDmg * self.accuracy
+		self.currentDmg = self.baseDmg * subbeat
+
+		print(self.currentDmg)
 
 		local px, py = self.collider:getPosition()
-		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
+		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
 		-- Perform the rest of the attack
 		self.lastAttack = 0
 	end
@@ -64,12 +66,6 @@ function Player:update(dt)
 	self.collider:setX(newX)
 
 	Person.setAnimationPos(self, newX - self.r/2, currentY - self.r/2 - self.h/2)
-end
-
-function Player:accuracy_calc()
-	local time_btw_beats = g_GameTime % bpm.spb
-	self.accuracy = time_btw_beats/bpm.spb
-	print(self.accuracy)
 end
 
 function Player:draw()

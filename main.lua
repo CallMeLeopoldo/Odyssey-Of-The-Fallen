@@ -26,13 +26,13 @@ local animation = require("source.objects.Animation")
 local Person = require("source.objects.Person")
 local BasicEnemy = require("source.objects.BasicEnemy")
 local Player = require("source.objects.Player")
-local BPM = require("source.tools.bpm")
+local Music = require("source.tools.music")
 require("source.resources")
 
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
-bpm = BPM:new(100)
+music = Music:new("Tank.mp3")
 
 world = windfield.newWorld()
 world:setGravity(0, 100)
@@ -60,6 +60,8 @@ g_GameTime = 0 --timer do jogo
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
+	music:load()
+
 	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
 	bit:load()
 
@@ -77,9 +79,23 @@ end
 function love.update(dt)
 	g_GameTime = g_GameTime + dt
 	--print(g_GameTime)
+	music.music:update(dt)
 	gameLoop:update(dt)
 	world:update(dt)
 end
+
+function love.keypressed(k)
+  if k == "space" then
+    -- Toggle pause
+    paused = not paused
+    if paused then
+      music.music:pause()
+    else
+      music.music:play()
+    end
+  end
+end
+
 
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
