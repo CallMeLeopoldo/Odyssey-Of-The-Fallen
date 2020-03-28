@@ -5,15 +5,14 @@ local animation = require("source.objects.Animation")
 
 local BasicEnemy = class("BasicEnemy", Person)
 
-
-
-function BasicEnemy:initialize(x,y,w,h,moveSpeed)
+function BasicEnemy:initialize(x, y, w, h, moveSpeed)
 	local collider = world:newRectangleCollider(x, y, w, h)
 	collider:setCollisionClass("BasicEnemy")
 
-	Person.initialize(self,x,y,w,h,collider)
+	local anim = animation:new(x, y, paintings, 64, 64, '1-3', 1, 0.5)
 
-	self.anim = paint
+	Person.initialize(self, x, y, w, h, collider, anim)
+
 	self.accuracy = 1
 	self.moveSpeed = moveSpeed
 end
@@ -23,29 +22,25 @@ function BasicEnemy:collider_pos_calc()
 	local vecy = self.collider:getY() - self.h / 2
 
 	return vecx,vecy
-
 end
 
-
-function BasicEnemy:draw()
-	self.anim:draw()
-
+function BasicEnemy:load()
+	renderer:addRenderer(self)
+	gameLoop:addLoop(self)
 end
 
 function BasicEnemy:update(dt)
-	self.anim:update(dt)
-	local currentX = self.collider:getX()
-	self.collider:setX(currentX - dt*self.moveSpeed)
-	self.anim.x, self.anim.y = self:collider_pos_calc() 
-end 
+	Person.update(self, dt)
+	local newX, currentY = self.collider:getX() - dt*self.moveSpeed, self.collider:getY()
+	self.collider:setX(newX)
 
-
-function BasicEnemy:load()
-
-	renderer:addRenderer(self)
-	gameLoop:addLoop(self)
-
+	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
 end
+
+function BasicEnemy:draw()
+	Person.draw(self)
+end
+
 
 
 return BasicEnemy

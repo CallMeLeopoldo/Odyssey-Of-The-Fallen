@@ -61,9 +61,6 @@ function love.load()
 	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
 	bit:load()
 
-	paint = animation:new(x, y, paintings, 64, 64, '1-3', 1, 0.5)
-	paint:load()
-
 	local basicEnemy = BasicEnemy:new(400,10,64,64,15)
 	basicEnemy:load()
 
