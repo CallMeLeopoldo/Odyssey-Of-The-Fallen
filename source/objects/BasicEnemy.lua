@@ -6,7 +6,7 @@ local animation = require("source.objects.Animation")
 local BasicEnemy = class("BasicEnemy", Person)
 
 function BasicEnemy:initialize(x, y, w, h, r, moveSpeed)
-	local collider = world:newRectangleCollider(x, y, w, h)
+	local collider = world:newCircleCollider(x, y, 30)
 	collider.object = self
 	collider:setCollisionClass("BasicEnemy")
 
