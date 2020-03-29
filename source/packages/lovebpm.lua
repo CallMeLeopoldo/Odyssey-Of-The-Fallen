@@ -48,7 +48,7 @@ function lovebpm.detectBPM(filename, opts)
   else
     data = filename
   end
-  local channels = data:getChannels()
+  local channels = data:getChannelCount()
   local samplerate = data:getSampleRate()
 
   -- Gets max amplitude over a number of samples at `n` seconds
