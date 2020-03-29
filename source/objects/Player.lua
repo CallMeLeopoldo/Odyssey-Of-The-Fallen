@@ -7,7 +7,7 @@ local Player = class("Player", Person)
 function Player:initialize(x, y, w, h, r)
 
 	-- Player Collider
-	local collider = world:newRectangleCollider(x, y, w, h)
+	local collider = world:newCircleCollider(x, y, 15)
 	collider:setObject(self)
 	collider:setSleepingAllowed(false)
 	collider:setCollisionClass("Player")
@@ -70,7 +70,6 @@ function Player:update(dt)
 
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
-		print(#colliders)
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
 		end
@@ -81,7 +80,7 @@ function Player:update(dt)
 	local newX, currentY = self.collider:getX() + x*dt*20, self.collider:getY()
 	self.collider:setX(newX)
 
-	Person.setAnimationPos(self, newX - self.r/2, currentY - self.r/2 - self.h/2)
+	Person.setAnimationPos(self, newX - self.w/2, currentY - 3*self.h/4)
 end
 
 function Player:draw()
