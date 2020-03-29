@@ -4,10 +4,10 @@ local animation = require("source.objects.Animation")
 
 local Player = class("Player", Person)
 
-function Player:initialize(x, y, w, h, r)
+function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Collider
-	local collider = world:newCircleCollider(x, y, 15)
+	local collider = world:newCircleCollider(x, y, r)
 	collider:setObject(self)
 	collider:setSleepingAllowed(false)
 	collider:setCollisionClass("Player")
@@ -24,8 +24,8 @@ function Player:initialize(x, y, w, h, r)
 	self.accuracy = 1
 	self.lastDirection = 1
 	self.onAir = true
-	self.attackTimming = 2
-	self.lastAttack = 2
+	self.attackTimming = attackSpeed
+	self.lastAttack = attackSpeed
 end
 
 function Player:load()

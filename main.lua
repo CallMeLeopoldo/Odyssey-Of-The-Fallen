@@ -46,13 +46,13 @@ g_GameTime = 0 --timer do jogo
 function love.load()
 	music:load()
 
-	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, 0.6)
+	bit = animation:new(250, 450, bit_image, 300, 64, '1-2', 1, music.spb)
 	bit:load()
 
 	local basicEnemy = BasicEnemy:new(400,10, 50, 50, 25,15)
 	basicEnemy:load()
 
-	local player = Player:new(250, 50, 20, 64, 20)
+	local player = Player:new(250, 50, 20, 64, 15, music.spb/2)
 	player:load()
 
 	tlm:load()
