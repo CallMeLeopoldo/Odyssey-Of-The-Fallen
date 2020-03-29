@@ -55,7 +55,9 @@ function Player:update(dt)
 		self.animation = self.animations.walkRight
 	end
 	if not self.onAir and love.keyboard.isDown("a") then
-		self.collider:applyLinearImpulse(0, -250)
+		local _, subbeat = music.music:getBeat()
+
+		self.collider:applyLinearImpulse(0, -250*subbeat)
 		self.onAir = true
 	end
 
