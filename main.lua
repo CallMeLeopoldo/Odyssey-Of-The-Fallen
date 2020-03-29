@@ -1,23 +1,7 @@
 io.stdout:setvbuf("no")
 
-
--- Declaração de atributos que vamos usar durante o jogo
--- Esses vão ser:
-
-
--- Renderer:
--- Carrega todos os objetos e prepara-os para serem desenhados assim que love:draw() for chamado
-
--- GameLoop:
--- Guarda todas ações (internas ou externas ao jogador) que possam ser repetidas durante o jogo
-
--- class:
--- Método da framework Middleclass usado para instanciar classes e subclasses
--- Para aceder à documentação desta framework, visitar: https://github.com/kikito/middleclass/wiki
-
--- tlm:
--- Tile Manager, responsável por manter uma tabela bidimensional que coloca as sprites pelo jogo, usados no desenho do nível, personagens, etc.
-
+-- Load required packages ,tools and classes
+require("source.resources")
 local Renderer = require("source.tools.renderer")
 local GameLoop = require("source.tools.gameLoop")
 local tlm = require("source.tiles.tile_manager")
@@ -27,13 +11,13 @@ local Person = require("source.objects.Person")
 local BasicEnemy = require("source.objects.BasicEnemy")
 local Player = require("source.objects.Player")
 local Music = require("source.tools.music")
-require("source.resources")
-
--- Criação do renderer e do gameloop
+anim8 = require("source.packages.anim8")
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
 music = Music:new("audio/sound.mp3")
 
+
+-- Create new world and set it's properties
 world = windfield.newWorld()
 world:setGravity(0, 100)
 world:addCollisionClass("Ground")
@@ -42,13 +26,13 @@ world:addCollisionClass("BasicEnemy")
 world:addCollisionClass("Attack")
 world:setQueryDebugDrawing(true)
 
+-- Create a ground and set it's properties
 ground = world:newRectangleCollider(200, 550, 600, 50)
 ground:setType("static")
 ground:setCollisionClass("Ground")
 
-anim8 = require("source.packages.anim8")
 
--- Definição da tela de jogo
+-- Game Screen Settings
 -- TODO: ajustar a tela para um tamanho mais adequado
 
 g_width = love.graphics.getWidth()
