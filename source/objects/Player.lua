@@ -5,8 +5,12 @@ local animation = require("source.objects.Animation")
 local Player = class("Player", Person)
 
 function Player:initialize(x, y, w, h, r)
-	local collider = world:newCircleCollider(x, y, r)
+	local collider = world:newRectangleCollider(x, y, w, h)
+	collider.object = self
+	collider:setSleepingAllowed(false)
 	collider:setCollisionClass("Player")
+	collider:getBody():setFixedRotation(true)
+
 	self.animations = {}
 	self.animations.walkRight = animation:new(x, y, player_image, w, h, 1, 1, 0.2)
 	self.animations.walkLeft = animation:new(x, y, player_image, w, h, 1, 2, 0.2)
@@ -21,7 +25,7 @@ end
 
 function Player:load()
 	renderer:addRenderer(self)
-	gameLoop:addLoop(self)
+	gameLoop:addLoop(self)  
 end
 
 function Player:update(dt)
@@ -58,7 +62,10 @@ function Player:update(dt)
 
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
-		-- Perform the rest of the attack
+		print(#colliders)
+		for i, c in ipairs(colliders) do
+			c.object:interact(self.currentDmg)
+		end
 		self.lastAttack = 0
 	end
 
@@ -70,6 +77,10 @@ end
 
 function Player:draw()
 	Person.draw(self)
+end
+
+function Player:interact(dmg_dealt)
+	Person.interact(self, dmg_dealt)
 end
 
 return Player

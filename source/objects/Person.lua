@@ -31,4 +31,9 @@ function Person:setAnimationPos(x, y)
 	self.animation.y = y
 end
 
+function Person:interact(dmg_dealt)
+	self.health = self.health - dmg_dealt
+	print(self.health)
+end
+
 return Person

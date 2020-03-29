@@ -32,7 +32,7 @@ require("source.resources")
 -- Criação do renderer e do gameloop
 renderer = Renderer:create()
 gameLoop = GameLoop:create()
-music = Music:new("Tank.mp3")
+music = Music:new("audio/sound.mp3")
 
 world = windfield.newWorld()
 world:setGravity(0, 100)
@@ -42,7 +42,7 @@ world:addCollisionClass("BasicEnemy")
 world:addCollisionClass("Attack")
 world:setQueryDebugDrawing(true)
 
-ground = world:newRectangleCollider(0, 550, 880, 50)
+ground = world:newRectangleCollider(200, 550, 600, 50)
 ground:setType("static")
 ground:setCollisionClass("Ground")
 
