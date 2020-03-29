@@ -5,17 +5,22 @@ local animation = require("source.objects.Animation")
 local Player = class("Player", Person)
 
 function Player:initialize(x, y, w, h, r)
+
+	-- Player Collider
 	local collider = world:newRectangleCollider(x, y, w, h)
-	collider.object = self
+	collider:setObject(self)
 	collider:setSleepingAllowed(false)
 	collider:setCollisionClass("Player")
 	collider:getBody():setFixedRotation(true)
 
+	-- Player Animations
 	self.animations = {}
 	self.animations.walkRight = animation:new(x, y, player_image, w, h, 1, 1, 0.2)
 	self.animations.walkLeft = animation:new(x, y, player_image, w, h, 1, 2, 0.2)
 
 	Person.initialize(self, x, y, w, h, r, collider, self.animations.walkRight)
+
+	-- Other variables required
 	self.accuracy = 1
 	self.lastDirection = 1
 	self.onAir = true
@@ -32,12 +37,13 @@ function Player:update(dt)
 	Person.update(self, dt)
 	self.lastAttack = self.lastAttack + dt
 	
+	-- Collisions
 	if self.collider:enter("Ground") then
 		self.onAir = false
 	end
 
+	-- Movement
 	local x = 0
-
 	if love.keyboard.isDown("left") then
 		x = -1
 		self.lastDirection = -1
@@ -52,6 +58,8 @@ function Player:update(dt)
 		self.collider:applyLinearImpulse(0, -250)
 		self.onAir = true
 	end
+
+	-- Attack
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
 		local beat, subbeat = music.music:getBeat()
@@ -69,6 +77,7 @@ function Player:update(dt)
 		self.lastAttack = 0
 	end
 
+	-- Position Update
 	local newX, currentY = self.collider:getX() + x*dt*20, self.collider:getY()
 	self.collider:setX(newX)
 
@@ -79,6 +88,7 @@ function Player:draw()
 	Person.draw(self)
 end
 
+-- Callback function for collisions
 function Player:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
 end

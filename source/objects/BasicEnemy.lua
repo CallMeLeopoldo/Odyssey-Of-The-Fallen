@@ -6,23 +6,20 @@ local animation = require("source.objects.Animation")
 local BasicEnemy = class("BasicEnemy", Person)
 
 function BasicEnemy:initialize(x, y, w, h, r, moveSpeed)
+
+	-- BasicEnemy Collider
 	local collider = world:newCircleCollider(x, y, 30)
 	collider.object = self
 	collider:setCollisionClass("BasicEnemy")
 
+	-- Animation
 	local anim = animation:new(x, y, paintings, w, h, '1-3', 1, 0.5)
 
 	Person.initialize(self, x, y, w, h, r, collider, anim)
 
+	-- Other Variables
 	self.accuracy = 1
 	self.moveSpeed = moveSpeed
-end
-
-function BasicEnemy:collider_pos_calc()
-	local vecx = self.collider:getX() - self.r / 2
-	local vecy = self.collider:getY() - self.r / 2
-
-	return vecx,vecy
 end
 
 function BasicEnemy:load()
@@ -42,6 +39,7 @@ function BasicEnemy:draw()
 	Person.draw(self)
 end
 
+-- Callback function for collisions
 function BasicEnemy:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
 end
