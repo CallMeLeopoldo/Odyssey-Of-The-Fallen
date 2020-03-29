@@ -13,7 +13,7 @@ function BasicEnemy:initialize(x, y, w, h, r, moveSpeed)
 	collider:setCollisionClass("BasicEnemy")
 
 	-- Animation
-	local anim = animation:new(x, y, paintings, w, h, '1-3', 1, 0.5)
+	local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
 
 	Person.initialize(self, x, y, w, h, r, collider, anim)
 

@@ -15,8 +15,8 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Animations
 	self.animations = {}
-	self.animations.walkRight = animation:new(x, y, player_image, w, h, 1, 1, 0.2)
-	self.animations.walkLeft = animation:new(x, y, player_image, w, h, 1, 2, 0.2)
+	self.animations.walkRight = animation:new(x, y, sprites.player, w, h, 1, 1, 0.2)
+	self.animations.walkLeft = animation:new(x, y, sprites.player, w, h, 1, 2, 0.2)
 
 	Person.initialize(self, x, y, w, h, r, collider, self.animations.walkRight)
 
@@ -64,7 +64,7 @@ function Player:update(dt)
 	-- Attack
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
-		local beat, subbeat = music.music:getBeat()
+		local _, subbeat = music.music:getBeat()
 
 		self.currentDmg = self.baseDmg * subbeat
 
