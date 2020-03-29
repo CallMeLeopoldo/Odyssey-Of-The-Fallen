@@ -27,10 +27,9 @@ world:addCollisionClass("Attack")
 world:setQueryDebugDrawing(true)
 
 -- Create a ground and set it's properties
-ground = world:newRectangleCollider(200, 550, 600, 50)
+ground = world:newRectangleCollider(0, 550, 800, 50)
 ground:setType("static")
 ground:setCollisionClass("Ground")
-
 
 -- Game Screen Settings
 -- TODO: ajustar a tela para um tamanho mais adequado
@@ -38,6 +37,7 @@ ground:setCollisionClass("Ground")
 g_width = love.graphics.getWidth()
 g_height= love.graphics.getHeight()
 
+love.graphics.setBackgroundColor(0.7, 0.7, 1)
 
 g_GameTime = 0 --timer do jogo
 
@@ -84,6 +84,10 @@ end
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
 function love.draw()
+	love.graphics.setColor(0.28, 0.63, 0.05)
+	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))
+	love.graphics.setColor(1, 1, 1)
+	
 	renderer:draw()
 	world:draw()
 end
