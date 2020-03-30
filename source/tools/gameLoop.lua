@@ -13,6 +13,14 @@ function GameLoop:create()
 		insert(self.tickers, obj)
 	end
 
+	function gameLoop:removeLoop(obj)
+		for i = 0, #self.tickers do
+        	if self.tickers[i] == obj then
+            	remove(self.tickers, i)
+        	end
+    	end
+	end
+
 	function gameLoop:update(dt)
 		for tickers = 0, #self.tickers do
 			local obj = self.tickers[tickers]

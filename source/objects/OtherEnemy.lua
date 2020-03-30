@@ -59,7 +59,9 @@ function OtherEnemy:interact(dmg_dealt)
 end
 
 function OtherEnemy:destroy()
-	--Person.destroy(self)
+	renderer:removeRenderer(self)
+	gameLoop:removeLoop(self,0)
+	Person.destroy(self)
 	self.collider = nil
 	self = nil
 	print("otherEnemy destroyed")

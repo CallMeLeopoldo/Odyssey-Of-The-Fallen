@@ -18,6 +18,15 @@ function Renderer:create()
 		insert(self.drawers[l], obj)
 	end
 
+	function renderer:removeRenderer(obj, layer)
+		local l = layer or 0
+		for i = 0, #self.drawers[l] do
+        	if self.drawers[l][i] == obj then
+            	remove(self.drawers[l], i)
+        	end
+    	end
+	end
+
 	function renderer:draw()
 		for layer = 0, #self.drawers do
 			for draw = 0, #self.drawers[layer] do
