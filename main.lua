@@ -6,6 +6,7 @@ local animation = require("source.objects.Animation") -- to be removed
 
 local BasicEnemy = require("source.objects.BasicEnemy")
 local Player = require("source.objects.Player")
+local Hud = require("source.objects.Hud")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
@@ -15,14 +16,17 @@ function love.load()
 
 	music:load()
 
-	bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
-	bit:load()
+	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
+	-- bit:load()
 
 	local basicEnemy = BasicEnemy:new(400,10, 50, 50, 25,15)
 	basicEnemy:load()
 
 	local player = Player:new(250, 50, 20, 64, 15, music.spb/2)
 	player:load()
+
+	local hud = Hud:new(50, 50, player, music.spb)
+	hud:load()
 
 	tlm:load()
 end
