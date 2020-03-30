@@ -41,7 +41,7 @@ function HUD:draw()
 	love.graphics.setColor(0, 0, 0, 0.7)
     love.graphics.rectangle("fill", g_width - 250, 50, 220, 55)
 
-	local accuracy = self.player.currentDmg / self.player.baseDmg
+	local accuracy = self.player.accuracy
 	local p1h = self.enemy1.health
 	local p2h = self.enemy2.health
 

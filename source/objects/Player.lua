@@ -64,8 +64,17 @@ function Player:update(dt)
 	if not self.onAir and love.keyboard.isDown("a") then
 		local _, subbeat = music.music:getBeat()
 
-		subbeat = 64 * math.pow(subbeat - 0.5, 6) 
-		self.collider:applyLinearImpulse(0, -250*subbeat)
+		if subbeat > 0 and subbeat <= 0.25 then
+			self.accuracy = 0.25
+		elseif subbeat > 0.25 and subbeat <= 0.5 then
+		    self.accuracy = 0.5
+		elseif subbeat > 0.5 and subbeat <= 0.75 then
+		    self.accuracy = 0.75
+		else
+			self.accuracy = 1
+		end
+
+		self.collider:applyLinearImpulse(0, -120*self.accuracy)
 		self.onAir = true
 	end
 
@@ -74,8 +83,17 @@ function Player:update(dt)
 
 		local _, subbeat = music.music:getBeat()
 
-		subbeat = 64 * math.pow(subbeat - 0.5, 6) 
-		self.currentDmg = self.baseDmg * subbeat
+		if subbeat > 0 and subbeat <= 0.25 then
+			self.accuracy = 0.25
+		elseif subbeat > 0.25 and subbeat <= 0.5 then
+		    self.accuracy = 0.5
+		elseif subbeat > 0.5 and subbeat <= 0.75 then
+		    self.accuracy = 0.75
+		else
+			self.accuracy = 1
+		end
+
+		self.currentDmg = self.baseDmg * self.accuracy
 
 		print(self.currentDmg)
 
