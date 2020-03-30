@@ -26,6 +26,8 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.onAir = true
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
+	self.mojo = 0
+	self.maxMojo = 10
 end
 
 function Player:load()
@@ -74,6 +76,8 @@ function Player:update(dt)
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
+			self.mojo = self.mojo + self.currentDmg
+			if self.mojo > self.maxMojo then self.mojo = self.maxMojo end
 		end
 		self.lastAttack = 0
 	end

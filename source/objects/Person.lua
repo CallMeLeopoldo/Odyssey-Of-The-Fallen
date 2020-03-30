@@ -11,6 +11,7 @@ function Person:initialize(x, y, w, h, r, collider, animation)
 	self.currentDmg = self.baseDmg
 	self.collider = collider
 	self.animation = animation
+	self.maxHealth = 100
 end
 
 function Person:load()

@@ -9,7 +9,7 @@ function BasicEnemy:initialize(x, y, w, h, r, moveSpeed)
 
 	-- BasicEnemy Collider
 	local collider = world:newCircleCollider(x, y, 30)
-	collider.object = self
+	collider:setObject(self)
 	collider:setCollisionClass("BasicEnemy")
 
 	-- Animation

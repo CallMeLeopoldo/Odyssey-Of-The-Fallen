@@ -1,6 +1,6 @@
 function gameStart()
 	
-	love.window.setFullscreen(true)
+	--love.window.setFullscreen(true)
 	
 	local windfield = require("source.packages.windfield")
 	local Renderer = require("source.tools.renderer")
