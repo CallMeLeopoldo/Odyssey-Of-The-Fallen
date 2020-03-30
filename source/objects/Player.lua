@@ -111,7 +111,7 @@ function Player:update(dt)
 	local newX, currentY = self.collider:getX() + x*dt*80, self.collider:getY()
 	
 	if currentY > 700 then
-		newX = newX - 200
+		x = 50
 		currentY = 400 
 		self.collider:setY(currentY)
 	end

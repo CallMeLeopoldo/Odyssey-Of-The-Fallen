@@ -45,6 +45,18 @@ end
 -- Callback function for collisions
 function BasicEnemy:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
+	if self.health < 0 then
+		self:destroy()
+	end
+end
+
+function BasicEnemy:destroy()
+	renderer:removeRenderer(self)
+	gameLoop:removeLoop(self,0)
+	Person.destroy(self)
+	self.collider = nil
+	self = nil
+	print("otherEnemy destroyed")
 end
 
 return BasicEnemy
