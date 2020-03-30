@@ -28,6 +28,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.lastAttack = attackSpeed
 	self.mojo = 0
 	self.maxMojo = 10
+	self.currentDmg = self.baseDmg
 end
 
 function Player:load()
@@ -83,9 +84,17 @@ function Player:update(dt)
 	end
 
 	-- Position Update
-	local newX, currentY = self.collider:getX() + x*dt*20, self.collider:getY()
+	local newX, currentY = self.collider:getX() + x*dt*40, self.collider:getY()
+	
+	if currentY > 700 then
+		newX = newX - 200
+		currentY = 400 
+		self.collider:setY(currentY)
+	end
+	
 	self.collider:setX(newX)
-
+	self.collider:setY(currentY)
+	
 	Person.setAnimationPos(self, newX - self.w/2, currentY - 3*self.h/4)
 end
 

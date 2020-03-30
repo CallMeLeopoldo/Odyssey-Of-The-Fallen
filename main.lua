@@ -5,6 +5,7 @@ local tlm = require("source.tiles.tile_manager")
 local animation = require("source.objects.Animation") -- to be removed
 
 local BasicEnemy = require("source.objects.BasicEnemy")
+local OtherEnemy = require("source.objects.OtherEnemy")
 local Player = require("source.objects.Player")
 local Hud = require("source.objects.Hud")
 
@@ -19,10 +20,13 @@ function love.load()
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	local basicEnemy = BasicEnemy:new(400,10, 50, 50, 25,15)
+	local basicEnemy = BasicEnemy:new(400, 520, 50, 50, 25, 15)
 	basicEnemy:load()
 
-	local player = Player:new(250, 50, 20, 64, 15, music.spb/2)
+	local throwableEnemy = OtherEnemy:new(1000, 520, 50, 50, 25, 15)
+	throwableEnemy:load()
+
+	local player = Player:new(50, 520, 20, 64, 15, music.spb/2)
 	player:load()
 
 	local hud = Hud:new(50, 50, player, music.spb)

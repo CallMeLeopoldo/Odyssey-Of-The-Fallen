@@ -44,6 +44,4 @@ function BasicEnemy:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
 end
 
-
-
 return BasicEnemy

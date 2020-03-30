@@ -30,4 +30,10 @@ function Animation:draw()
 	self.animation:draw(self.image, self.x, self.y)
 end
 
+function Animation:destroy()
+	self.animation = nil
+	self = nil
+	print("animation destroyed")
+end
+
 return Animation

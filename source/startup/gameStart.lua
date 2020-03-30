@@ -26,7 +26,11 @@ function gameStart()
 
 	--This point from here on out is to be removed
 	-- Create a ground and set it's properties
-	ground = world:newRectangleCollider(0, 550, 800, 50)
+	ground = world:newRectangleCollider(0, 550, 500, 50)
+	ground:setType("static")
+	ground:setCollisionClass("Ground")
+	
+	ground = world:newRectangleCollider(600, 550, 900, 50)
 	ground:setType("static")
 	ground:setCollisionClass("Ground")
 

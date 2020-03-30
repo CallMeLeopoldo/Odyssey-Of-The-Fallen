@@ -6,7 +6,7 @@ function Person:initialize(x, y, w, h, r, collider, animation)
 	self.x, self.y = x, y
 	self.w, self.h = w, h
 	self.r = r
-	self.health = 100
+	self.health = 10
 	self.baseDmg = 1
 	self.currentDmg = self.baseDmg
 	self.collider = collider
@@ -34,7 +34,13 @@ end
 
 function Person:interact(dmg_dealt)
 	self.health = self.health - dmg_dealt
-	print(self.health)
+end
+
+function Person:destroy()
+	self.collider:destroy()
+	self.animation:destroy()
+	self = nil
+	print("person destroyed")
 end
 
 return Person

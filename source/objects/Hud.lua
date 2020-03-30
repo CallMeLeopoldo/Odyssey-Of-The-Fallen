@@ -34,6 +34,20 @@ function HUD:draw()
 	love.graphics.setColor(1, 1, 1)
 	
 	self.animation:draw()
+
+	-- Debug only
+	love.graphics.setColor(0, 0, 0, 0.7)
+    love.graphics.rectangle("fill", g_width - 250, 50, 220, 25)
+
+	local accuracy = self.player.currentDmg / self.player.baseDmg
+	
+	if accuracy >= 0 then accuracy = " " .. accuracy end
+
+    love.graphics.setColor(1, 1, 1, 1)
+	love.graphics.setFont(fonts.debug)
+	love.graphics.print("Accuracy: " .. accuracy, g_width - 250, 50)
+	
+
 end
 
 return HUD
