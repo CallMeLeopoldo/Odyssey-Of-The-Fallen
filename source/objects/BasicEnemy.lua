@@ -36,7 +36,10 @@ function BasicEnemy:update(dt)
 end
 
 function BasicEnemy:draw()
-	Person.draw(self)
+	--Person.draw(self)
+	love.graphics.setColor(.2, .6, .8)
+	love.graphics.circle("fill", self.collider:getX(), self.collider:getY(), 30)
+	love.graphics.setColor(1, 1, 1)
 end
 
 -- Callback function for collisions

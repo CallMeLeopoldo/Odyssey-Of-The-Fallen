@@ -20,7 +20,7 @@ function gameStart()
 	anim8 = require("source.packages.anim8")
 	renderer = Renderer:create()
 	gameLoop = GameLoop:create()
-	music = Music:new("audio/sound.mp3")
+	music = Music:new("audio/sound2.mp3")
 
 	require("source.startup.resources")
 
@@ -30,9 +30,9 @@ function gameStart()
 	ground:setType("static")
 	ground:setCollisionClass("Ground")
 	
-	ground = world:newRectangleCollider(600, 550, 900, 50)
-	ground:setType("static")
-	ground:setCollisionClass("Ground")
+	ground2 = world:newRectangleCollider(600, 550, 900, 50)
+	ground2:setType("static")
+	ground2:setCollisionClass("Ground")
 
 	-- Game Screen Settings
 	-- TODO: ajustar a tela para um tamanho mais adequado

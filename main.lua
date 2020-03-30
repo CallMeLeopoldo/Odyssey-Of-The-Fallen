@@ -20,16 +20,16 @@ function love.load()
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	local basicEnemy = BasicEnemy:new(400, 520, 50, 50, 25, 15)
+	local basicEnemy = BasicEnemy:new(400, 520, 64, 64, 25, 15)
 	basicEnemy:load()
 
-	local throwableEnemy = OtherEnemy:new(1000, 520, 50, 50, 25, 15)
+	local throwableEnemy = OtherEnemy:new(1000, 520, 64, 64, 25, 15)
 	throwableEnemy:load()
 
 	local player = Player:new(50, 520, 20, 64, 15, music.spb/2)
 	player:load()
 
-	local hud = Hud:new(50, 50, player, music.spb)
+	local hud = Hud:new(50, 50, player, music.spb, basicEnemy, throwableEnemy)
 	hud:load()
 
 	tlm:load()
@@ -63,6 +63,10 @@ end
 function love.draw()
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))
+	love.graphics.setColor(1, 1, 1)
+	
+	love.graphics.setColor(0.28, 0.63, 0.05)
+	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
 	
 	renderer:draw()

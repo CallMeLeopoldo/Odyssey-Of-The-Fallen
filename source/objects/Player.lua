@@ -29,6 +29,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.mojo = 0
 	self.maxMojo = 10
 	self.currentDmg = self.baseDmg
+	self.health = 100
 end
 
 function Player:load()
@@ -41,8 +42,11 @@ function Player:update(dt)
 	self.lastAttack = self.lastAttack + dt
 	
 	-- Collisions
-	if self.collider:enter("Ground") then
+	if self.collider:enter("Ground") or self.collider:stay("Ground") then
 		self.onAir = false
+	end
+	if self.collider:exit("Ground") then
+		self.onAir = true
 	end
 
 	-- Movement
@@ -60,6 +64,7 @@ function Player:update(dt)
 	if not self.onAir and love.keyboard.isDown("a") then
 		local _, subbeat = music.music:getBeat()
 
+		subbeat = 64 * math.pow(subbeat - 0.5, 6) 
 		self.collider:applyLinearImpulse(0, -250*subbeat)
 		self.onAir = true
 	end
@@ -69,6 +74,7 @@ function Player:update(dt)
 
 		local _, subbeat = music.music:getBeat()
 
+		subbeat = 64 * math.pow(subbeat - 0.5, 6) 
 		self.currentDmg = self.baseDmg * subbeat
 
 		print(self.currentDmg)

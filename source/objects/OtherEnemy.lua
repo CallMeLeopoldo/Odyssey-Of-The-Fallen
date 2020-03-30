@@ -14,7 +14,7 @@ function OtherEnemy:initialize(x, y, w, h, r, moveSpeed)
 	collider:setCollisionClass("BasicEnemy")
 
 	-- Animation
-	local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
+	local anim = animation:new(x - h/2, y - w/2, sprites.cube, w, h, '1-3', 1, 0.5)
 
 	Person.initialize(self, x, y, w, h, r, collider, anim)
 
@@ -44,10 +44,15 @@ function OtherEnemy:update(dt)
 		local t = throwable:new(self.x - 25, self.y - 25)
 		t:load()
 	end
+
+
 end
 
 function OtherEnemy:draw()
-	Person.draw(self)
+	--Person.draw(self)
+	love.graphics.setColor(.8, .4, .8)
+	love.graphics.circle("fill", self.collider:getX(), self.collider:getY(), 30)
+	love.graphics.setColor(1, 1, 1)
 end
 
 -- Callback function for collisions
