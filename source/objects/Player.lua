@@ -64,17 +64,17 @@ function Player:update(dt)
 	if not self.onAir and love.keyboard.isDown("a") then
 		local _, subbeat = music.music:getBeat()
 
-		if subbeat > 0 and subbeat <= 0.25 then
-			self.accuracy = 0.25
-		elseif subbeat > 0.25 and subbeat <= 0.5 then
-		    self.accuracy = 0.5
-		elseif subbeat > 0.5 and subbeat <= 0.75 then
-		    self.accuracy = 0.75
-		else
+		if subbeat >= 0 and subbeat < 0.25 then
+			self.accuracy = 0
+		elseif subbeat >= 0.25 and subbeat < 0.5 then
+		    self.accuracy = 0.33
+		elseif subbeat >= 0.5 and subbeat < 0.75 then
+		    self.accuracy = 0.66
+		elseif subbeat >= 0.75 and subbeat < 1 then
 			self.accuracy = 1
 		end
 
-		self.collider:applyLinearImpulse(0, -120*self.accuracy)
+		self.collider:applyLinearImpulse(0, -100*self.accuracy)
 		self.onAir = true
 	end
 
@@ -83,13 +83,13 @@ function Player:update(dt)
 
 		local _, subbeat = music.music:getBeat()
 
-		if subbeat > 0 and subbeat <= 0.25 then
-			self.accuracy = 0.25
-		elseif subbeat > 0.25 and subbeat <= 0.5 then
-		    self.accuracy = 0.5
-		elseif subbeat > 0.5 and subbeat <= 0.75 then
-		    self.accuracy = 0.75
-		else
+		if subbeat >= 0 and subbeat < 0.25 then
+			self.accuracy = 0
+		elseif subbeat >= 0.25 and subbeat < 0.5 then
+		    self.accuracy = 0.33
+		elseif subbeat >= 0.5 and subbeat < 0.75 then
+		    self.accuracy = 0.66
+		elseif subbeat >= 0.75 and subbeat < 1 then
 			self.accuracy = 1
 		end
 
@@ -108,7 +108,7 @@ function Player:update(dt)
 	end
 
 	-- Position Update
-	local newX, currentY = self.collider:getX() + x*dt*40, self.collider:getY()
+	local newX, currentY = self.collider:getX() + x*dt*80, self.collider:getY()
 	
 	if currentY > 700 then
 		newX = newX - 200
