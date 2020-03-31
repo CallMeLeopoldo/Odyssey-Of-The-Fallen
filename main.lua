@@ -66,7 +66,7 @@ function love.draw()
 	love.graphics.setColor(1, 1, 1)
 	
 	love.graphics.setColor(0.28, 0.63, 0.05)
-	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground:getShape():getPoints()))
+	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground2:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
 	
 	renderer:draw()
