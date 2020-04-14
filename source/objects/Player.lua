@@ -62,20 +62,26 @@ function Player:update(dt)
 		self.animation = self.animations.walkRight
 	end
 	if not self.onAir and love.keyboard.isDown("a") then
-		local _, subbeat = music.music:getBeat()
 
-		if subbeat >= 0 and subbeat < 0.25 then
-			self.accuracy = 0
-		elseif subbeat >= 0.25 and subbeat < 0.5 then
-		    self.accuracy = 0.33
-		elseif subbeat >= 0.5 and subbeat < 0.75 then
-		    self.accuracy = 0.66
-		elseif subbeat >= 0.75 and subbeat < 1 then
-			self.accuracy = 1
+		local x, y = self.collider:getLinearVelocity()
+		
+		if y == 0 then
+			local _, subbeat = music.music:getBeat()
+	
+			if subbeat >= 0 and subbeat < 0.25 then
+				self.accuracy = 0
+			elseif subbeat >= 0.25 and subbeat < 0.5 then
+				self.accuracy = 0.33
+			elseif subbeat >= 0.5 and subbeat < 0.75 then
+				self.accuracy = 0.66
+			elseif subbeat >= 0.75 and subbeat < 1 then
+				self.accuracy = 1
+			end
+	
+			self.collider:applyLinearImpulse(0, -100*self.accuracy)
+			self.onAir = true
 		end
 
-		self.collider:applyLinearImpulse(0, -100*self.accuracy)
-		self.onAir = true
 	end
 
 	-- Attack
