@@ -23,7 +23,6 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	-- Other variables required
 	self.accuracy = 1
 	self.lastDirection = 1
-	self.onAir = true
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
 	self.mojo = 0
@@ -41,14 +40,6 @@ function Player:update(dt)
 	Person.update(self, dt)
 	self.lastAttack = self.lastAttack + dt
 	
-	-- Collisions
-	if self.collider:enter("Ground") or self.collider:stay("Ground") then
-		self.onAir = false
-	end
-	if self.collider:exit("Ground") then
-		self.onAir = true
-	end
-
 	-- Movement
 	local x = 0
 	if love.keyboard.isDown("left") then
@@ -61,7 +52,7 @@ function Player:update(dt)
 		self.lastDirection = 1
 		self.animation = self.animations.walkRight
 	end
-	if not self.onAir and love.keyboard.isDown("a") then
+	if love.keyboard.isDown("a") then
 
 		local x, y = self.collider:getLinearVelocity()
 		
@@ -78,8 +69,7 @@ function Player:update(dt)
 				self.accuracy = 1
 			end
 	
-			self.collider:applyLinearImpulse(0, -100*self.accuracy)
-			self.onAir = true
+			self.collider:applyLinearImpulse(0, -100)
 		end
 
 	end
