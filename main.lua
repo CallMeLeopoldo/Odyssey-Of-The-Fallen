@@ -9,11 +9,14 @@ local OtherEnemy = require("source.objects.OtherEnemy")
 local Player = require("source.objects.Player")
 local Hud = require("source.objects.Hud")
 local BeatBar = require("source.objects.BeatBar")
+local Camera = require("source.packages.hump-temp-master.camera")
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
 	require("source.startup.gameStart")
 	gameStart()
+
+	
 
 	music:load()
 
@@ -26,13 +29,15 @@ function love.load()
 	local throwableEnemy = OtherEnemy:new(1000, 520, 64, 64, 25, 15)
 	throwableEnemy:load()
 
-	local player = Player:new(50, 520, 20, 64, 15, music.spb/2)
+	player = Player:new(50, 520, 20, 64, 15, music.spb/2)
 	player:load()
 
-	local hud = Hud:new(50, 50, player, music.spb, basicEnemy, throwableEnemy)
+	camera = Camera(player.collider:getX(), player.collider:getY() - 100)
+
+	hud = Hud:new(50, 50, player, music.spb, basicEnemy, throwableEnemy)
 	hud:load()
 
-	local beatBar = BeatBar:new(love.graphics.getWidth() / 2, 7*love.graphics.getHeight()/8)
+	beatBar = BeatBar:new(love.graphics.getWidth() / 2, 7*love.graphics.getHeight()/8)
 	beatBar:load()
 
 	tlm:load()
@@ -46,6 +51,9 @@ function love.update(dt)
 	music.music:update(dt)
 	gameLoop:update(dt)
 	world:update(dt)
+	--hud:update(dt)
+	--beatBar:update(dt)
+	camera:lockX(player.collider:getX())
 end
 
 function love.keypressed(k)
@@ -64,6 +72,7 @@ end
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
 function love.draw()
+	camera:attach()
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
@@ -71,7 +80,10 @@ function love.draw()
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground2:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
-	
 	renderer:draw()
 	world:draw()
+	camera:detach()
+	beatBar:draw()
+	hud:draw()
+	
 end

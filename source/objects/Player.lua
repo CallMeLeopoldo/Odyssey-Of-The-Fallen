@@ -33,7 +33,7 @@ end
 
 function Player:load()
 	renderer:addRenderer(self)
-	gameLoop:addLoop(self)  
+	gameLoop:addLoop(self)
 end
 
 function Player:update(dt)
@@ -59,14 +59,14 @@ function Player:update(dt)
 		if y == 0 then
 			local _, subbeat = music.music:getBeat()
 	
-			if subbeat >= 0 and subbeat < 0.25 then
-				self.accuracy = 0
-			elseif subbeat >= 0.25 and subbeat < 0.5 then
-				self.accuracy = 0.33
-			elseif subbeat >= 0.5 and subbeat < 0.75 then
-				self.accuracy = 0.66
-			elseif subbeat >= 0.75 and subbeat < 1 then
+			if subbeat >= 0.875 or subbeat < 0.125 then
 				self.accuracy = 1
+			elseif subbeat >= 0.125 and subbeat < 0.375 then
+				self.accuracy = 0.25
+			elseif subbeat >= 0.3755 and subbeat < 0.625 then
+				self.accuracy = 0.5
+			elseif subbeat >= 0.625 and subbeat < 0.875 then
+				self.accuracy = 0.75
 			end
 	
 			self.collider:applyLinearImpulse(0, -100)
@@ -79,14 +79,14 @@ function Player:update(dt)
 
 		local _, subbeat = music.music:getBeat()
 
-		if subbeat >= 0 and subbeat < 0.25 then
-			self.accuracy = 0
-		elseif subbeat >= 0.25 and subbeat < 0.5 then
-		    self.accuracy = 0.33
-		elseif subbeat >= 0.5 and subbeat < 0.75 then
-		    self.accuracy = 0.66
-		elseif subbeat >= 0.75 and subbeat < 1 then
+		if subbeat >= 0.875 or subbeat < 0.125 then
 			self.accuracy = 1
+		elseif subbeat >= 0.125 and subbeat < 0.375 then
+			self.accuracy = 0.25
+		elseif subbeat >= 0.3755 and subbeat < 0.625 then
+			self.accuracy = 0.5
+		elseif subbeat >= 0.625 and subbeat < 0.875 then
+			self.accuracy = 0.75
 		end
 
 		self.currentDmg = self.baseDmg * self.accuracy

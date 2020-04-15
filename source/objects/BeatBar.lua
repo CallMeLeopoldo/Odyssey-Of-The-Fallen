@@ -17,7 +17,7 @@ function BeatBar:initialize(x, y)
 end
 
 function BeatBar:load()
-	renderer:addRenderer(self)
+	--renderer:addRenderer(self)
 	gameLoop:addLoop(self)
 end
 

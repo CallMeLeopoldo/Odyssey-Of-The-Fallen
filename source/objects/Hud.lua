@@ -14,12 +14,13 @@ end
 
 function HUD:load()
 	gameLoop:addLoop(self)
-	renderer:addRenderer(self)
+	--renderer:addRenderer(self)
 end
 
 function HUD:update(dt)
 	self.animation:update(dt)
 end
+
 
 function HUD:draw()
 	love.graphics.draw(sprites.health_and_mojo, self.x + 43.68, self.y)

@@ -1,3 +1,5 @@
+io.stdout:setvbuf("no")
+
 local class = require("source.packages.middleclass")
 local lovebpm = require("source.packages.lovebpm")
 
@@ -5,9 +7,8 @@ local Music = class("Music")
 
 function Music:initialize(track)
 	self.track = track
-	local bpm = lovebpm.detectBPM(self.track)
-	self.bpm = bpm
-	self.bps = bpm/60	-- beats per second
+	self.bpm = 60
+	self.bps = self.bpm/60	-- beats per second
 	self.spb = 1/self.bps	-- seconds per beat (time, in seconds, between beats)
 
 end
@@ -35,4 +36,4 @@ function Music:draw()
 
 end
 
-return Music 
+return Music
