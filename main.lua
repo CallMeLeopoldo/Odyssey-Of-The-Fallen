@@ -8,7 +8,7 @@ local BasicEnemy = require("source.objects.BasicEnemy")
 local OtherEnemy = require("source.objects.OtherEnemy")
 local Player = require("source.objects.Player")
 local Hud = require("source.objects.Hud")
-
+local BeatBar = require("source.objects.BeatBar")
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
@@ -31,6 +31,9 @@ function love.load()
 
 	local hud = Hud:new(50, 50, player, music.spb, basicEnemy, throwableEnemy)
 	hud:load()
+
+	local beatBar = BeatBar:new(love.graphics.getWidth() / 2, 7*love.graphics.getHeight()/8)
+	beatBar:load()
 
 	tlm:load()
 end
