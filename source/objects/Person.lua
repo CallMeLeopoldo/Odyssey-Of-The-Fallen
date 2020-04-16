@@ -15,7 +15,7 @@ function Person:initialize(x, y, w, h, r, collider, animation)
 end
 
 function Person:load()
-	renderer:addRenderer(self)
+	renderer:addRenderer(self, 3)
 	gameLoop:addLoop(self)
 end
 

@@ -1,6 +1,7 @@
 local class = require("source.packages.middleclass")
 local Person = require("source.objects.Person")
 local animation = require("source.objects.Animation")
+local rangedAttack = require("source.objects.RangedAttack")
 
 local Player = class("Player", Person)
 
@@ -53,7 +54,7 @@ function Player:update(dt)
 		self.lastDirection = 1
 		self.animation = self.animations.walkRight
 	end
-	if love.keyboard.isDown("a") then
+	if love.keyboard.isDown("up") then
 
 		local x, y = self.collider:getLinearVelocity()
 		
@@ -72,13 +73,11 @@ function Player:update(dt)
 
 	end
 
-	-- Attack
-	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
+	-- Attack and Ranged Attack
+	if love.keyboard.isDown("d") and self.lastAttack >= self.attackTimming then
 
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
-
-		print(self.currentDmg)
 
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
@@ -89,13 +88,20 @@ function Player:update(dt)
 		end
 		self.lastAttack = 0
 	end
+	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
+
+		self:calculateAccuracy()
+		local ra = rangedAttack:new(self.collider:getX() + 40*self.lastDirection, self.collider:getY() - 20, self.lastDirection, self.accuracy)
+		ra:load()
+		self.lastAttack = 0
+	end
 
 	-- Position Update
 	local newX, currentY = self.collider:getX() + x*dt*80, self.collider:getY()
 	
 	if currentY > 700 then
 		x = 50
-		currentY = 400 
+		currentY = 400
 		self.collider:setY(currentY)
 	end
 	
@@ -106,7 +112,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-	Person.draw(self)
+	Person.draw(self, 3)
 end
 
 -- Callback function for collisions
