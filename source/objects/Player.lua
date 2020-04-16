@@ -29,6 +29,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.maxMojo = 10
 	self.currentDmg = self.baseDmg
 	self.health = 100
+	self.multiplier = 0
 end
 
 function Player:load()
@@ -57,19 +58,16 @@ function Player:update(dt)
 		local x, y = self.collider:getLinearVelocity()
 		
 		if y == 0 then
-			local _, subbeat = music.music:getBeat()
-	
-			if subbeat >= 0.875 or subbeat < 0.125 then
-				self.accuracy = 1
-			elseif subbeat >= 0.125 and subbeat < 0.375 then
-				self.accuracy = 0.25
-			elseif subbeat >= 0.3755 and subbeat < 0.625 then
-				self.accuracy = 0.5
-			elseif subbeat >= 0.625 and subbeat < 0.875 then
-				self.accuracy = 0.75
+			self:calculateAccuracy()
+
+			local impulse = -100
+			if self.multiplier >= 3 then 
+				impulse = impulse * 3
+			else
+				impulse = impulse*self.multiplier
 			end
-	
-			self.collider:applyLinearImpulse(0, -100)
+
+			self.collider:applyLinearImpulse(0, impulse)
 		end
 
 	end
@@ -77,18 +75,7 @@ function Player:update(dt)
 	-- Attack
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
-		local _, subbeat = music.music:getBeat()
-
-		if subbeat >= 0.875 or subbeat < 0.125 then
-			self.accuracy = 1
-		elseif subbeat >= 0.125 and subbeat < 0.375 then
-			self.accuracy = 0.25
-		elseif subbeat >= 0.3755 and subbeat < 0.625 then
-			self.accuracy = 0.5
-		elseif subbeat >= 0.625 and subbeat < 0.875 then
-			self.accuracy = 0.75
-		end
-
+		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
 
 		print(self.currentDmg)
@@ -125,6 +112,26 @@ end
 -- Callback function for collisions
 function Player:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
+end
+
+function Player:calculateAccuracy() 
+	local _, subbeat = music.music:getBeat()
+		
+	if subbeat >= 0.875 or subbeat < 0.125 then
+		self.accuracy = 1
+	elseif subbeat >= 0.125 and subbeat < 0.375 then
+		self.accuracy = 0.25
+	elseif subbeat >= 0.3755 and subbeat < 0.625 then
+		self.accuracy = 0.5
+	elseif subbeat >= 0.625 and subbeat < 0.875 then
+		self.accuracy = 0.75
+	end
+
+	if self.accuracy >= 0.75 then
+		self.multiplier = self.multiplier + 1
+	else
+		self.multiplier = 1
+	end
 end
 
 return Player
