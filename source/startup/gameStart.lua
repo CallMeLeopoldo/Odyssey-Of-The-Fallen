@@ -12,7 +12,7 @@ function gameStart()
 	world:setGravity(0, 100)
 	world:addCollisionClass("Ground")
 	world:addCollisionClass("Player")
-	world:addCollisionClass("BasicEnemy")
+	world:addCollisionClass("Enemy")
 	world:addCollisionClass("Attack")
 	world:setQueryDebugDrawing(true)
 
