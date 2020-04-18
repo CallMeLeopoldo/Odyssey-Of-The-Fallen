@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="images/Pop.lua" format="lua"/>
  </editorsettings>
- <tileset firstgid="1" source="atlas.tsx"/>
- <tileset firstgid="1025" source="sea.tsx"/>
+ <tileset firstgid="1" source="images/atlas.tsx"/>
+ <tileset firstgid="1025" source="images/sea.tsx"/>
  <layer id="2" name="background" width="600" height="40">
   <properties>
    <property name="collidable" type="bool" value="false"/>

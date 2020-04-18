@@ -15,13 +15,13 @@ return {
     {
       name = "atlas",
       firstgid = 1,
-      filename = "../atlas.tsx",
+      filename = "atlas.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 0,
       margin = 0,
       columns = 32,
-      image = "../atlas.png",
+      image = "atlas.png",
       imagewidth = 512,
       imageheight = 512,
       tileoffset = {
@@ -41,13 +41,13 @@ return {
     {
       name = "sea",
       firstgid = 1025,
-      filename = "../sea.tsx",
+      filename = "sea.tsx",
       tilewidth = 16,
       tileheight = 16,
       spacing = 0,
       margin = 0,
       columns = 7,
-      image = "../Magic-Cliffs-Environment/PNG/sea.png",
+      image = "Magic-Cliffs-Environment/PNG/sea.png",
       imagewidth = 112,
       imageheight = 96,
       tileoffset = {

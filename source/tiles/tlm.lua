@@ -13,7 +13,7 @@ function Tlm:load(mapname, tx, ty)
 	self.map:bump_init(NewWorld)
 
 --Gets number of tables(objects) in currently loaded map
-colliderLayer = self.map.objects
+colliderLayer = self.map.layers["ground"].data
 print(inspect(colliderLayer))
 --Loops through all objects and gets their respective x, y values
 --this then creates a new collider rectangle at respective coordinates
