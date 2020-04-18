@@ -7,19 +7,33 @@ local Player = class("Player", Person)
 function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Collider
-	local collider = world:newCircleCollider(x, y, r)
-	collider:setObject(self)
-	collider:setSleepingAllowed(false)
-	collider:setCollisionClass("Player")
-	collider:getBody():setFixedRotation(true)
-	collider:setRestitution(0)
-	collider:setInertia(50)
+	
+	-- local upperBody = world:newRectangleCollider(x, y + h/2, w, h/2)
+	-- upperBody:setObject(self)
+	-- upperBody:setSleepingAllowed(false)
+	-- upperBody:setCollisionClass("Player")
+	-- upperBody:setFixedRotation(true)
+	-- upperBody:setRestitution(0)
+	-- upperBody:setInertia(50)
+	
+	local lowerBody = world:newRectangleCollider(x, y, w, h/2)
+	lowerBody:setObject(self)
+	lowerBody:setSleepingAllowed(false)
+	lowerBody:setCollisionClass("Player")
+	lowerBody:setFixedRotation(true)
+	lowerBody:setRestitution(0)
+	lowerBody:setInertia(50)
+	
+	--world:addJoint("WeldJoint", lowerBody, upperBody, h, w, true)
+
+	-- self.upperBody = upperBody
+
 	-- Player Animations
 	self.animations = {}
 	self.animations.walkRight = animation:new(x, y, sprites.player, w, h, 1, 1, 0.2)
 	self.animations.walkLeft = animation:new(x, y, sprites.player, w, h, 1, 2, 0.2)
 
-	Person.initialize(self, x, y, w, h, r, collider, self.animations.walkRight, "player")
+	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
 
 	-- Other variables required
 	self.accuracy = 1
@@ -72,7 +86,6 @@ function Player:update(dt)
 
 			self.collider:applyLinearImpulse(0, impulse)
 		end
-
 	end
 
 	-- Attack
@@ -135,6 +148,10 @@ function Player:calculateAccuracy()
 	else
 		self.multiplier = 1
 	end
+end
+
+function Player:getPosition()
+	return self.collider:getPosition()
 end
 
 return Player
