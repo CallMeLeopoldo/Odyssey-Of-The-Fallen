@@ -7,7 +7,6 @@ local Player = class("Player", Person)
 function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Collider
-	
 	local upperBody = world:newRectangleCollider(x, y - h/2, w, h/2)
 	upperBody:setObject(self)
 	upperBody:setSleepingAllowed(false)
@@ -20,7 +19,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 		function(collider_1, collider_2, contact)
 			if collider_1.collision_class == "Ignore" and collider_2.collision_class == "EnemyAttack" then contact:setEnabled(false) end
 		end)
-	
+
 	local lowerBody = world:newRectangleCollider(x, y, w, h/2)
 	lowerBody:setObject(self)
 	lowerBody:setSleepingAllowed(false)
@@ -28,7 +27,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	lowerBody:setFixedRotation(true)
 	lowerBody:setRestitution(0)
 	lowerBody:setInertia(50)
-	
+
 	world:addJoint("RevoluteJoint", lowerBody, upperBody, h, w, true)
 
 	-- Player Animations
@@ -96,7 +95,7 @@ function Player:update(dt)
 	else
 		self.upperBody:setCollisionClass("Player")
 	end
-	
+
 	-- Attack
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
@@ -147,7 +146,7 @@ function Player:calculateAccuracy()
 		self.accuracy = 0.75
 	elseif subbeat >= 0.6 and subbeat < 0.4 then
 		self.accuracy = 0.5
-	else 
+	else
 		self.accuracy = 0.25
 	end
 
