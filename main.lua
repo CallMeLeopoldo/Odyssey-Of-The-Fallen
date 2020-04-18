@@ -3,38 +3,44 @@ io.stdout:setvbuf("no")
 local tlm = require("source.tiles.tile_manager")
 
 local animation = require("source.objects.Animation") -- to be removed
-
-local BasicEnemy = require("source.objects.BasicEnemy")
-local OtherEnemy = require("source.objects.OtherEnemy")
 local Player = require("source.objects.Player")
 local Hud = require("source.objects.Hud")
 local BeatBar = require("source.objects.BeatBar")
 local Camera = require("source.packages.hump-temp-master.camera")
+local enemy = require("source.objects.enemy")
+local melee_enemy = require("source.objects.melee_enemy")
+local ranged_enemy = require("source.objects.ranged_enemy")
+
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
 	require("source.startup.gameStart")
 	gameStart()
 
-	
 
 	music:load()
 
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	local basicEnemy = BasicEnemy:new(400, 520, 64, 64, 25, 15)
-	basicEnemy:load()
+	local meleeEnemy = melee_enemy:new(400,500,64,64,20,"melee_enemy")
+	meleeEnemy:load()
 
-	local throwableEnemy = OtherEnemy:new(1000, 520, 64, 64, 25, 15)
-	throwableEnemy:load()
+	local rangedEnemy = ranged_enemy:new(1000,500,64,64,25,"ranged_enemy")
+	rangedEnemy:load()
+
+	local rangedEnemy2 = ranged_enemy:new(1100,500,64,64,25,"ranged_enemy2")
+	rangedEnemy2:load()
+
+
 
 	player = Player:new(50, 520, 20, 64, 15, music.spb/2)
 	player:load()
 
+
 	camera = Camera(player.collider:getX(), player.collider:getY() - 100)
 
-	hud = Hud:new(50, 50, player, music.spb, basicEnemy, throwableEnemy)
+	hud = Hud:new(50, 50, player, music.spb, meleeEnemy, rangedEnemy)
 	hud:load()
 
 	beatBar = BeatBar:new(love.graphics.getWidth() / 2, 7*love.graphics.getHeight()/8)
@@ -76,7 +82,7 @@ function love.draw()
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
-	
+
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground2:getShape():getPoints()))
 	love.graphics.setColor(1, 1, 1)
@@ -85,5 +91,5 @@ function love.draw()
 	camera:detach()
 	beatBar:draw()
 	hud:draw()
-	
+
 end
