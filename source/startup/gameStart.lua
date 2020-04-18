@@ -1,7 +1,8 @@
 function gameStart()
 	
 	--love.window.setFullscreen(true)
-	
+	tlm = require("source.tiles.tlm")
+	sti  = require ("source.packages.sti")
 	local windfield = require("source.packages.windfield")
 	local Renderer = require("source.tools.renderer")
 	local GameLoop = require("source.tools.gameLoop")
