@@ -12,13 +12,14 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   -- BasicEnemy Collider
   local collider = world:newCircleCollider(x, y, r)
   collider:setObject(self)
-  collider:setCollisionClass("Enemy")
+  collider:setCollisionClass("enemy")
   collider:setSleepingAllowed(false)
   collider:setRestitution(0)
-  collider:setInertia(50)
+  collider:setInertia(5000)
 
   -- Animation
   local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
+
 
   Person.initialize(self, x, y, w, h, r, collider, anim)
 
@@ -29,6 +30,7 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   self.id = id or "enemy"
   self.dir = 1
   self.walk = 1
+  self.range = 1  -- variable to make them stop runnning into you
 
 
 
@@ -53,16 +55,17 @@ function enemy:update(dt)
 			self.dir = 1
 		end
 	else
-		self.walk = 0 -- se calhar por para so parar se saires de duas vezes da aggro range inicial ou algo assim, have to change
-
+		self.walk = 0
+     self.collider:setLinearVelocity(0,10)-- se calhar por para so parar se saires de duas vezes da aggro range inicial ou algo assim, have to change
+    self.collider:setAngularVelocity(0)
   end
 
-  local newX, currentY = selfx - dt*self.moveSpeed*self.dir*self.walk, selfy
+  local newX, currentY = selfx - dt*self.moveSpeed*self.dir*self.walk*self.range, selfy
   self.collider:setX(newX)
 
 	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
 
-  self.collider:setAngularVelocity(0)
+
 
 end
 

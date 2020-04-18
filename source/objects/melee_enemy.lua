@@ -26,9 +26,11 @@ end
   	local selfy = self.collider:getY()
     local _, subbeat = music.music:getBeat()
 
-
-
-
+    if math.abs(selfx-playerx) < (player.r + self.r + 1) then
+      self.range = 0
+    else
+      self.range = 1
+    end
   end
 
   function melee_enemy:draw()
