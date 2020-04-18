@@ -20,7 +20,6 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   -- Animation
   local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
 
-
   Person.initialize(self, x, y, w, h, r, collider, anim)
 
   -- Other Variables
@@ -63,7 +62,7 @@ function enemy:update(dt)
 
 	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
 
-
+  self.collider:setAngularVelocity(0)
 
 end
 
