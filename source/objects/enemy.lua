@@ -12,7 +12,7 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   -- BasicEnemy Collider
   local collider = world:newCircleCollider(x, y, r)
   collider:setObject(self)
-  collider:setCollisionClass("enemy")
+  collider:setCollisionClass("Enemy")
   collider:setSleepingAllowed(false)
   collider:setRestitution(0)
   collider:setInertia(5000)
