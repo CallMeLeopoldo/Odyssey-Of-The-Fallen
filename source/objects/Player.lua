@@ -5,6 +5,10 @@ local rangedAttack = require("source.objects.RangedAttack")
 
 local Player = class("Player", Person)
 
+local bool = false
+local beatnumb = 0
+local beatpos = 0
+
 
 function Player:initialize(x, y, w, h, r, attackSpeed)
 
@@ -45,7 +49,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.lastDirection = 1
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
-	self.mojo = 0
+	self.mojo = 5
 	self.maxMojo = 10
 	self.currentDmg = self.baseDmg
 	self.health = 100
@@ -66,7 +70,7 @@ function Player:update(dt)
 	Person.update(self, dt)
 	self.lastAttack = self.lastAttack + dt
 
-
+	local beatnumb,subbeat2 = music.music:getBeat()
 
 	-- Movement
 	local x = 0
@@ -108,32 +112,59 @@ function Player:update(dt)
 
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
-		if self.combo == 1 and self.accuracy == 1 then
-			self.combo = 2
-		else
+		if self.accuracy == 1 then
+			if self.combo == 0 then
+				 self.combo = 1
+				 self.combobeat = beatnumb
+				 if subbeat2 >= 0.875  then
+	 					beatpos = 1
+				 else
+					 	beatpos = 0
+	 			 end
+
+			elseif self.combo == 1 then
+				if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
+					self.combo = 2
+					self.combobeat = beatnumb
+					if subbeat2 >= 0.875  then
+					 beatpos = 1
+				  else
+					 beatpos = 0
+				  end
+			  else
+					self.combo = 0
+			  end
+		  else
+			  self.combo = 0
+			end
+    else
 			self.combo = 0
 		end
-
-
 		local px, py = self.collider:getPosition()
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
 			self.mojo = self.mojo + self.currentDmg
 			if self.mojo > self.maxMojo then self.mojo = self.maxMojo end
-		end
+    end
 		self.lastAttack = 0
 	end
+
 	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
 		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 5 then
-			self.combo = 0
-			local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true)
-			combo1:load()
-			local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true)
-			combo2:load()
-			self.mojo = self.mojo - 5
+			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
+				self.combo = 0
+				local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true)
+				combo1:load()
+				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true)
+				combo2:load()
+			else
+				self.combo = 0
+				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
+				ra:load()
+			end
 		else
 			self.combo = 0
 			local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
@@ -142,17 +173,6 @@ function Player:update(dt)
 		self.lastAttack = 0
 	end
 
-	if (love.keyboard.isDown("c") and self.lastAttack >= 2*self.attackTimming) then
-		self:calculateAccuracy()
-		if self.accuracy == 1 and self.combo == 0 then
-			self.combo = 1
-			self.oncombo = true
-		else
-			self.combo = 0
-			self.oncombo = false
-		end
-		self.lastAttack = 0
-	end
 
 
 	if x == 0 then self.animation = self.animations.stand end
@@ -185,6 +205,7 @@ end
 
 function Player:calculateAccuracy()
 	local _, subbeat = music.music:getBeat()
+
 
 	if subbeat >= 0.875 or subbeat < 0.125 then
 		self.accuracy = 1
