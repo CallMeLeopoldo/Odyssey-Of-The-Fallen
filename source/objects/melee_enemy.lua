@@ -11,6 +11,7 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   self.id =id or "melee_enemy"
   self.moveSpeed = 40
   self.aggro = 150
+  self.counter = 0
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro)
 end
@@ -26,6 +27,27 @@ function melee_enemy:update(dt)
     self.range = 0
   else
     self.range = 1
+  end
+  if math.abs(selfx-playerx) < self.aggro + 20 then --throws on beat if a little over aggro range
+    if (subbeat < 0.05 or subbeat > 0.95) then
+      if self.bool == false then
+          self.counter = self.counter + 1
+      end
+
+      self.bool = true
+    end
+    if subbeat > 0.05 and subbeat < 0.95 then
+        self.bool = false
+    end
+
+    if self.counter == 2 then
+      local px, py = self.collider:getPosition()
+  		local colliders = world:queryCircleArea(px + -1*self.dir*(2*self.r), py , 20, {"Player"})
+      for i, c in ipairs(colliders) do
+  			c.object:interact(self.currentDmg)
+      end
+      self.counter = 0
+    end
   end
 end
 

@@ -33,9 +33,9 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Animations
 	self.animations = {}
-	self.animations.walkRight = animation:new(x, y, sprites.player, 64, 64, '1-4', 1, 1/12)
-	self.animations.walkLeft = animation:new(x, y, sprites.player, 64, 64, '1-4', 2, 1/12)
-	self.animations.stand = animation:new(x, y, sprites.player, 64, 64, 1, 3, 1/12)
+	self.animations.walkRight = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12)
+	self.animations.walkLeft = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, 1/12)
+	self.animations.stand = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1/12)
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
 
@@ -82,7 +82,7 @@ function Player:update(dt)
 		if y == 0 then
 			self:calculateAccuracy()
 
-			local impulse = -300
+			local impulse = -500
 			if self.multiplier >= 3 then
 				impulse = impulse * 3
 			else
@@ -116,7 +116,7 @@ function Player:update(dt)
 	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
-		
+
 		local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
 		ra:load()
 		self.lastAttack = 0
@@ -127,7 +127,7 @@ function Player:update(dt)
 	-- Position Update
 	local velocity = x*dt*300
 	local newX, currentY = self.collider:getX() + velocity, self.collider:getY()
-	
+
 	if currentY > 700 then
 		x = 50
 		currentY = 400
@@ -138,7 +138,7 @@ function Player:update(dt)
 	self.collider:setX(newX)
 	self.collider:setY(currentY)
 
-	Person.setAnimationPos(self, newX - self.w/2, currentY - 3*self.h/4)
+	Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
 end
 
 function Player:draw()

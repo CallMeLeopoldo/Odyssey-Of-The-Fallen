@@ -20,17 +20,17 @@ function love.load()
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	local meleeEnemy = melee_enemy:new(400,500,64,64,20,"melee_enemy")
+	local meleeEnemy = melee_enemy:new(400,300,64,64,20,"melee_enemy")
 	meleeEnemy:load()
 
-	local rangedEnemy = ranged_enemy:new(1000,500,64,64,25,"ranged_enemy")
+	local rangedEnemy = ranged_enemy:new(1500,300,64,64,25,"ranged_enemy")
 	rangedEnemy:load()
 
-	local rangedEnemy2 = ranged_enemy:new(1100,500,64,64,25,"ranged_enemy2")
+	local rangedEnemy2 = ranged_enemy:new(1400,300,64,64,25,"ranged_enemy2")
 	rangedEnemy2:load()
 
 
-	player = Player:new(50, 400, 20, 64, 15, music.spb/2)
+	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
 	player:load()
 
 	tlm:load("images/Pop.lua",0,0)
