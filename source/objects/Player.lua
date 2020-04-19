@@ -1,6 +1,7 @@
 local class = require("source.packages.middleclass")
 local Person = require("source.objects.Person")
 local animation = require("source.objects.Animation")
+local rangedAttack = require("source.objects.RangedAttack")
 
 local Player = class("Player", Person)
 
@@ -32,8 +33,9 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Animations
 	self.animations = {}
-	self.animations.walkRight = animation:new(x, y, sprites.player, w, h, 1, 1, 0.2)
-	self.animations.walkLeft = animation:new(x, y, sprites.player, w, h, 1, 2, 0.2)
+	self.animations.walkRight = animation:new(x, y, sprites.player, 64, 64, '1-4', 1, 1/12)
+	self.animations.walkLeft = animation:new(x, y, sprites.player, 64, 64, '1-4', 2, 1/12)
+	self.animations.stand = animation:new(x, y, sprites.player, 64, 64, 1, 3, 1/12)
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
 
@@ -80,7 +82,7 @@ function Player:update(dt)
 		if y == 0 then
 			self:calculateAccuracy()
 
-			local impulse = -100
+			local impulse = -300
 			if self.multiplier >= 3 then
 				impulse = impulse * 3
 			else
@@ -97,13 +99,13 @@ function Player:update(dt)
 	end
 
 	-- Attack
-	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
+	if love.keyboard.isDown("z") and self.lastAttack >= self.attackTimming then
 
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
 
 		local px, py = self.collider:getPosition()
-		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
+		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
 			self.mojo = self.mojo + self.currentDmg
@@ -111,6 +113,16 @@ function Player:update(dt)
 		end
 		self.lastAttack = 0
 	end
+	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
+		self:calculateAccuracy()
+		self.currentDmg = self.baseDmg * self.accuracy
+		
+		local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
+		ra:load()
+		self.lastAttack = 0
+	end
+
+	if x == 0 then self.animation = self.animations.stand end
 
 	-- Position Update
 	local velocity = x*dt*300

@@ -39,11 +39,11 @@ function Person:interact(dmg_dealt)
 end
 
 function Person:destroy()
+	self.destroyed = true
 	self.remove = true
 	self.collider:destroy()
 	self.animation:destroy()
 	self = nil
-	print(id "destroyed")
 end
 
 return Person

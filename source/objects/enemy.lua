@@ -8,13 +8,18 @@ local enemy = class("enemy", Person)
 
 function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
 
-  -- BasicEnemy Collider
-  local collider = world:newCircleCollider(x, y, r)
+  -- Enemy Collider
+  local collider = world:newRectangleCollider(x, y, 64, 64)
   collider:setObject(self)
   collider:setCollisionClass("Enemy")
   collider:setSleepingAllowed(false)
   collider:setRestitution(0)
   collider:setInertia(5000)
+
+  collider:setPreSolve(
+    function(c1, c2, contact)
+      if c1.collision_class == "Enemy" and c2.collision_class == "Enemy" then contact:setEnabled(false) end
+    end)
 
   -- Animation
   local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
@@ -29,13 +34,7 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   self.dir = 1
   self.walk = 1
   self.range = 1  -- variable to make them stop runnning into you
-
-
-
 end
-
-
-
 
 function enemy:update(dt)
   Person.update(self, dt)
@@ -62,13 +61,7 @@ function enemy:update(dt)
   self.collider:setX(newX)
 
 	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
-
-
-
 end
-
-
-
 
 -- Callback function for collisions
 function enemy:interact(dmg_dealt)

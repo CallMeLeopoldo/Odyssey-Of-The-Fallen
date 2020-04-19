@@ -23,12 +23,12 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 		function(collider_1, collider_2, contact)
 			if collider_1.collision_class == "PlayerAttack" then
 				if (collider_2.collision_class == "EnemyAttack" or collider_2.collision_class == "PlayerAttack") then
-					contact.setActive(false)
+					contact:setEnabled(false)
 				end
 			elseif collider_1.collision_class == "EnemyAttack" then
 				if (collider_2.collision_class == "EnemyAttack" or collider_2.collision_class == "PlayerAttack" or 
 					collider_2.collision_class == "Enemy") then
-					contact.setActive(false)
+					contact:setEnabled(false)
 				end
 			end
 		end)
@@ -47,7 +47,7 @@ function RangedAttack:update(dt)
 		return
 	end
 
-	self.collider:setX(self.collider:getX() + 100*dt*self.orientation)
+	self.collider:setX(self.collider:getX() + 150*dt*self.orientation)
 end
 
 function RangedAttack:draw()
@@ -55,10 +55,13 @@ function RangedAttack:draw()
 end
 
 function RangedAttack:CheckCollisions() 
-	if self.collider:enter('BasicEnemy') then
-		local cd = self.collider:getEnterCollisionData("BasicEnemy")
+	if self.collider.collision_class == "PlayerAttack" and self.collider:enter('Enemy') then
+		local cd = self.collider:getEnterCollisionData("Enemy")
 		cd.collider:getObject():interact(self.damage)
 		return true
+	elseif self.collider.collision_class == "EnemyAttack" and self.collider:enter('Player') then
+		local cd = self.collider:getEnterCollisionData('Player')
+		cd.collider:getObject():interact(self.damage)
 	end
 
 	return false

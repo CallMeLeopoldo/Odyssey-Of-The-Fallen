@@ -12,7 +12,7 @@ function Throwable:initialize(x, y, r, ix, iy, dmg, id)
 		function(collider_1, collider_2, contact)
 			if collider_1.collision_class == "EnemyAttack" and (collider_2.collision_class == "EnemyAttack" or 
 					collider_2.collision_class == "PlayerAttack" or	collider_2.collision_class == "Enemy") then
-				contact.setActive(false)
+				contact:setEnabled(false)
 			end
 		end)
 	
