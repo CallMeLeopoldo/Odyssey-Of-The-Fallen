@@ -30,12 +30,12 @@ function love.load()
 	rangedEnemy2:load()
 
 
-	player = Player:new(50, 520, 20, 64, 15, music.spb/2)
+	player = Player:new(50, 400, 20, 64, 15, music.spb/2)
 	player:load()
 
 	tlm:load("images/Pop.lua",0,0)
 
-	camera = Camera(player.collider:getX(), player.collider:getY())
+	camera = Camera(player.collider:getX(), 320)
 
 	hud = Hud:new(50, 50, player, music.spb, meleeEnemy, rangedEnemy)
 	hud:load()
@@ -55,7 +55,11 @@ function love.update(dt)
 	tlm:update(dt)
 	--hud:update(dt)
 	--beatBar:update(dt)
-	camera:lockX(player.collider:getX())
+	if(player.collider:getX() < love.graphics.getWidth()/2) then
+		camera:lockX(love.graphics.getWidth()/2)
+	else
+		camera:lockX(player.collider:getX())
+	end
 end
 
 function love.keypressed(k)
@@ -74,10 +78,10 @@ end
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
 function love.draw()
+	tlm:draw()
 	camera:attach()
 
 	-- Draw map
-	tlm:draw()
 
 	love.graphics.setColor(0.28, 0.63, 0.05)
 	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))

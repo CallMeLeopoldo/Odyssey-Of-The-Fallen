@@ -113,8 +113,9 @@ function Player:update(dt)
 	end
 
 	-- Position Update
-	local newX, currentY = self.collider:getX() + x*dt*self.moveSpeed, self.collider:getY()
-
+	local velocity = x*dt*300
+	local newX, currentY = self.collider:getX() + velocity, self.collider:getY()
+	
 	if currentY > 700 then
 		x = 50
 		currentY = 400
