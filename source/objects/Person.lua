@@ -2,7 +2,7 @@ local vec2 = require("source.tools.vec2")
 local class = require("source.packages.middleclass")
 local Person = class("Person")
 
-function Person:initialize(x, y, w, h, r, collider, animation)
+function Person:initialize(x, y, w, h, r, collider, animation, id)
 	self.x, self.y = x, y
 	self.w, self.h = w, h
 	self.r = r
@@ -12,6 +12,8 @@ function Person:initialize(x, y, w, h, r, collider, animation)
 	self.collider = collider
 	self.animation = animation
 	self.maxHealth = 100
+	self.remove = false
+	self.id = id or "Person"
 end
 
 function Person:load()
@@ -37,10 +39,11 @@ function Person:interact(dmg_dealt)
 end
 
 function Person:destroy()
+	self.remove = true
 	self.collider:destroy()
 	self.animation:destroy()
 	self = nil
-	print("person destroyed")
+	print(id "destroyed")
 end
 
 return Person

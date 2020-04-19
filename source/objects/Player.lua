@@ -7,18 +7,35 @@ local Player = class("Player", Person)
 function Player:initialize(x, y, w, h, r, attackSpeed)
 
 	-- Player Collider
-	local collider = world:newCircleCollider(x, y, r)
-	collider:setObject(self)
-	collider:setSleepingAllowed(false)
-	collider:setCollisionClass("Player")
-	collider:getBody():setFixedRotation(true)
+	local upperBody = world:newRectangleCollider(x, y - h/2, w, h/2)
+	upperBody:setObject(self)
+	upperBody:setSleepingAllowed(false)
+	upperBody:setCollisionClass("Player")
+	upperBody:setFixedRotation(true)
+	upperBody:setRestitution(0)
+	upperBody:setInertia(50)
+
+	upperBody:setPreSolve(
+		function(collider_1, collider_2, contact)
+			if collider_1.collision_class == "Ignore" and collider_2.collision_class == "EnemyAttack" then contact:setEnabled(false) end
+		end)
+
+	local lowerBody = world:newRectangleCollider(x, y, w, h/2)
+	lowerBody:setObject(self)
+	lowerBody:setSleepingAllowed(false)
+	lowerBody:setCollisionClass("Player")
+	lowerBody:setFixedRotation(true)
+	lowerBody:setRestitution(0)
+	lowerBody:setInertia(50)
+
+	world:addJoint("RevoluteJoint", lowerBody, upperBody, h, w, true)
 
 	-- Player Animations
 	self.animations = {}
 	self.animations.walkRight = animation:new(x, y, sprites.player, w, h, 1, 1, 0.2)
 	self.animations.walkLeft = animation:new(x, y, sprites.player, w, h, 1, 2, 0.2)
 
-	Person.initialize(self, x, y, w, h, r, collider, self.animations.walkRight)
+	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
 
 	-- Other variables required
 	self.accuracy = 1
@@ -29,6 +46,10 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.maxMojo = 10
 	self.currentDmg = self.baseDmg
 	self.health = 100
+	self.multiplier = 0
+	self.moveSpeed = 200
+	self.upperBody = upperBody
+	self.height = h
 end
 
 function Player:load()
@@ -39,7 +60,7 @@ end
 function Player:update(dt)
 	Person.update(self, dt)
 	self.lastAttack = self.lastAttack + dt
-	
+
 	-- Movement
 	local x = 0
 	if love.keyboard.isDown("left") then
@@ -52,49 +73,37 @@ function Player:update(dt)
 		self.lastDirection = 1
 		self.animation = self.animations.walkRight
 	end
-	if love.keyboard.isDown("a") then
+	if love.keyboard.isDown("up") then
 
 		local x, y = self.collider:getLinearVelocity()
-		
-		if y == 0 then
-			local _, subbeat = music.music:getBeat()
-	
-			if subbeat >= 0.875 or subbeat < 0.125 then
-				self.accuracy = 1
-			elseif subbeat >= 0.125 and subbeat < 0.375 then
-				self.accuracy = 0.25
-			elseif subbeat >= 0.3755 and subbeat < 0.625 then
-				self.accuracy = 0.5
-			elseif subbeat >= 0.625 and subbeat < 0.875 then
-				self.accuracy = 0.75
-			end
-	
-			self.collider:applyLinearImpulse(0, -100)
-		end
 
+		if y == 0 then
+			self:calculateAccuracy()
+
+			local impulse = -100
+			if self.multiplier >= 3 then
+				impulse = impulse * 3
+			else
+				impulse = impulse*self.multiplier
+			end
+
+			self.collider:applyLinearImpulse(0, impulse)
+		end
+	end
+	if love.keyboard.isDown("down") then
+		self.upperBody:setCollisionClass("Ignore")
+	else
+		self.upperBody:setCollisionClass("Player")
 	end
 
 	-- Attack
 	if love.keyboard.isDown("s") and self.lastAttack >= self.attackTimming then
 
-		local _, subbeat = music.music:getBeat()
-
-		if subbeat >= 0.875 or subbeat < 0.125 then
-			self.accuracy = 1
-		elseif subbeat >= 0.125 and subbeat < 0.375 then
-			self.accuracy = 0.25
-		elseif subbeat >= 0.3755 and subbeat < 0.625 then
-			self.accuracy = 0.5
-		elseif subbeat >= 0.625 and subbeat < 0.875 then
-			self.accuracy = 0.75
-		end
-
+		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
 
-		print(self.currentDmg)
-
 		local px, py = self.collider:getPosition()
-		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"BasicEnemy"})
+		local colliders = world:queryCircleArea(px + self.lastDirection*35, py, 20, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
 			self.mojo = self.mojo + self.currentDmg
@@ -104,17 +113,18 @@ function Player:update(dt)
 	end
 
 	-- Position Update
-	local newX, currentY = self.collider:getX() + x*dt*80, self.collider:getY()
-	
+	local newX, currentY = self.collider:getX() + x*dt*self.moveSpeed, self.collider:getY()
+
 	if currentY > 700 then
 		x = 50
-		currentY = 400 
+		currentY = 400
 		self.collider:setY(currentY)
+		self.upperBody:setY(currentY + self.h/2)
 	end
-	
+
 	self.collider:setX(newX)
 	self.collider:setY(currentY)
-	
+
 	Person.setAnimationPos(self, newX - self.w/2, currentY - 3*self.h/4)
 end
 
@@ -125,6 +135,30 @@ end
 -- Callback function for collisions
 function Player:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
+end
+
+function Player:calculateAccuracy()
+	local _, subbeat = music.music:getBeat()
+
+	if subbeat >= 0.875 or subbeat < 0.125 then
+		self.accuracy = 1
+	elseif subbeat >= 0.7 and subbeat < 0.3 then
+		self.accuracy = 0.75
+	elseif subbeat >= 0.6 and subbeat < 0.4 then
+		self.accuracy = 0.5
+	else
+		self.accuracy = 0.25
+	end
+
+	if self.accuracy >= 0.75 then
+		self.multiplier = self.multiplier + 1
+	else
+		self.multiplier = 1
+	end
+end
+
+function Player:getPosition()
+	return self.collider:getPosition()
 end
 
 return Player

@@ -11,10 +11,12 @@ function gameStart()
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
 	world:setGravity(0, 100)
+	world:addCollisionClass("Ignore")
 	world:addCollisionClass("Ground")
 	world:addCollisionClass("Player")
-	world:addCollisionClass("BasicEnemy")
-	world:addCollisionClass("Attack")
+	world:addCollisionClass("Enemy")
+	world:addCollisionClass("PlayerAttack", {ignores = {"Player"}})
+	world:addCollisionClass("EnemyAttack", {ignores = {"Enemy", "Ignore"}})
 	world:setQueryDebugDrawing(true)
 
 	-- Global packages and variables
