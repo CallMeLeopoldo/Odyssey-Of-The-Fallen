@@ -39,6 +39,8 @@ function Person:interact(dmg_dealt)
 end
 
 function Person:destroy()
+	gameLoop:removeLoop(self)
+	renderer:removeRenderer(self)
 	self.destroyed = true
 	self.remove = true
 	self.collider:destroy()
