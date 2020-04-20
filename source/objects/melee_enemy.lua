@@ -98,7 +98,7 @@ end
 
 function melee_enemy:setAnimationPos()
   self.animation.x = self.collider:getX() - self.w/2 - 5
-  self.animation.y = self.collider:getY() - self.h/2 - 7
+  self.animation.y = self.collider:getY() - self.h/4 - 5
 
 end
 function melee_enemy:destroy()
