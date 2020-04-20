@@ -11,7 +11,7 @@ local states = { fight = 1, spawn = 2, shield = 3 }
 
 function PopBoss:initialize(x, y, player)
 	
-	Enemy.initialize(self, x, y, 64, 64, 30, 10, "PopBoss", 70)
+	Enemy.initialize(self, x, y, 64, 64, 30, 150, "PopBoss", 1000)
 
 	self.states = states
 	self.currentState = self.states.fight
@@ -78,7 +78,6 @@ function PopBoss:updateState()
 			self.currentState = self.states.fight
 			if self.player.collider:getX() >= 9032 then
 				self.collider:setPosition(8664, 300)
-				self.animation:setPosition(8664,300)
 			else
 				self.collider:setPosition(9400, 300)
 			end
@@ -109,6 +108,7 @@ function PopBoss:updateFight(dt)
 		
 		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX()) 
 		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false)
+		t.movementSpeed = 200
     	t:load()
     	self.counter = 0
 	end

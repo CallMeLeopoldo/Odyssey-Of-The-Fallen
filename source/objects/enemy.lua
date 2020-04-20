@@ -9,7 +9,7 @@ local enemy = class("enemy", Person)
 function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro, animation)
 
   -- Enemy Collider
-  local collider = world:newRectangleCollider(x, y, 32, 32)
+  local collider = world:newRectangleCollider(x, y, 32, 64)
   collider:setObject(self)
   collider:setCollisionClass("Enemy")
   collider:setSleepingAllowed(false)

@@ -7,7 +7,6 @@ local ranged_enemy = require("source.objects.ranged_enemy")
 local PopLevel = class("PopLevel", Level)
 
 function PopLevel:initialize()
-	print("yo")
 	self.enemies = {}
 
 	table.insert(self.enemies, melee_enemy:new(450,360,64,64,40,"melee_enemy"))

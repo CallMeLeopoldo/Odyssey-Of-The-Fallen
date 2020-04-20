@@ -10,6 +10,7 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 	self.radius = 15
 	self.collider = world:newCircleCollider(x, y, self.radius)
 	self.animation = animation:new(x-self.radius, y-self.radius, sprites.macRanged, 32, 32, 1, 1, 1)
+	self.movementSpeed = 150
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)
 	if isPlayers then
@@ -48,8 +49,8 @@ function RangedAttack:update(dt)
 		return
 	end
 
-	self.collider:setX(self.collider:getX() + 150*dt*self.orientation)
-	self.animation.x = (self.collider:getX() - self.radius + 150*dt*self.orientation)
+	self.collider:setX(self.collider:getX() + self.movementSpeed*dt*self.orientation)
+	self.animation.x = (self.collider:getX() - self.radius + self.movementSpeed*dt*self.orientation)
 	self.animation.y = self.collider:getY() - self.radius
 end
 
