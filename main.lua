@@ -62,8 +62,8 @@ function love.update(dt)
 		
 		if(player.collider:getX() < love.graphics.getWidth()/2) then
 			camera:lockX(love.graphics.getWidth()/2)
-		elseif (player.collider:getX() >= 32944) then
-			camera:lockX(33512)
+		elseif (player.collider:getX() >= 8464) then
+			camera:lockX(9032)
 		else
 			camera:lockX(player.collider:getX())
 		end

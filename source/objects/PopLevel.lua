@@ -28,9 +28,9 @@ function PopLevel:load()
 end
 
 function PopLevel:update()
-	if self.boss == nil and player.collider:getX() >= 33512 then
-		self.boss = popBoss:new(33300, 550, player)
-		pb:load()
+	if self.boss == nil and player.collider:getX() >= 9032 then
+		self.boss = popBoss:new(9600, 550, player)
+		self.boss:load()
 	end
 end
 

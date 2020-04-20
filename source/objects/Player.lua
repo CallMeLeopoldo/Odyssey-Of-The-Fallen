@@ -41,6 +41,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.animations.walkRight = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12)
 	self.animations.walkLeft = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, 1/12)
 	self.animations.stand = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1/12)
+	self.animations.crouch = animation:new(x- w, y, sprites.player, 64, 64, 2, 3, 1/12)
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
 
@@ -84,6 +85,7 @@ function Player:update(dt)
 		self.lastDirection = 1
 		self.animation = self.animations.walkRight
 	end
+	if x == 0 then self.animation = self.animations.stand end
 	if love.keyboard.isDown("up") then
 
 		local x, y = self.collider:getLinearVelocity()
@@ -112,6 +114,7 @@ function Player:update(dt)
 		end
 	end
 	if love.keyboard.isDown("down") then
+		self.animation = self.animations.crouch
 		self.upperBody:setCollisionClass("Ignore")
 	else
 		self.upperBody:setCollisionClass("Player")
@@ -184,10 +187,6 @@ function Player:update(dt)
 		end
 		self.lastAttack = 0
 	end
-
-
-
-	if x == 0 then self.animation = self.animations.stand end
 
 	-- Position Update
 	local velocity = x*dt*300

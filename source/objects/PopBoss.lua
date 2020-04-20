@@ -30,7 +30,7 @@ end
 
 function PopBoss:update(dt)
 	self:updateState()
-	
+	if #self.enemies ~= 0 then print("HELO") else print("not one") end
 	if self.currentState == self.states.fight or self.currentState == self.states.shield then
 		self:updateFight(dt)
 	elseif self.currentState == self.states.spawn then
@@ -43,10 +43,10 @@ function PopBoss:updateState()
 		if  self.health < (self.maxHealth / 3) then
 			self.currentState = self.states.shield
 			self.shield = 20
-			if self.player.collider:getX() >= 33512 then
-				self.collider:setPosition(33144, 486)
+			if self.player.collider:getX() >= 9032 then
+				self.collider:setPosition(8664, 486)
 			else
-				self.collider:setPosition(33760, 486)
+				self.collider:setPosition(9400, 486)
 			end
 			-- TODO: set animation
 			-- TODO: Make the music faster and adjust the bmps
@@ -56,10 +56,10 @@ function PopBoss:updateState()
 			self.currentState = self.states.spawn
 			self.numberEnemies = 4
 
-			table.insert(self.enemies, MeleeEnemy:new(32944 + 300, 450, 64, 64, 30))
-			table.insert(self.enemies, MeleeEnemy:new(33960 - 300, 450, 64, 64, 30))
-			table.insert(self.enemies, RangedEnemy:new(32944 + 100, 450, 64, 64, 30))
-			table.insert(self.enemies, RangedEnemy:new(33960 - 100, 450, 64, 64, 30)) 
+			table.insert(self.enemies, MeleeEnemy:new(8464 + 300, 300, 64, 64, 30))
+			table.insert(self.enemies, MeleeEnemy:new(9600 - 300, 300, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(8464 + 100, 300, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(9600 - 100, 300, 64, 64, 30)) 
 
 			self.healthLost = 0
 			self.collider:setPosition(34020, 286)
@@ -67,10 +67,10 @@ function PopBoss:updateState()
 	elseif self.currentState == self.states.spawn then
 		if table.maxn(self.enemies) == 0 then
 			self.currentState = self.states.fight
-			if self.player.collider:getX() >= 33512 then
-				self.collider:setPosition(33144, 486)
+			if self.player.collider:getX() >= 9032 then
+				self.collider:setPosition(8664, 486)
 			else
-				self.collider:setPosition(33760, 486)
+				self.collider:setPosition(9400, 486)
 			end
 			-- TODO: change the attack it makes
 		end
@@ -78,7 +78,7 @@ function PopBoss:updateState()
 end
 
 function PopBoss:updateFight(dt)
-	Enemy.update(self, dt)
+	--Enemy.update(self, dt)
 
 	local _, subbeat = music.music:getBeat()
 
@@ -115,11 +115,11 @@ function PopBoss:updateSpawn(dt)
 		end
 	end
 
-	self.animation:update(dt)
+	--self.animation:update(dt)
 end
 
 function PopBoss:draw()
-	self.animation:draw()
+	--self.animation:draw()
 	for _, enemy in ipairs(self.enemies) do
 		if not enemy.destroyed then enemy:draw() end  
 	end
@@ -134,6 +134,12 @@ function PopBoss:interact(dmgDealt)
 	end
 	self.health = self.health - dmgDealt
 	self.healthLost = self.healthLost + dmgDealt
+end
+
+function PopBoss:destroy()
+	for _, enemy in ipairs(self.enemies) do
+		enemy:destroy()
+	end 
 end
 
 return PopBoss
