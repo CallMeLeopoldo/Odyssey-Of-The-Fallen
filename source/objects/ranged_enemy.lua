@@ -44,14 +44,18 @@ function ranged_enemy:update(dt)
     if self.dir == 1 then
       if self.walk == 1 and self.range == 1 then
         self.animation = self.animations.walkLeft
+        self:setAnimationPos()
       else
         self.animation = self.animations.standLeft
+        self:setAnimationPos()
       end
     else
       if self.walk == 1 and self.range == 1 then
         self.animation = self.animations.walkRight
+        self:setAnimationPos()
       else
         self.animation = self.animations.standRight
+        self:setAnimationPos()
       end
     end
   end
@@ -78,9 +82,11 @@ function ranged_enemy:update(dt)
       self.attacking = 1
       if self.dir == -1 then
         self.animation = self.animations.attackRight
+        self:setAnimationPos()
 
       else
         self.animation = self.animations.attackLeft
+        self:setAnimationPos()
       end
       local t = throwable:new(selfx - self.dir*(self.r + 12 + 5), selfy - (self.r + 12 + 5), self.isize, self.ix*self.dir, self.iy)
       t:load()
@@ -93,7 +99,10 @@ end
 function ranged_enemy:draw()
   enemy.draw(self)
 end
-
+function ranged_enemy:setAnimationPos()
+  self.animation.x = self.collider:getX() - self.w/2 - 5
+  self.animation.y = self.collider:getY() - self.h/2 - 7
+end
 function ranged_enemy:destroy()
   enemy.destroy(self)
 end
