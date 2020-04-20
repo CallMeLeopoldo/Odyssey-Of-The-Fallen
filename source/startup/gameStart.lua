@@ -1,13 +1,14 @@
 function gameStart()
 	
 	--love.window.setFullscreen(true)
-	tlm = require("source.tiles.tlm")
+	tlm = require("source.tools.tlm")
 	sti  = require ("source.packages.sti")
 	local windfield = require("source.packages.windfield")
 	local Renderer = require("source.tools.renderer")
 	local GameLoop = require("source.tools.gameLoop")
 	local Music = require("source.tools.music")
-
+	local Screen = require("source.objects.Screen")
+	
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
 	world:setGravity(0, 100)
@@ -24,18 +25,9 @@ function gameStart()
 	renderer = Renderer:create()
 	gameLoop = GameLoop:create()
 	music = Music:new("audio/sound3.mp3")
+	pauseScreen = Screen:new()
 
 	require("source.startup.resources")
-
-	--This point from here on out is to be removed
-	-- Create a ground and set it's properties
-	ground = world:newRectangleCollider(0, 550, 500, 50)
-	ground:setType("static")
-	ground:setCollisionClass("Ground")
-	
-	ground2 = world:newRectangleCollider(600, 550, 900, 50)
-	ground2:setType("static")
-	ground2:setCollisionClass("Ground")
 
 	-- Game Screen Settings
 	-- TODO: ajustar a tela para um tamanho mais adequado

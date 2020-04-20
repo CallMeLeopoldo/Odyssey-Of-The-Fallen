@@ -23,7 +23,6 @@ end
 
 function Animation:update(dt)
 	self.animation:update(dt)
-
 end
 
 function Animation:draw()

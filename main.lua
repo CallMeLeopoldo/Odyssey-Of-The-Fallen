@@ -8,7 +8,8 @@ local Camera = require("source.packages.hump-temp-master.camera")
 local enemy = require("source.objects.enemy")
 local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
-
+local popBoss = require("source.objects.PopBoss")
+local Screen = require("source.objects.Screen")
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
@@ -28,14 +29,26 @@ function love.load()
 
 	local rangedEnemy2 = ranged_enemy:new(1400,300,64,64,25,"ranged_enemy2")
 	rangedEnemy2:load()
+	
+	local g = world:newRectangleCollider(32944, 550, 1136, 50)
+	g:setType("static")
+	g:setCollisionClass("Ground")
 
+	g = world:newRectangleCollider(33960, 350, 120, 200)
+	g:setType("static")
+	g:setCollisionClass("Ground")
 
 	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
 	player:load()
 
-	tlm:load("images/Pop.lua",0,0)
+	tlm:load("images/Pop.lua", require("images.Pop"))
 
-	camera = Camera(player.collider:getX(), 320)
+	-- camera = Camera(player.collider:getX(), 320)
+
+	local pb = popBoss:new(33300, 550, player)
+	pb:load()
+	
+	camera = Camera(33512, 320)
 
 	hud = Hud:new(50, 50, player, music.spb, meleeEnemy, rangedEnemy)
 	hud:load()
@@ -48,32 +61,37 @@ end
 
 function love.update(dt)
 	g_GameTime = g_GameTime + dt
-	--print(g_GameTime)
-	music.music:update(dt)
-	gameLoop:update(dt)
-	world:update(dt)
-	tlm:update(dt)
-	--hud:update(dt)
-	--beatBar:update(dt)
-	if(player.collider:getX() < love.graphics.getWidth()/2) then
-		camera:lockX(love.graphics.getWidth()/2)
-	else
-		camera:lockX(player.collider:getX())
+	if not pauseScreen.paused then
+		music.music:update(dt)
+		gameLoop:update(dt)
+		world:update(dt)
+		tlm:update(dt)
+		if(player.collider:getX() < love.graphics.getWidth()/2) then
+			camera:lockX(love.graphics.getWidth()/2)
+		elseif (player.collider:getX() >= 32944) then
+			camera:lockX(33512)
+		else
+			camera:lockX(player.collider:getX())
+		end
 	end
 end
 
 function love.keypressed(k)
-  if k == "space" then
-    -- Toggle pause
-    paused = not paused
-    if paused then
-      music.music:pause()
-    else
-      music.music:play()
-    end
-  end
+	if (pauseScreen.paused) then
+		pauseScreen:keypressed(k)
+	end
+	if k == "space" then
+		-- Toggle pause
+		pauseScreen.paused = not pauseScreen.paused
+		if pauseScreen.paused then
+			pauseScreen:load()
+			music.music:pause()
+		else	
+			pauseScreen:remove()
+			music.music:play()
+		end
+	end
 end
-
 
 --love:draw(): Desenha todos os elementos que estiverem no renderer
 
@@ -82,14 +100,6 @@ function love.draw()
 	camera:attach()
 
 	-- Draw map
-
-	love.graphics.setColor(0.28, 0.63, 0.05)
-	love.graphics.polygon("fill", ground:getBody():getWorldPoints(ground:getShape():getPoints()))
-	love.graphics.setColor(1, 1, 1)
-
-	love.graphics.setColor(0.28, 0.63, 0.05)
-	love.graphics.polygon("fill", ground2:getBody():getWorldPoints(ground2:getShape():getPoints()))
-	love.graphics.setColor(1, 1, 1)
 	renderer:draw()
 	world:draw()
 	camera:detach()

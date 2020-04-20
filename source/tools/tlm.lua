@@ -3,13 +3,11 @@ local sti  = require ("source.packages.sti")
 local bump  = require ("source.packages.bump")
 local inspect = require("source.packages.inspect")
 
-local popLevel = require("images.Pop")
-
-function Tlm:load(mapname)
+function Tlm:load(mapname, luamap)
     self.tiles = {}
     self.map = sti(mapname)
 
-    for _, layer in ipairs(popLevel.layers) do
+    for _, layer in ipairs(luamap.layers) do
         if layer.properties["collidable"] == true then
             print(layer.data[1])
             for i = 1, self.map.height - 1, 1 do

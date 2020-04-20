@@ -2,6 +2,7 @@ local class = require("source.packages.middleclass")
 local Enemy = require("source.objects.enemy")
 local MeleeEnemy = require("source.objects.melee_enemy")
 local RangedEnemy = require("source.objects.ranged_enemy")
+local RangedAttack = require("source.objects.RangedAttack")
 
 local PopBoss = class("PopBoss", RangedEnemy)
 
@@ -18,6 +19,8 @@ function PopBoss:initialize(x, y, player)
 	self.healthLost = 15
 	self.shield = 0
 	self.enemies = {}
+	self.counter = 0
+	self.attack = false
 end
 
 function PopBoss:load()
@@ -38,7 +41,7 @@ end
 function PopBoss:updateState()
 	if self.currentState == self.states.fight then
 		if  self.health < (self.maxHealth / 3) then
-			self.currentState = self.state.shield
+			self.currentState = self.states.shield
 			self.shield = 20
 			if self.player.collider:getX() >= 33512 then
 				self.collider:setPosition(33144, 486)
@@ -51,16 +54,14 @@ function PopBoss:updateState()
 
 			-- Create the new enemies
 			self.currentState = self.states.spawn
-			self.numberEnemies = math.floor((self.maxHealth - self.health) / 15)
-			for i = 0, 2 + self.numberEnemies, 1 do
-				table.insert(self.enemies, MeleeEnemy:new(32944 + 100 * (i + 1), 450, 64, 64, 30)) -- need to choose the inside variables for the enemy
-			end
-			for i = 0, 1 + self.numberEnemies, 1 do
-				table.insert(self.enemies, RangedEnemy:new(33960 - 100 * (i + 1), 450, 64, 64, 30)) -- need to choose the inside variables for the enemy
-			end
-			self.numberEnemies = (self.numberEnemies * 2) + 3
-			self.healthLost = 0
+			self.numberEnemies = 4
 
+			table.insert(self.enemies, MeleeEnemy:new(32944 + 300, 450, 64, 64, 30))
+			table.insert(self.enemies, MeleeEnemy:new(33960 - 300, 450, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(32944 + 100, 450, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(33960 - 100, 450, 64, 64, 30)) 
+
+			self.healthLost = 0
 			self.collider:setPosition(34020, 286)
 		end
 	elseif self.currentState == self.states.spawn then
@@ -78,6 +79,29 @@ end
 
 function PopBoss:updateFight(dt)
 	Enemy.update(self, dt)
+
+	local _, subbeat = music.music:getBeat()
+
+	if  subbeat > 0.05 and subbeat < 0.95 then
+		if not self.attack then
+			self.counter = self.counter + 1
+		end
+		self.attack = true
+	else
+		self.attack = false
+	end
+
+	if self.counter == 2 then
+		local accuracy = 0.5
+		if self.currentState == self.states.shield then
+			accuracy = 1
+		end
+		
+		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX()) 
+		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false)
+    	t:load()
+    	self.counter = 0
+    end
 end
 
 function PopBoss:updateSpawn(dt)

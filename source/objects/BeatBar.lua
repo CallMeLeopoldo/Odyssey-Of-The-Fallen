@@ -7,12 +7,17 @@ function BeatBar:initialize(x, y)
 	self.x = x
 	self.y = y
 	self.beats = {
-		beat:new(self.x + 60, self.y, self.x + 60, -1, 0),
-		beat:new(self.x + 40, self.y, self.x + 60, -1, 1),
-		beat:new(self.x + 20, self.y, self.x + 60, -1, 2),
-		beat:new(self.x - 20, self.y, self.x - 60, 1, 2),
-		beat:new(self.x - 40, self.y, self.x - 60, 1, 1),
-		beat:new(self.x - 60, self.y, self.x - 60, 1, 0)
+		beat:new(self.x + 350, self.y, self.x + 350, -1, 0),
+		beat:new(self.x + 280, self.y, self.x + 350, -1, 1),
+		beat:new(self.x + 210, self.y, self.x + 350, -1, 2),
+		beat:new(self.x + 140, self.y, self.x + 350, -1, 3),
+		beat:new(self.x + 70, self.y, self.x + 350, -1, 4),
+		beat:new(self.x - 70, self.y, self.x - 350, 1, 4),
+		beat:new(self.x - 140, self.y, self.x - 350, 1, 3),
+		beat:new(self.x - 210, self.y, self.x - 350, 1, 2),
+		beat:new(self.x - 280, self.y, self.x - 350, 1, 1),
+		beat:new(self.x - 350, self.y, self.x - 350, 1, 0)
+
 	}
 end
 
