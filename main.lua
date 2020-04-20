@@ -103,7 +103,7 @@ function love.draw()
 	-- Draw map
 	renderer:draw()
 	
-	world:draw()
+	--world:draw()
 	--renderer:draw()
 	camera:detach()
 	beatBar:draw()

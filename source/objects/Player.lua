@@ -91,11 +91,11 @@ function Player:update(dt)
 		if y == 0 then
 			self:calculateAccuracy()
 
-			local impulse = -500
+			local impulse = -700
 			if self.multiplier >= 2 then
-				impulse = impulse - (100 * 2)
+				impulse = impulse - (200 * 2)
 			else
-				impulse = impulse - (100*self.multiplier)
+				impulse = impulse - (200*self.multiplier)
 			end
 
 			self.collider:applyLinearImpulse(0, impulse)
