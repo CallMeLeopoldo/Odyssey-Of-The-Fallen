@@ -31,16 +31,16 @@ function love.load()
 	g = world:newRectangleCollider(33960, 350, 120, 200)
 	g:setType("static")
 	g:setCollisionClass("Ground")
-	
+
 	Shop = Shop:new(100, 352, 96,96)
 	Shop:load()
 
-	player = Player:new(8000, 200, 32, 64, 15, music.spb/2)
+	player = Player:new(50, 352, 32, 64, 15, music.spb/2)
 	player:load()
 
 	currentLevel = PopLevel:new()
 	currentLevel:load()
-	
+
 	camera = Camera(33512, 320)
 
 	hud = Hud:new(50, 50, player, music.spb, meleeEnemy, rangedEnemy)
@@ -59,7 +59,7 @@ function love.update(dt)
 		gameLoop:update(dt)
 		world:update(dt)
 		tlm:update(dt)
-		
+
 		if(player.collider:getX() < love.graphics.getWidth()/2) then
 			camera:lockX(love.graphics.getWidth()/2)
 		elseif (player.collider:getX() >= 8464) then
@@ -102,7 +102,7 @@ function love.draw()
 
 	-- Draw map
 	renderer:draw()
-	
+
 	--world:draw()
 	--renderer:draw()
 	camera:detach()
