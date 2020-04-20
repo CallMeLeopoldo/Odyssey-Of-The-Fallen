@@ -35,7 +35,7 @@ function love.load()
 	Shop = Shop:new(100, 352, 96,96)
 	Shop:load()
 
-	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
+	player = Player:new(8000, 200, 32, 64, 15, music.spb/2)
 	player:load()
 
 	currentLevel = PopLevel:new()
