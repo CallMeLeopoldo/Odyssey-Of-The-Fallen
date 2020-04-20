@@ -49,7 +49,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.lastDirection = 1
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
-	self.mojo = 5
+	self.mojo = 0
 	self.maxMojo = 10
 	self.currentDmg = self.baseDmg
 	self.health = 100

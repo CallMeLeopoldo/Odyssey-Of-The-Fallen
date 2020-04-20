@@ -10,7 +10,7 @@ function PopLevel:initialize()
 	print("yo")
 	self.enemies = {}
 
-	table.insert(self.enemies, melee_enemy:new(400,300,64,64,20,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(450,360,64,64,40,"melee_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(1500,300,64,64,25,"ranged_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(1400,300,64,64,25,"ranged_enemy2"))
 
@@ -40,7 +40,7 @@ function PopLevel:restart()
 			enemy:destroy()
 		end
 	end
-	
+
 	self.enemies = nil
 
 	if self.boss ~= nil then
@@ -54,4 +54,3 @@ function PopLevel:restart()
 end
 
 return PopLevel
-

@@ -6,10 +6,10 @@ local throwable = require("source.objects.Throwable")
 
 local enemy = class("enemy", Person)
 
-function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
+function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro, animation)
 
   -- Enemy Collider
-  local collider = world:newRectangleCollider(x, y, 64, 64)
+  local collider = world:newRectangleCollider(x, y, 32, 32)
   collider:setObject(self)
   collider:setCollisionClass("Enemy")
   collider:setSleepingAllowed(false)
@@ -22,9 +22,9 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
     end)
 
   -- Animation
-  local anim = animation:new(x, y, sprites.cube, w, h, '1-3', 1, 0.5)
+  self.animation = animation
 
-  Person.initialize(self, x, y, w, h, r, collider, anim)
+  Person.initialize(self, x, y, w, h, r, collider, self.animation)
 
   -- Other Variables
   self.accuracy = 1
@@ -34,6 +34,8 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro)
   self.dir = 1
   self.walk = 1
   self.range = 1  -- variable to make them stop runnning into you
+  self.w = w
+  self.h = h
 end
 
 function enemy:update(dt)
@@ -60,13 +62,14 @@ function enemy:update(dt)
   local newX, currentY = selfx - dt*self.moveSpeed*self.dir*self.walk*self.range, selfy
   self.collider:setX(newX)
 
-	Person.setAnimationPos(self, newX - self.w/2, currentY - self.h/2)
+	Person.setAnimationPos(self, newX - self.w/2 - 5, currentY - self.h/2 - 7)
 end
 
 -- Callback function for collisions
 function enemy:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
 	if self.health < 0 then
+    self.animation = self.animations.die
     self.health = 0
 		self:destroy()
 	end
