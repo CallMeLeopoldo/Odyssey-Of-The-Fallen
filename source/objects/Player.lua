@@ -60,6 +60,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.height = h
 	self.combo = 0
 	self.oncombo = false
+	self.melee_erase = 0
 end
 
 function Player:load()
@@ -70,7 +71,9 @@ end
 function Player:update(dt)
 	Person.update(self, dt)
 	self.lastAttack = self.lastAttack + dt
-
+	if(self.melee_erase ~= 0) then
+		self.melee_erase = self.melee_erase - dt
+	end
 	local beatnumb,subbeat2 = music.music:getBeat()
 
 	-- Movement
@@ -154,7 +157,8 @@ function Player:update(dt)
 			self.combo = 0
 		end
 		local px, py = self.collider:getPosition()
-		--melee_animation = 
+		self.melee_animation = animation:new(px, py-40, sprites.macMelee, 32, 32, 1, 1, 1)
+		self.melee_erase = 0.1
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
@@ -206,6 +210,9 @@ function Player:update(dt)
 end
 
 function Player:draw()
+	if(self.melee_erase > 0) then
+		self.melee_animation:draw()
+	end
 	Person.draw(self)
 end
 

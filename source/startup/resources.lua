@@ -9,6 +9,12 @@ sprites.shop = love.graphics.newImage("images/lojaMDJ.png")
 sprites.cup = love.graphics.newImage("images/Cup.png")
 sprites.goblin = love.graphics.newImage("images/NPC's/goblin/goblin.png")
 sprites.macMelee = love.graphics.newImage("images/MacMelee.png")
+<<<<<<< HEAD
+sprites.cage = love.graphics.newImage("images/cage.png")
+=======
+sprites.macRanged = love.graphics.newImage("images/MacRanged.png")
+sprites.popBoss = love.graphics.newImage("images/PopBoss.png")
+>>>>>>> e4273dced69c4edff214d40a5d00c7ea468fae7b
 
 fonts = {}
 
