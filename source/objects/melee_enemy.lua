@@ -18,12 +18,12 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   -- other variables
   self.id = id or "melee_enemy"
   self.moveSpeed = 40
-  self.aggro = 150
+  self.aggro = 512
   self.counter = 0
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
-  
-  self.health = 30 
+
+  self.health = 30
   self.baseDmg = 8
 end
 

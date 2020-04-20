@@ -20,7 +20,7 @@ function ranged_enemy:initialize(x,y,w,h,r,id)
   -- other variables
   self.id =id or "melee_enemy"
   self.moveSpeed = 50
-  self.aggro = 250
+  self.aggro = 512
   self.canThrow = 0
   self.ix = -70 -- atack impulse direction
   self.iy = -3
@@ -60,13 +60,13 @@ function ranged_enemy:update(dt)
     end
   end
 
-  if math.abs(selfx - playerx) < (player.r + self.r + 100) then
+  if math.abs(selfx - playerx) < (player.r + self.r + 250) then
     self.range = 0
   else
     self.range = 1
   end
 
-  if math.abs(selfx-playerx) < self.aggro + 20 then --throws on beat if a little over aggro range
+  if math.abs(selfx-playerx) < self.aggro then --throws on beat if a little over aggro range
     if (subbeat < 0.05 or subbeat > 0.95) then
       if self.bool == false then
           self.counter = self.counter + 1
