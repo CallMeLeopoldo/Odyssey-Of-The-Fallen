@@ -24,8 +24,6 @@ function love.load()
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	
-	
 	local g = world:newRectangleCollider(32944, 550, 1136, 50)
 	g:setType("static")
 	g:setCollisionClass("Ground")
@@ -40,13 +38,8 @@ function love.load()
 	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
 	player:load()
 
-	local pl = PopLevel:new()
-	pl:load()
-
-	-- camera = Camera(player.collider:getX(), 320)
-
-	local pb = popBoss:new(33300, 550, player)
-	pb:load()
+	currentLevel = PopLevel:new()
+	currentLevel:load()
 	
 	camera = Camera(33512, 320)
 
@@ -66,6 +59,7 @@ function love.update(dt)
 		gameLoop:update(dt)
 		world:update(dt)
 		tlm:update(dt)
+		
 		if(player.collider:getX() < love.graphics.getWidth()/2) then
 			camera:lockX(love.graphics.getWidth()/2)
 		elseif (player.collider:getX() >= 32944) then
@@ -75,6 +69,10 @@ function love.update(dt)
 		end
 	elseif Shop.inShop then
 		Shop.menu:update(dt)
+	end
+
+	if (player.health <= 0) then
+		restart()
 	end
 end
 

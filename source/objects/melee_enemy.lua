@@ -58,4 +58,8 @@ function melee_enemy:draw()
   love.graphics.setColor(1, 1, 1)
 end
 
+function melee_enemy:destroy()
+  enemy.destroy(self)
+end
+
 return melee_enemy

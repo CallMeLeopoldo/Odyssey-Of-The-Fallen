@@ -7,6 +7,7 @@ local ranged_enemy = require("source.objects.ranged_enemy")
 local PopLevel = class("PopLevel", Level)
 
 function PopLevel:initialize()
+	print("yo")
 	self.enemies = {}
 
 	table.insert(self.enemies, melee_enemy:new(400,300,64,64,20,"melee_enemy"))
@@ -35,17 +36,21 @@ end
 
 function PopLevel:restart()
 	for _, enemy in ipairs(self.enemies) do
-		enemy:remove()
+		if not enemy.destroyed then
+			enemy:destroy()
+		end
 	end
 	
 	self.enemies = nil
 
 	if self.boss ~= nil then
-		self.boss:remove()
+		self.boss:destroy()
 		self.boss = nil
 	end
 
-	self:initialize()
+	tlm:restart()
+
+	self:initialize("images/Pop.lua", require("images.Pop"))
 end
 
 return PopLevel

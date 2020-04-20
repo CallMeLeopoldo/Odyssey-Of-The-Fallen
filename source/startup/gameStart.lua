@@ -8,7 +8,8 @@ function gameStart()
 	local GameLoop = require("source.tools.gameLoop")
 	local Music = require("source.tools.music")
 	local Screen = require("source.objects.Screen")
-	
+	require("source.startup.global")
+
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
 	world:setGravity(0, 400)
@@ -27,6 +28,7 @@ function gameStart()
 	gameLoop = GameLoop:create()
 	music = Music:new("audio/sound3.mp3")
 	pauseScreen = Screen:new()
+	currentLevel = nil
 
 	require("source.startup.resources")
 

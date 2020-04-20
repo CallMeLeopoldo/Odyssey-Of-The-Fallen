@@ -6,6 +6,7 @@ local inspect = require("source.packages.inspect")
 function Tlm:load(mapname, luamap)
     self.tiles = {}
     self.map = sti(mapname)
+    self.worldColliders = {}
 
     for _, layer in ipairs(luamap.layers) do
         if layer.properties["collidable"] == true then
@@ -16,6 +17,7 @@ function Tlm:load(mapname, luamap)
                         local collider = world:newRectangleCollider(16*j, 16*i, 16, 16)
                         collider:setCollisionClass("Ground")
                         collider:setType("static")
+                        table.insert(self.worldColliders, collider)
                     end
                 end
             end
@@ -42,6 +44,12 @@ function Tlm:draw()
 	local tx = math.floor(cx - love.graphics.getWidth() / 2)
 	love.graphics.setColor(1, 1, 1)
 	self.map:draw(-tx, -ty)
+end
+
+function Tlm:restart(mapname, luamap)
+    for _, col in ipairs(self.worldColliders) do
+        col:destroy()
+    end
 end
 
 return Tlm

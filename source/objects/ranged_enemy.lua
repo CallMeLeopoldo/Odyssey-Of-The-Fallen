@@ -63,4 +63,9 @@ function ranged_enemy:draw()
   love.graphics.setColor(1, 1, 1)
 end
 
+function ranged_enemy:destroy()
+  enemy.destroy(self)
+end
+
+
 return ranged_enemy

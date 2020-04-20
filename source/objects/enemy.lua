@@ -72,4 +72,8 @@ function enemy:interact(dmg_dealt)
 	end
 end
 
+function enemy:destroy()
+  Person.destroy(self)
+end
+
 return enemy

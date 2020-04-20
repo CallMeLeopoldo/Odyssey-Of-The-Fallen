@@ -4,7 +4,7 @@ local Screen = class("Screen")
 
 function Screen:initialize()
 	self.buttons = {
-		{ "Restart", function() print("hello") end },
+		{ "Restart", function() restart() end },
 		{ "Exit", function() love.event.quit(0) end }
 	}
 	self.currentChoice = 0
@@ -29,15 +29,25 @@ function Screen:keypressed(k)
 end
 
 function Screen:draw()
+	local cx, _ = camera:position()
+	local ox = 0
+	if (cx == love.graphics.getWidth()/2) then
+		ox = 0
+	elseif (cx == 33512) then
+		ox = 32944
+	else
+		ox = cx - 568
+	end
+
 	local ww = love.graphics.getWidth() * 0.5
 	local wh = love.graphics.getHeight() * 0.5
 	local leftMargin = 10
 	local topMargin = 10
 
 	love.graphics.setColor(0, 0, 0)
-	love.graphics.rectangle("fill", ww/2 , wh/2 ,ww, wh)
+	love.graphics.rectangle("fill", ox + ww/2 , wh/2 ,ww, wh)
 
-	local x, y = ww/2 + leftMargin, wh/2 + topMargin
+	local x, y = ox + ww/2 + leftMargin, wh/2 + topMargin
 	for i, button in ipairs(self.buttons) do
 		if (i == self.currentChoice + 1) then
 			love.graphics.setColor(0, 0, 1)

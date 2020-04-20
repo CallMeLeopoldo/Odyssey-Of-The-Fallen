@@ -168,6 +168,7 @@ function Player:update(dt)
 				combo1:load()
 				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true)
 				combo2:load()
+				self.mojo = self.mojo - 5
 			else
 				self.combo = 0
 				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
@@ -228,6 +229,18 @@ end
 
 function Player:getPosition()
 	return self.collider:getPosition()
+end
+
+function Player:restart(x, y)
+	self.collider:setPosition(x, y)
+	self.upperBody:setPosition(x, y)
+	self.lastDirection = 1
+	self.mojo = 5
+	self.maxMojo = 10
+	self.health = 100
+	self.multiplier = 0
+	self.combo = 0
+	self.oncombo = false
 end
 
 return Player
