@@ -22,8 +22,8 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   self.counter = 0
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
-  
-  self.health = 50 
+
+  self.health = 50
 end
 
   function melee_enemy:update(dt)
@@ -36,14 +36,18 @@ end
     if self.dir == 1 then
       if self.walk == 1 and self.range == 1 then
         self.animation = self.animations.walkLeft
+        self:setAnimationPos()
       else
         self.animation = self.animations.standLeft
+        self:setAnimationPos()
       end
     else
       if self.walk == 1 and self.range == 1 then
         self.animation = self.animations.walkRight
+        self:setAnimationPos()
       else
         self.animation = self.animations.standRight
+        self:setAnimationPos()
       end
     end
   end
@@ -64,7 +68,7 @@ end
         self.bool = false
     end
 
-    if self.counter == 2 then
+    if self.counter == 1 then
       local px, py = self.collider:getPosition()
   		local colliders = world:queryCircleArea(px + -self.dir*(self.w/2), py , 20, {"Player"})
       self.attacking = 1
@@ -72,9 +76,11 @@ end
 
       if self.dir == -1 then
         self.animation = self.animations.attackRight
+        self:setAnimationPos()
 
       else
           self.animation = self.animations.attackLeft
+          self:setAnimationPos()
       end
       for i, c in ipairs(colliders) do
   			c.object:interact(self.currentDmg)
@@ -89,6 +95,11 @@ function melee_enemy:draw()
   enemy.draw(self)
 end
 
+function melee_enemy:setAnimationPos()
+  self.animation.x = self.collider:getX() - self.w/2 - 5
+  self.animation.y = self.collider:getY() - self.h/2 - 7
+
+end
 function melee_enemy:destroy()
   enemy.destroy(self)
 end
