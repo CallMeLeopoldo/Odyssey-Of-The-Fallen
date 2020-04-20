@@ -51,7 +51,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.lastAttack = attackSpeed
 	self.mojo = 0
 	self.maxMojo = 10
-	self.currentDmg = self.baseDmg
+	self.currentDmg = 10
 	self.health = 100
 	self.multiplier = 0
 	self.moveSpeed = 200
@@ -103,6 +103,8 @@ function Player:update(dt)
 			if self.accuracy >= 0.75 then
 				if self.multiplier < 2 then
 					self.multiplier = self.multiplier + 1
+				else
+					self.multiplier = 0
 				end
 			else
 				self.multiplier = 0
@@ -149,6 +151,7 @@ function Player:update(dt)
 			self.combo = 0
 		end
 		local px, py = self.collider:getPosition()
+		--melee_animation = 
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
