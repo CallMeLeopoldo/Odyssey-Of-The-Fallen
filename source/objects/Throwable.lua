@@ -36,7 +36,7 @@ function Throwable:update(dt)
 	elseif self.collider:enter("Player") then
 		local collision_data = self.collider:getEnterCollisionData('Player')
 		local player = collision_data.collider:getObject()
-		player:interact(dmg or 15)
+		player:interact(15)
 		self:destroy()
 	end
 
