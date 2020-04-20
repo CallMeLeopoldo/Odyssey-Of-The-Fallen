@@ -32,12 +32,16 @@ end
 
 function PopBoss:update(dt)
 	self:updateState()
-	if #self.enemies ~= 0 then print("HELO") else print("not one") end
+	
 	if self.currentState == self.states.fight or self.currentState == self.states.shield then
 		self:updateFight(dt)
 	elseif self.currentState == self.states.spawn then
 		self:updateSpawn(dt)
 	end
+
+	self.animation.x = self.collider:getX() - 32
+	self.animation.y = self.collider:getY() - 48
+
 end
 
 function PopBoss:updateState()
@@ -47,10 +51,8 @@ function PopBoss:updateState()
 			self.shield = 20
 			if self.player.collider:getX() >= 9032 then
 				self.collider:setPosition(8664, 300)
-				self.animation:setPosition(8664,300)
 			else
 				self.collider:setPosition(9400, 300)
-				self.animation:setPosition(9400,300)
 			end
 			-- TODO: set animation
 			-- TODO: Make the music faster and adjust the bmps
@@ -79,7 +81,6 @@ function PopBoss:updateState()
 				self.animation:setPosition(8664,300)
 			else
 				self.collider:setPosition(9400, 300)
-				self.animation:setPosition(9400,300)
 			end
 			-- TODO: change the attack it makes
 		end
@@ -87,7 +88,7 @@ function PopBoss:updateState()
 end
 
 function PopBoss:updateFight(dt)
-	--Enemy.update(self, dt)
+	Enemy.update(self, dt)
 
 	local _, subbeat = music.music:getBeat()
 
@@ -112,7 +113,6 @@ function PopBoss:updateFight(dt)
     	self.counter = 0
 	end
 	
-	self.animation:update(dt)
 end
 
 function PopBoss:updateSpawn(dt)
@@ -126,6 +126,7 @@ function PopBoss:updateSpawn(dt)
 		end
 	end
 
+	self.animation:update(dt)
 end
 
 function PopBoss:draw()
