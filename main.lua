@@ -10,6 +10,8 @@ local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
 local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
+local Shop = require("source.objects.Shop")
+
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
 function love.load()
@@ -37,6 +39,9 @@ function love.load()
 	g = world:newRectangleCollider(33960, 350, 120, 200)
 	g:setType("static")
 	g:setCollisionClass("Ground")
+	
+	local shop = Shop:new(100, 352, 96,96)
+	shop:load()
 
 	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
 	player:load()
@@ -101,7 +106,9 @@ function love.draw()
 
 	-- Draw map
 	renderer:draw()
+	
 	world:draw()
+	--renderer:draw()
 	camera:detach()
 	beatBar:draw()
 	hud:draw()
