@@ -15,7 +15,7 @@ function enemy:initialize(x, y, w, h, r, moveSpeed, id, aggro, animation)
   collider:setSleepingAllowed(false)
   collider:setRestitution(0)
   collider:setInertia(5000)
-
+  collider:setFixedRotation(true)
   collider:setPreSolve(
     function(c1, c2, contact)
       if c1.collision_class == "Enemy" and c2.collision_class == "Enemy" then contact:setEnabled(false) end
@@ -62,7 +62,7 @@ function enemy:update(dt)
   local newX, currentY = selfx - dt*self.moveSpeed*self.dir*self.walk*self.range, selfy
   self.collider:setX(newX)
 
-	Person.setAnimationPos(self, newX - self.w/2 - 5, currentY - self.h/2 - 7)
+	Person.setAnimationPos(self, newX - self.w/2 - 5, currentY - self.h/4)
 end
 
 -- Callback function for collisions

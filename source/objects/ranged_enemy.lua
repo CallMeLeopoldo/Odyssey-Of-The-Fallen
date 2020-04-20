@@ -30,7 +30,7 @@ function ranged_enemy:initialize(x,y,w,h,r,id)
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
 
-  self.health = 20
+  self.health = 10
 end
 
 function ranged_enemy:update(dt)
@@ -103,9 +103,13 @@ function ranged_enemy:setAnimationPos()
   self.animation.x = self.collider:getX() - self.w/2 - 5
   self.animation.y = self.collider:getY() - self.h/2 - 7
 end
+
 function ranged_enemy:destroy()
   enemy.destroy(self)
 end
 
+function ranged_enemy:interact(dmg)
+  enemy.interact(self, dmg)
+end
 
 return ranged_enemy

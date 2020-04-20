@@ -53,6 +53,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.mojo = 0
 	self.maxMojo = 10
 	self.currentDmg = 10
+	self.baseDmg = 10
 	self.health = 100
 	self.multiplier = 0
 	self.moveSpeed = 200

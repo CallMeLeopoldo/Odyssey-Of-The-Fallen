@@ -23,7 +23,7 @@ function melee_enemy:initialize(x,y,w,h,r,id)
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
 
-  self.health = 30
+  self.health = 15
   self.baseDmg = 8
 end
 
@@ -101,7 +101,14 @@ function melee_enemy:setAnimationPos()
   self.animation.y = self.collider:getY() - self.h/4 - 5
 
 end
+
 function melee_enemy:destroy()
   enemy.destroy(self)
 end
+
+function melee_enemy:interact(dmg)
+  print(dmg)
+  enemy.interact(self, dmg)
+end
+
 return melee_enemy
