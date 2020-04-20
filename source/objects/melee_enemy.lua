@@ -16,14 +16,15 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   self.animations.attackLeft = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 4, 1/12)
   self.animations.die = animation:new(x , y, sprites.goblin, 64, 64, '1-5', 5, 0.5)
   -- other variables
-  self.id =id or "melee_enemy"
+  self.id = id or "melee_enemy"
   self.moveSpeed = 40
   self.aggro = 150
   self.counter = 0
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
 
-  self.health = 50
+  self.health = 30
+  self.baseDmg = 8
 end
 
   function melee_enemy:update(dt)
