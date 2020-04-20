@@ -8,6 +8,7 @@ sprites.hud_bit = love.graphics.newImage("images/hud_bit.png")
 sprites.shop = love.graphics.newImage("images/lojaMDJ.png")
 sprites.cup = love.graphics.newImage("images/Cup.png")
 sprites.goblin = love.graphics.newImage("images/NPC's/goblin/goblin.png")
+sprites.macMelee = love.graphics.newImage("images/MacMelee.png")
 
 fonts = {}
 

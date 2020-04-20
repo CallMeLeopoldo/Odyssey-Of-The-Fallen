@@ -1,5 +1,5 @@
 local class = require("source.packages.middleclass")
-
+local animation = require("source.objects.Animation")
 local RangedAttack = class("RangedAttack")
 
 
@@ -7,8 +7,9 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 	self.orientation = orientation
 	self.lifeSpan = 1
 	self.damage = 5 * accuracy
-
-	self.collider = world:newCircleCollider(x, y, 15)
+	self.radius = 15
+	self.collider = world:newCircleCollider(x, y, self.radius)
+	self.animation = animation:new(x-self.radius, y-self.radius, sprites.macMelee, 32, 32, 1, 1, 1)
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)
 	if isPlayers then
@@ -35,7 +36,7 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 end
 
 function RangedAttack:load()
-	renderer:addRenderer(self, 3)
+	renderer:addRenderer(self)
 	gameLoop:addLoop(self)
 end
 
@@ -48,10 +49,12 @@ function RangedAttack:update(dt)
 	end
 
 	self.collider:setX(self.collider:getX() + 150*dt*self.orientation)
+	self.animation.x = (self.collider:getX() - self.radius + 150*dt*self.orientation)
+	self.animation.y = self.collider:getY() - self.radius
 end
 
 function RangedAttack:draw()
-	-- drawing the animation to be set
+	self.animation:draw()
 end
 
 function RangedAttack:CheckCollisions() 
@@ -71,6 +74,7 @@ function RangedAttack:destroy()
 	gameLoop:removeLoop(self)
 	renderer:removeRenderer(self)
 	self.collider:destroy()
+	self.animation:destroy()
 end
 
 return RangedAttack

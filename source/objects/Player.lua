@@ -151,6 +151,7 @@ function Player:update(dt)
 			self.combo = 0
 		end
 		local px, py = self.collider:getPosition()
+		--melee_animation = 
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
