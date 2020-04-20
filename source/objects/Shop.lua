@@ -11,6 +11,7 @@ function Shop:initialize(x,y,w,h)
     self.collider:setCollisionClass("Shop")
     self.collider:setType("static")
     self.animation = animation:new(x, y, sprites.shop, 96, 96, 1, 1, 1)
+    self.animation2 = animation:new(x, y, sprites.cage, 64, 64, 1, 1, 1)
     self.inShop = false
     self.menu = nil
     --self.items
@@ -34,17 +35,17 @@ function Shop:update(dt)
     if self.collider:enter('Player') then
         print('Collision entered!')
     end
-    
+
     if self.collider:stay('Player') and love.keyboard.isDown("e") then
-        -- Toggle pause        
+        -- Toggle pause
         if self.inShop then
             return
         end
-        
+
         self.inShop = true
         if self.menu == nil then
-            self.menu = Menu:new(self)          
-            self.menu:load(self) 
+            self.menu = Menu:new(self)
+            self.menu:load(self)
         end
     end
 
@@ -54,6 +55,7 @@ function Shop:update(dt)
 end
 
 function Shop:draw()
+    self.animation2:draw()
     self.animation:draw()
 end
 
