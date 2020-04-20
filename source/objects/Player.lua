@@ -92,13 +92,21 @@ function Player:update(dt)
 			self:calculateAccuracy()
 
 			local impulse = -500
-			if self.multiplier >= 3 then
-				impulse = impulse * 3
+			if self.multiplier >= 2 then
+				impulse = impulse - (100 * 2)
 			else
-				impulse = impulse*self.multiplier
+				impulse = impulse - (100*self.multiplier)
 			end
 
 			self.collider:applyLinearImpulse(0, impulse)
+
+			if self.accuracy >= 0.75 then
+				if self.multiplier < 2 then
+					self.multiplier = self.multiplier + 1
+				end
+			else
+				self.multiplier = 0
+			end
 		end
 	end
 	if love.keyboard.isDown("down") then
@@ -215,12 +223,6 @@ function Player:calculateAccuracy()
 		self.accuracy = 0.5
 	else
 		self.accuracy = 0.25
-	end
-
-	if self.accuracy >= 0.75 then
-		self.multiplier = self.multiplier + 1
-	else
-		self.multiplier = 1
 	end
 end
 

@@ -11,6 +11,7 @@ local ranged_enemy = require("source.objects.ranged_enemy")
 local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
 local Shop = require("source.objects.Shop")
+local PopLevel = require("source.objects.PopLevel")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
@@ -23,14 +24,7 @@ function love.load()
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()
 
-	local meleeEnemy = melee_enemy:new(400,300,64,64,20,"melee_enemy")
-	meleeEnemy:load()
-
-	local rangedEnemy = ranged_enemy:new(1500,300,64,64,25,"ranged_enemy")
-	rangedEnemy:load()
-
-	local rangedEnemy2 = ranged_enemy:new(1400,300,64,64,25,"ranged_enemy2")
-	rangedEnemy2:load()
+	
 	
 	local g = world:newRectangleCollider(32944, 550, 1136, 50)
 	g:setType("static")
@@ -40,13 +34,14 @@ function love.load()
 	g:setType("static")
 	g:setCollisionClass("Ground")
 	
-	local shop = Shop:new(100, 352, 96,96)
-	shop:load()
+	Shop = Shop:new(100, 352, 96,96)
+	Shop:load()
 
 	player = Player:new(50, 400, 32, 64, 15, music.spb/2)
 	player:load()
 
-	tlm:load("images/Pop.lua", require("images.Pop"))
+	local pl = PopLevel:new()
+	pl:load()
 
 	-- camera = Camera(player.collider:getX(), 320)
 
@@ -66,7 +61,7 @@ end
 
 function love.update(dt)
 	g_GameTime = g_GameTime + dt
-	if not pauseScreen.paused then
+	if not pauseScreen.paused and not Shop.inShop then
 		music.music:update(dt)
 		gameLoop:update(dt)
 		world:update(dt)
@@ -78,6 +73,8 @@ function love.update(dt)
 		else
 			camera:lockX(player.collider:getX())
 		end
+	elseif Shop.inShop then
+		Shop.menu:update(dt)
 	end
 end
 
@@ -85,13 +82,14 @@ function love.keypressed(k)
 	if (pauseScreen.paused) then
 		pauseScreen:keypressed(k)
 	end
+
 	if k == "space" then
 		-- Toggle pause
 		pauseScreen.paused = not pauseScreen.paused
 		if pauseScreen.paused then
 			pauseScreen:load()
 			music.music:pause()
-		else	
+		else
 			pauseScreen:remove()
 			music.music:play()
 		end

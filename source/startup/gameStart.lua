@@ -11,7 +11,7 @@ function gameStart()
 	
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
-	world:setGravity(0, 100)
+	world:setGravity(0, 400)
 	world:addCollisionClass("Shop")
 	world:addCollisionClass("Ignore", {ignores = {"Shop"}})
 	world:addCollisionClass("Ground")

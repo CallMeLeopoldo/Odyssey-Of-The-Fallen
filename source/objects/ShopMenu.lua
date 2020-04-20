@@ -3,13 +3,13 @@ local Item = require("source.objects.Item")
 local listbox = require("source.packages.listbox")
 local ShopMenu = class("Screen")
 
-function ShopMenu:initialize()
+function ShopMenu:initialize(shop)
 
     local hell = Item:new("Hell's Blazes", "passive", 100,"A worshiping flame from the Underworld itself" )
     local jazz = Item:new("Jazzy Blues", "passive", 150, "It grooves like B.B.King")
     self.items = { hell, jazz}
     self.currentChoice = 0
-    self.pause = false
+    self.shop = shop
 
     local tlist={
         x=200, y=100,
@@ -17,6 +17,8 @@ function ShopMenu:initialize()
         rounded=true,
         w=200,h=300,showindex=true}
 
+    self.lastKeyPressed = nil
+    self.timerPress = 0
     --listbox:newprop(tlist)
     --for _,item in ipairs(self.items) do
     --    listbox:additem(item.name, "HELLO BUDDY")
@@ -28,16 +30,28 @@ function ShopMenu:load()
     renderer:addRenderer(self, 5)
 end
 
-function ShopMenu:update()
+function ShopMenu:update(dt)
+    self.timerPress = self.timerPress - dt
     if (love.keyboard.isDown("up")) then
-        self.currentChoice = (self.currentChoice + 1) % #self.items
+        if (self.lastKeyPressed ~= "up" or self.timerPress <= 0) then
+            self.currentChoice = (self.currentChoice + 1) % #self.items
+            self.lastKeyPressed = "up"
+            self.timerPress = 0.5
+        end
     elseif (love.keyboard.isDown("down")) then
-        self.currentChoice = (self.currentChoice - 1) % #self.items
-
+        if (self.lastKeyPressed ~= "down" or self.timerPress <= 0) then
+            self.lastKeyPressed = "down"
+            self.currentChoice = (self.currentChoice - 1) % #self.items
+            self.timerPress = 0.5
+        end
     elseif (love.keyboard.isDown("z") or love.keyboard.isDown("return")) then
         --self.items[self.currentChoice + 1][2]()
     elseif (love.keyboard.isDown("x") or love.keyboard.isDown("escape")) then
-        --self.pause = false
+        print(self.shop)
+        self.shop.inShop = false
+        self.shop.menu = nil
+        self:remove()
+        self = nil
     end
 end
 
@@ -63,7 +77,9 @@ function ShopMenu:draw()
     end
     local newx = ww*3/2 - ww/3 - leftMargin
     local newy = wh/2 + topMargin
+    love.graphics.setColor(0.4, 0.4, 0.4)
     love.graphics.rectangle("fill", newx , newy, ww / 3, wh *2/ 3)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.print(self.items[self.currentChoice+1].description, newx, newy)
     --listbox:draw()
 end

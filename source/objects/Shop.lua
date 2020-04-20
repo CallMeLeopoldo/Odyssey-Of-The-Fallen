@@ -11,7 +11,7 @@ function Shop:initialize(x,y,w,h)
     self.collider:setCollisionClass("Shop")
     self.collider:setType("static")
     self.animation = animation:new(x, y, sprites.shop, 96, 96, 1, 1, 1)
-    pause = false
+    self.inShop = false
     self.menu = nil
     --self.items
     --Criar classe Item
@@ -30,25 +30,23 @@ function Shop:load()
     gameLoop:addLoop(self)
 end
 
-function Shop:update()
+function Shop:update(dt)
     if self.collider:enter('Player') then
         print('Collision entered!')
     end
     
     if self.collider:stay('Player') and love.keyboard.isDown("e") then
-        -- Toggle pause
-        print("HERE WE GO!")
-        if(not self.menu) then
-            pause = true
-            self.menu = Menu:new()
-            self.menu:load()
+        -- Toggle pause        
+        if self.inShop then
+            return
         end
-        elseif self.collider:stay('Player') and love.keyboard.isDown("x") then
-            if(self.menu) then
-                self.menu:remove()
-                self.menu = nil
-            end
+        
+        self.inShop = true
+        if self.menu == nil then
+            self.menu = Menu:new(self)          
+            self.menu:load(self) 
         end
+    end
 
     if self.collider:exit('Player') then
         print('Collision exited!')
