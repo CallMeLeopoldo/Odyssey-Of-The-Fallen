@@ -1,0 +1,13 @@
+controls:
+left, right - move left and right
+up - jump
+down - crouch
+z - melee attack or confirm in menus
+x - ranged attack or discard in menus
+e - interact with store
+escape - pause game
+
+mechanics:
+z, z, x on beat - combo costing 5 mojo
+attacks on beat deal more damage
+double and triple jump on beat
