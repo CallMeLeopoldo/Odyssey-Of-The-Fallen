@@ -1,3 +1,5 @@
+local animation = require("source.objects.animation")
+
 class = require("source.packages.middleclass")
 
 local Throwable = class("Throwable")
@@ -16,6 +18,8 @@ function Throwable:initialize(x, y, r, ix, iy, dmg, id)
 			end
 		end)
 	
+	self.animation = animation:new(x, y, sprites.cup, 64, 64, 1, 1, 1)
+
 	self.remove = false
 end
 
@@ -25,6 +29,8 @@ function Throwable:load()
 end
 
 function Throwable:update(dt)
+	self.animation.x, self.animation.y = self.collider:getPosition() 
+	
 	if self.collider:enter("Ground") then
 		self:destroy()
 	elseif self.collider:enter("Player") then
@@ -33,15 +39,19 @@ function Throwable:update(dt)
 		player:interact(dmg or 15)
 		self:destroy()
 	end
+
 end
 
 function Throwable:draw()
-
+	self.animation:draw()
 end
 
 function Throwable:destroy()
+	renderer:removeRenderer(self)
+	gameLoop:removeLoop(self)
 	self.remove = true
 	self.collider:destroy()
+	self.animation:destroy()
 	self = nil
 end
 
