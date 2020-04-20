@@ -79,17 +79,17 @@ end
 function love.keypressed(k)
 	if (pauseScreen.paused) then
 		pauseScreen:keypressed(k)
-	end
-
-	if k == "space" then
-		-- Toggle pause
-		pauseScreen.paused = not pauseScreen.paused
-		if pauseScreen.paused then
-			pauseScreen:load()
-			music.music:pause()
-		else
-			pauseScreen:remove()
-			music.music:play()
+	else
+		if k == "escape" then
+			-- Toggle pause
+			pauseScreen.paused = not pauseScreen.paused
+			if pauseScreen.paused then
+				pauseScreen:load()
+				music.music:pause()
+			else
+				pauseScreen:remove()
+				music.music:play()
+			end
 		end
 	end
 end

@@ -25,6 +25,7 @@ function Screen:keypressed(k)
 		self.buttons[self.currentChoice + 1][2]()
 	elseif k == "x" or k == "escape" then
 		self.pause = false
+		music.music:play()
 	end
 end
 

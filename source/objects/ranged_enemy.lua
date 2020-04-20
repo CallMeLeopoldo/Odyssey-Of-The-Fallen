@@ -30,6 +30,7 @@ function ranged_enemy:initialize(x,y,w,h,r,id)
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
 
+  self.health = 20
 end
 
 function ranged_enemy:update(dt)

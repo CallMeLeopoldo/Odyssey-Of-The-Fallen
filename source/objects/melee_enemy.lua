@@ -22,6 +22,8 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   self.counter = 0
 
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
+  
+  self.health = 50 
 end
 
   function melee_enemy:update(dt)

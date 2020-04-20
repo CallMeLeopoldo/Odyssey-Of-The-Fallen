@@ -15,8 +15,8 @@ function PopBoss:initialize(x, y, player)
 	self.states = states
 	self.currentState = self.states.fight
 	self.player = player
-	self.health = 100
-	self.healthLost = 15
+	self.health = 200
+	self.healthLost = 40
 	self.shield = 0
 	self.enemies = {}
 	self.counter = 0
@@ -50,7 +50,7 @@ function PopBoss:updateState()
 			end
 			-- TODO: set animation
 			-- TODO: Make the music faster and adjust the bmps
-		elseif self.healthLost >= 15 then
+		elseif self.healthLost >= 40 then
 
 			-- Create the new enemies
 			self.currentState = self.states.spawn
@@ -135,7 +135,5 @@ function PopBoss:interact(dmgDealt)
 	self.health = self.health - dmgDealt
 	self.healthLost = self.healthLost + dmgDealt
 end
-
--- TODO: tratar de colisões com o player e com ataques do player
 
 return PopBoss

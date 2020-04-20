@@ -235,7 +235,7 @@ function Player:restart(x, y)
 	self.collider:setPosition(x, y)
 	self.upperBody:setPosition(x, y)
 	self.lastDirection = 1
-	self.mojo = 5
+	self.mojo = 0
 	self.maxMojo = 10
 	self.health = 100
 	self.multiplier = 0

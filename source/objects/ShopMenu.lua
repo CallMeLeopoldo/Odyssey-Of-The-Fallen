@@ -65,7 +65,11 @@ function ShopMenu:draw()
     love.graphics.rectangle("fill", ww/2 , wh/2 ,ww, wh)
 
     local x, y = ww/2 + leftMargin, wh/2 + topMargin
-    for _, item in ipairs(self.items) do
+    for i, item in ipairs(self.items) do
+        if (self.currentChoice == i) then
+            love.graphics.setColor(0, 0, 1)
+            love.graphics.rectangle("fill", x-1, y - 1, (ww/3) + 2, (wh/3) + 2)
+        end
         love.graphics.setColor(0.4, 0.4, 0.4)
         
         love.graphics.rectangle("fill", x, y, ww / 3, wh / 3)
@@ -75,10 +79,12 @@ function ShopMenu:draw()
     
         y = y + wh/3 + topMargin
     end
-    local newx = ww*3/2 - ww/3 - leftMargin
+
+    local newx = (ww/2) + (ww/3) + 2*leftMargin
     local newy = wh/2 + topMargin
+
     love.graphics.setColor(0.4, 0.4, 0.4)
-    love.graphics.rectangle("fill", newx , newy, ww / 3, wh *2/ 3)
+    love.graphics.rectangle("fill", newx , newy, ww / 1.8, wh - 2*(topMargin) )
     love.graphics.setColor(1, 1, 1)
     love.graphics.print(self.items[self.currentChoice+1].description, newx, newy)
     --listbox:draw()
