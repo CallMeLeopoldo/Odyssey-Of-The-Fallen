@@ -9,12 +9,12 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 	self.damage = 5 * accuracy
 	self.radius = 15
 	self.collider = world:newCircleCollider(x, y, self.radius)
-	
+
 	local collumn = 0
-	if orientation == 1 then collumn = 1 else collumn = 2 end 
+	if orientation == 1 then collumn = 1 else collumn = 2 end
 
 	self.animation = animation:new(x-self.radius, y-self.radius, sprites.macRanged, 32, 32, collumn, 1, 1)
-	self.movementSpeed = 150
+	self.movementSpeed = 250
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)
 	if isPlayers then
@@ -32,7 +32,7 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 					contact:setEnabled(false)
 				end
 			elseif collider_1.collision_class == "EnemyAttack" then
-				if (collider_2.collision_class == "EnemyAttack" or collider_2.collision_class == "PlayerAttack" or 
+				if (collider_2.collision_class == "EnemyAttack" or collider_2.collision_class == "PlayerAttack" or
 					collider_2.collision_class == "Enemy") then
 					contact:setEnabled(false)
 				end
@@ -62,7 +62,7 @@ function RangedAttack:draw()
 	self.animation:draw()
 end
 
-function RangedAttack:CheckCollisions() 
+function RangedAttack:CheckCollisions()
 	if self.collider.collision_class == "PlayerAttack" and self.collider:enter('Enemy') then
 		local cd = self.collider:getEnterCollisionData("Enemy")
 		cd.collider:getObject():interact(self.damage)
