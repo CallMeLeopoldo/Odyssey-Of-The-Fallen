@@ -40,7 +40,8 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.animations = {}
 	self.animations.walkRight = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12)
 	self.animations.walkLeft = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, 1/12)
-	self.animations.stand = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1/12)
+	self.animations.stand1 = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1/12)
+	self.animations.stand2 = animation:new(x - w, y, sprites.Mac2, 64, 64, 1, 1, 1/12)
 	self.animations.crouch = animation:new(x- w, y, sprites.player, 64, 64, 2, 3, 1/12)
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
@@ -89,7 +90,13 @@ function Player:update(dt)
 		self.lastDirection = 1
 		self.animation = self.animations.walkRight
 	end
-	if x == 0 then self.animation = self.animations.stand end
+	if x == 0 then
+		if self.lastDirection == 1 then
+			self.animation = self.animations.stand1
+		else
+			self.animation = self.animations.stand2
+	  end
+	end
 	if love.keyboard.isDown("up") then
 
 		local x, y = self.collider:getLinearVelocity()
@@ -158,7 +165,11 @@ function Player:update(dt)
 			self.combo = 0
 		end
 		local px, py = self.collider:getPosition()
-		self.melee_animation = animation:new(px, py-40, sprites.macMelee, 32, 32, 1, 1, 1)
+		if self.lastDirection == -1 then
+			self.melee_animation = animation:new(px-40, py-40, sprites.macMelee2, 32, 32, 1, 1, 1)
+		else
+			self.melee_animation = animation:new(px, py-40, sprites.macMelee, 32, 32, 1, 1, 1)
+		end
 		self.melee_erase = 0.1
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
