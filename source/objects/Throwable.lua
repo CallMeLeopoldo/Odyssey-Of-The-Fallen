@@ -1,4 +1,4 @@
-local animation = require("source.objects.animation")
+local animation = require("source.objects.Animation")
 
 class = require("source.packages.middleclass")
 
