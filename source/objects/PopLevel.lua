@@ -12,6 +12,23 @@ function PopLevel:initialize()
 	table.insert(self.enemies, melee_enemy:new(450,360,64,64,40,"melee_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(1500,300,64,64,25,"ranged_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(1400,300,64,64,25,"ranged_enemy2"))
+	table.insert(self.enemies, melee_enemy:new(2300,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(2900,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(3500,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(4500,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(6500,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(6580,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(7020,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(2000,300,64,64,25,"ranged_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(3700,300,64,64,25,"ranged_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(3600,300,64,64,25,"ranged_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(5000,300,64,64,25,"ranged_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(5060,300,64,64,25,"ranged_enemy"))
+	table.insert(self.enemies, melee_enemy:new(7450,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(7400,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(7500,200,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, melee_enemy:new(8000,200,64,64,40,"melee_enemy"))
+
 
 	self.boss = nil
 end

@@ -51,7 +51,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
 	self.mojo = 0
-	self.maxMojo = 10
+	self.maxMojo = 100
 	self.currentDmg = 10
 	self.baseDmg = 10
 	self.health = 100
@@ -172,14 +172,14 @@ function Player:update(dt)
 	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
 		self:calculateAccuracy()
 		self.currentDmg = self.baseDmg * self.accuracy
-		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 5 then
+		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 50 then
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
 				local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true)
 				combo1:load()
 				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true)
 				combo2:load()
-				self.mojo = self.mojo - 5
+				self.mojo = self.mojo - 50
 			else
 				self.combo = 0
 				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
