@@ -186,19 +186,19 @@ function Player:update(dt)
 		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 50 then
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
-				local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true)
+				local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true, sprites.macRanged)
 				combo1:load()
-				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true)
+				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true, sprites.macRanged)
 				combo2:load()
 				self.mojo = self.mojo - 50
 			else
 				self.combo = 0
-				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
+				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged)
 				ra:load()
 			end
 		else
 			self.combo = 0
-			local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true)
+			local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged)
 			ra:load()
 		end
 		self.lastAttack = 0

@@ -3,7 +3,7 @@ local animation = require("source.objects.Animation")
 local RangedAttack = class("RangedAttack")
 
 
-function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
+function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite)
 	self.orientation = orientation
 	self.lifeSpan = 1
 	self.damage = 5 * accuracy
@@ -13,7 +13,7 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers)
 	local collumn = 0
 	if orientation == 1 then collumn = 1 else collumn = 2 end
 
-	self.animation = animation:new(x-self.radius, y-self.radius, sprites.macRanged, 32, 32, collumn, 1, 1)
+	self.animation = animation:new(x-self.radius, y-self.radius, sprite, 32, 32, collumn, 1, 1)
 	self.movementSpeed = 250
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)

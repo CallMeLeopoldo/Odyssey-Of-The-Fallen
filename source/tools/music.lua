@@ -5,9 +5,9 @@ local lovebpm = require("source.packages.lovebpm")
 
 local Music = class("Music")
 
-function Music:initialize(track)
+function Music:initialize(track, bpm)
 	self.track = track
-	self.bpm = 60
+	self.bpm = bpm
 	self.bps = self.bpm/60	-- beats per second
 	self.spb = 1/self.bps	-- seconds per beat (time, in seconds, between beats)
 

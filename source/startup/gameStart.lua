@@ -26,7 +26,7 @@ function gameStart()
 	anim8 = require("source.packages.anim8")
 	renderer = Renderer:create()
 	gameLoop = GameLoop:create()
-	music = Music:new("audio/sound3.mp3")
+	music = Music:new("audio/synthpop.wav", 100)
 	pauseScreen = Screen:new()
 	currentLevel = nil
 

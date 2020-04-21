@@ -40,7 +40,7 @@ function PopBoss:update(dt)
 	end
 
 	self.animation.x = self.collider:getX() - 32
-	self.animation.y = self.collider:getY() - 48
+	self.animation.y = self.collider:getY() - 32
 
 end
 
@@ -107,7 +107,7 @@ function PopBoss:updateFight(dt)
 		end
 		
 		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX()) 
-		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false)
+		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false, sprites.popRanged)
 		t.movementSpeed = 200
     	t:load()
     	self.counter = 0
