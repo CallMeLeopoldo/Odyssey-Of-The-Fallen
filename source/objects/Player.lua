@@ -37,14 +37,16 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	world:addJoint("RevoluteJoint", lowerBody, upperBody, h, w, true)
 
 	-- Player Animations
-	self.animations = {}
-	self.animations.walkRight = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12)
-	self.animations.walkLeft = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, 1/12)
-	self.animations.stand1 = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1/12)
-	self.animations.stand2 = animation:new(x - w, y, sprites.Mac2, 64, 64, 1, 1, 1/12)
-	self.animations.crouch = animation:new(x- w, y, sprites.player, 64, 64, 2, 3, 1/12)
+	self.animations = {
+		walk = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12),
+		stand = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1),
+		crouch = animation:new(x- w, y, sprites.player, 64, 64, 3, 3, 1),
+		attackRanged = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, attackSpeed/4),
+		attackMelee = animation:new(x-w, y, sprites.player, 64, 64, '1-3', 4, attackSpeed/3),
+		meleeGuitar = animation:new(x, y, sprites.player, 64, 64, 4, 4, 1)
+	}
 
-	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walkRight, "player")
+	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walk, "player")
 
 	-- Other variables required
 	self.accuracy = 1
@@ -62,7 +64,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.height = h
 	self.combo = 0
 	self.oncombo = false
-	self.melee_erase = 0
+	self.isMelee = false
 end
 
 function Player:load()
@@ -71,11 +73,20 @@ function Player:load()
 end
 
 function Player:update(dt)
+	local primaryDirection = self.lastDirection
+	
+	-- Checking variables
 	Person.update(self, dt)
+	
 	self.lastAttack = self.lastAttack + dt
-	if(self.melee_erase ~= 0) then
-		self.melee_erase = self.melee_erase - dt
+	if self.lastAttack < self.attackTimming then
+		if self.isMelee and self.lastAttack > (2*self.attackTimming)/3 then
+			local animX, animY = self.collider:getPosition()
+			self.animations.meleeGuitar:setPosition(animX - self.w + self.lastDirection*64, animY - 3*self.h/4)
+		end
+		return
 	end
+	
 	local beatnumb,subbeat2 = music.music:getBeat()
 
 	-- Movement
@@ -83,19 +94,15 @@ function Player:update(dt)
 	if love.keyboard.isDown("left") then
 		x = -1
 		self.lastDirection = -1
-		self.animation = self.animations.walkLeft
 	end
 	if love.keyboard.isDown("right") then
 		x = 1
 		self.lastDirection = 1
-		self.animation = self.animations.walkRight
 	end
 	if x == 0 then
-		if self.lastDirection == 1 then
-			self.animation = self.animations.stand1
-		else
-			self.animation = self.animations.stand2
-	  end
+		self.animation = self.animations.stand
+	else
+		self.animation = self.animations.walk
 	end
 	if love.keyboard.isDown("up") then
 
@@ -165,12 +172,6 @@ function Player:update(dt)
 			self.combo = 0
 		end
 		local px, py = self.collider:getPosition()
-		if self.lastDirection == -1 then
-			self.melee_animation = animation:new(px-40, py-40, sprites.macMelee2, 32, 32, 1, 1, 1)
-		else
-			self.melee_animation = animation:new(px, py-40, sprites.macMelee, 32, 32, 1, 1, 1)
-		end
-		self.melee_erase = 0.1
 		local colliders = world:queryCircleArea(px + self.lastDirection*64, py - self.height/4, 25, {"Enemy"})
 		for i, c in ipairs(colliders) do
 			c.object:interact(self.currentDmg)
@@ -178,6 +179,8 @@ function Player:update(dt)
 			if self.mojo > self.maxMojo then self.mojo = self.maxMojo end
     end
 		self.lastAttack = 0
+		self.animation  = self.animations.attackMelee
+		self.isMelee = true
 	end
 
 	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
@@ -202,6 +205,8 @@ function Player:update(dt)
 			ra:load()
 		end
 		self.lastAttack = 0
+		self.animation = self.animations.attackRanged
+		self.isMelee = false
 	end
 
 	-- Position Update
@@ -218,14 +223,23 @@ function Player:update(dt)
 	self.collider:setX(newX)
 	self.collider:setY(currentY)
 
+	-- Animation updates
 	Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
+	if primaryDirection ~= self.lastDirection then
+		for _, anim in pairs(self.animations) do
+			anim.animation:flipH()
+		end
+	end
 end
 
 function Player:draw()
-	if(self.melee_erase > 0) then
-		self.melee_animation:draw()
-	end
 	Person.draw(self)
+	if self.lastAttack < self.attackTimming then
+		if self.isMelee and self.lastAttack > (2*self.attackTimming)/3 then
+			self.animations.meleeGuitar.animation:gotoFrame(1)
+			self.animations.meleeGuitar:draw()
+		end
+	end
 end
 
 -- Callback function for collisions

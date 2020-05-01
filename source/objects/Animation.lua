@@ -35,4 +35,9 @@ function Animation:destroy()
 	print("animation destroyed")
 end
 
+function Animation:setPosition(x, y)
+	self.x = x
+	self.y = y
+end
+
 return Animation
