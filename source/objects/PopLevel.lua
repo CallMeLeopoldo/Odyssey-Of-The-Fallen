@@ -54,6 +54,7 @@ function PopLevel:restart()
 	for _, enemy in ipairs(self.enemies) do
 		if not enemy.destroyed then
 			enemy:destroy()
+			player.money = 0
 		end
 	end
 

@@ -104,6 +104,7 @@ end
 
 function melee_enemy:destroy()
   enemy.destroy(self)
+  player.money = player.money + 5
 end
 
 function melee_enemy:interact(dmg)

@@ -15,6 +15,7 @@ sprites.macRanged = love.graphics.newImage("images/MacRanged.png")
 sprites.popBoss = love.graphics.newImage("images/PopBoss.png")
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 sprites.popRanged = love.graphics.newImage("images/PopRanged.png")
+sprites.coin = love.graphics.newImage("images/coin.png")
 
 fonts = {}
 

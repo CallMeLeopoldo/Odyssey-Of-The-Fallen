@@ -106,6 +106,7 @@ end
 
 function ranged_enemy:destroy()
   enemy.destroy(self)
+  player.money = player.money + 5
 end
 
 function ranged_enemy:interact(dmg)

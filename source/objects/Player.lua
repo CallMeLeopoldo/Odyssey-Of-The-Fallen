@@ -66,6 +66,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.oncombo = false
 	self.isMelee = false
 	self.start_time = os.time()
+	self.money = 0
 end
 
 function Player:load()
@@ -283,6 +284,7 @@ function Player:restart(x, y)
 	self.multiplier = 0
 	self.combo = 0
 	self.oncombo = false
+	self.money = 0
 end
 
 return Player
