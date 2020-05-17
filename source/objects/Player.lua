@@ -65,6 +65,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.combo = 0
 	self.oncombo = false
 	self.isMelee = false
+	self.start_time = os.time()
 end
 
 function Player:load()
@@ -74,10 +75,10 @@ end
 
 function Player:update(dt)
 	local primaryDirection = self.lastDirection
-	
+
 	-- Checking variables
 	Person.update(self, dt)
-	
+
 	self.lastAttack = self.lastAttack + dt
 	if self.lastAttack < self.attackTimming then
 		if self.isMelee and self.lastAttack > (2*self.attackTimming)/3 then
@@ -86,7 +87,7 @@ function Player:update(dt)
 		end
 		return
 	end
-	
+
 	local beatnumb,subbeat2 = music.music:getBeat()
 
 	-- Movement
@@ -110,7 +111,13 @@ function Player:update(dt)
 
 		if y == 0 then
 			self:calculateAccuracy()
-
+			if self.multiplier == 0 then
+				self.start_time = os.time()
+			end
+			if os.time() - self.start_time >= 5 then
+				self.multiplier = 0
+				self.start_time = os.time()
+			end
 			local impulse = -700
 			if self.multiplier >= 2 then
 				impulse = impulse - (200 * 2)
