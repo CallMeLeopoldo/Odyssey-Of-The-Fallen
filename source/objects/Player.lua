@@ -77,6 +77,7 @@ end
 
 function Player:update(dt)
 	local primaryDirection = self.lastDirection
+	self.xis = 0
 
 	-- Checking variables
 	Person.update(self, dt)
@@ -89,27 +90,8 @@ function Player:update(dt)
 		end
 		-- por aqui coisas que ele pode fazer enquanto está a meio da animação de ataque
 		--antes de dar return
-		-- Position updates
-		local velocity = self.xis*dt*300
-		local newX, currentY = self.collider:getX() + velocity , self.collider:getY()
 
-		if currentY > 700 then
-			x = 50
-			currentY = 400
-			self.collider:setY(currentY)
-			self.upperBody:setY(currentY + self.h/2)
-		end
-
-		self.collider:setX(newX)
-		self.collider:setY(currentY)
-
-		-- Animation updates
-		Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
-		if primaryDirection ~= self.lastDirection then
-			for _, anim in pairs(self.animations) do
-				anim.animation:flipH()
-			end
-		end
+		-- inputs enquanto ataca
 		if love.keyboard.isDown("left") then
 			self.xis = -1
 
@@ -150,8 +132,30 @@ function Player:update(dt)
 				end
 			end
 		end
+		-- Position updates
+		local velocity = self.xis*dt*300
+		local newX, currentY = self.collider:getX() + velocity , self.collider:getY()
+
+		if currentY > 700 then
+			x = 50
+			currentY = 400
+			self.collider:setY(currentY)
+			self.upperBody:setY(currentY + self.h/2)
+		end
+
+		self.collider:setX(newX)
+		self.collider:setY(currentY)
+
+		-- Animation updates
+		Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
+		if primaryDirection ~= self.lastDirection then
+			for _, anim in pairs(self.animations) do
+				anim.animation:flipH()
+			end
+		end
 
 		return
+		-- fim de acoes que acontecem durante ataque
 	end
 
 	local beatnumb,subbeat2 = music.music:getBeat()
@@ -167,6 +171,16 @@ function Player:update(dt)
 	end
 
 	local x = 0
+	if isCrouching == true then
+		if love.keyboard.isDown("left") then
+			x = -1
+			self.lastDirection = -1
+		end
+		if love.keyboard.isDown("right") then
+			x = 1
+			self.lastDirection = 1
+		end
+	end
 	if isCrouching == false then
 
 		-- Movement
@@ -351,7 +365,7 @@ function Player:restart(x, y)
 	self.upperBody:setPosition(x, y)
 	self.lastDirection = 1
 	self.mojo = 0
-	self.maxMojo = 10
+	self.maxMojo = 100
 	self.health = 100
 	self.multiplier = 0
 	self.combo = 0
