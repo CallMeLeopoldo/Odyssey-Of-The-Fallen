@@ -86,6 +86,29 @@ function Player:update(dt)
 			local animX, animY = self.collider:getPosition()
 			self.animations.meleeGuitar:setPosition(animX - self.w + self.lastDirection*64, animY - 3*self.h/4)
 		end
+		-- por aqui coisas que ele pode fazer enquanto está a meio da animação de ataque
+		--antes de dar return
+		-- Position updates
+		local velocity = self.lastDirection*dt*300
+		local newX, currentY = self.collider:getX() , self.collider:getY()
+
+		if currentY > 700 then
+			x = 50
+			currentY = 400
+			self.collider:setY(currentY)
+			self.upperBody:setY(currentY + self.h/2)
+		end
+
+		self.collider:setX(newX)
+		self.collider:setY(currentY)
+
+		-- Animation updates
+		Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
+		if primaryDirection ~= self.lastDirection then
+			for _, anim in pairs(self.animations) do
+				anim.animation:flipH()
+			end
+		end
 		return
 	end
 
@@ -103,7 +126,7 @@ function Player:update(dt)
 
 	local x = 0
 	if isCrouching == false then
-	
+
 		-- Movement
 	if love.keyboard.isDown("left") then
 		x = -1
