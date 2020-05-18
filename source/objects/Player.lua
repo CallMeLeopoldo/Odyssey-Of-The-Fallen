@@ -91,8 +91,20 @@ function Player:update(dt)
 
 	local beatnumb,subbeat2 = music.music:getBeat()
 
-	-- Movement
+	-- Crouch
+	local isCrouching = false
+	if love.keyboard.isDown("down") then
+		self.animation = self.animations.crouch
+		self.upperBody:setCollisionClass("Ignore")
+		isCrouching = true
+	else
+		self.upperBody:setCollisionClass("Player")
+	end
+
 	local x = 0
+	if isCrouching == false then
+	
+		-- Movement
 	if love.keyboard.isDown("left") then
 		x = -1
 		self.lastDirection = -1
@@ -138,12 +150,6 @@ function Player:update(dt)
 				self.multiplier = 0
 			end
 		end
-	end
-	if love.keyboard.isDown("down") then
-		self.animation = self.animations.crouch
-		self.upperBody:setCollisionClass("Ignore")
-	else
-		self.upperBody:setCollisionClass("Player")
 	end
 
 	-- Attack
@@ -215,6 +221,7 @@ function Player:update(dt)
 		self.lastAttack = 0
 		self.animation = self.animations.attackRanged
 		self.isMelee = false
+	end
 	end
 
 	-- Position Update
