@@ -67,6 +67,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.isMelee = false
 	self.start_time = os.time()
 	self.money = 0
+	self.xis = 0
 end
 
 function Player:load()
@@ -89,8 +90,8 @@ function Player:update(dt)
 		-- por aqui coisas que ele pode fazer enquanto está a meio da animação de ataque
 		--antes de dar return
 		-- Position updates
-		local velocity = self.lastDirection*dt*300
-		local newX, currentY = self.collider:getX() , self.collider:getY()
+		local velocity = self.xis*dt*300
+		local newX, currentY = self.collider:getX() + velocity , self.collider:getY()
 
 		if currentY > 700 then
 			x = 50
@@ -109,6 +110,47 @@ function Player:update(dt)
 				anim.animation:flipH()
 			end
 		end
+		if love.keyboard.isDown("left") then
+			self.xis = -1
+
+		end
+		if love.keyboard.isDown("right") then
+			self.xis = 1
+		end
+		if love.keyboard.isDown("up") then
+
+			local x, y = self.collider:getLinearVelocity()
+
+			if y == 0 then
+				self:calculateAccuracy()
+				if self.multiplier == 0 then
+					self.start_time = os.time()
+				end
+				if os.time() - self.start_time >= 5 then
+					self.multiplier = 0
+					self.start_time = os.time()
+				end
+				local impulse = -700
+				if self.multiplier >= 2 then
+					impulse = impulse - (200 * 2)
+				else
+					impulse = impulse - (200*self.multiplier)
+				end
+
+				self.collider:applyLinearImpulse(0, impulse)
+
+				if self.accuracy >= 0.75 then
+					if self.multiplier < 2 then
+						self.multiplier = self.multiplier + 1
+					else
+						self.multiplier = 0
+					end
+				else
+					self.multiplier = 0
+				end
+			end
+		end
+
 		return
 	end
 
