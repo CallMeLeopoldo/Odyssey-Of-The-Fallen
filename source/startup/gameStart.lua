@@ -20,6 +20,7 @@ function gameStart()
 	world:addCollisionClass("Enemy")
 	world:addCollisionClass("PlayerAttack", {ignores = {"Player"}})
 	world:addCollisionClass("EnemyAttack", {ignores = {"Enemy", "Ignore"}})
+	world:addCollisionClass("Stop", {ignores = {"Player", "Shop", "PlayerAttack", "EnemyAttack"}})
 	world:setQueryDebugDrawing(true)
 
 	-- Global packages and variables

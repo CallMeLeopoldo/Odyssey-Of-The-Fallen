@@ -10,7 +10,7 @@ function Shop:initialize(x,y,w,h)
     self.collider = world:newRectangleCollider(x+w/4, y, w/2, h)
     self.collider:setCollisionClass("Shop")
     self.collider:setType("static")
-    self.animation = animation:new(x, y, sprites.shop, 96, 96, 1, 1, 1)
+    self.animation = animation:new(x, y, sprites.shop, 105, 99, 1, 1, 1)
     self.animation2 = animation:new(x, y, sprites.cage, 64, 64, 1, 1, 1)
     self.inShop = false
     self.menu = nil

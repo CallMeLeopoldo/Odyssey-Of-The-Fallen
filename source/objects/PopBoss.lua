@@ -11,7 +11,7 @@ local states = { fight = 1, spawn = 2, shield = 3 }
 
 function PopBoss:initialize(x, y, player)
 	
-	Enemy.initialize(self, x, y, 64, 64, 30, 150, "PopBoss", 1000)
+	Enemy.initialize(self, x, y, 64, 64, 30, 100, "PopBoss", 1000)
 
 	self.states = states
 	self.currentState = self.states.fight

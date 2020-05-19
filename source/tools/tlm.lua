@@ -22,6 +22,19 @@ function Tlm:load(mapname, luamap)
                 end
             end
         end
+        if layer.properties["stop"] == true then
+            print(layer.data[1])
+            for i = 1, self.map.height - 1, 1 do
+                for j = 0, self.map.width, 1 do
+                    if not (layer.data[(i * 600) + (j + 1)] == 0) then
+                        local collider = world:newRectangleCollider(16*j, 16*i, 16, 16)
+                        collider:setCollisionClass("Stop")
+                        collider:setType("static")
+                        table.insert(self.worldColliders, collider)
+                    end
+                end
+            end
+        end
     end
 end
 

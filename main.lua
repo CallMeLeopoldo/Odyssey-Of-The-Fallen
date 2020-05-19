@@ -32,7 +32,7 @@ function love.load()
 	g:setType("static")
 	g:setCollisionClass("Ground")
 
-	Shop = Shop:new(100, 352, 96,96)
+	Shop = Shop:new(100, 396, 96,96)
 	Shop:load()
 
 	player = Player:new(50, 200, 32, 64, 15, 0.5)
