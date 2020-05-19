@@ -15,6 +15,9 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   self.animations.attackRight = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 2, 1/12)
   self.animations.attackLeft = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 4, 1/12)
   self.animations.die = animation:new(x , y, sprites.goblin, 64, 64, '1-5', 5, 0.5)
+  self.animations.blood = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/12)
+  death = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/6)
+
   -- other variables
   self.id = id or "melee_enemy"
   self.moveSpeed = 40
@@ -25,6 +28,12 @@ function melee_enemy:initialize(x,y,w,h,r,id)
 
   self.health = 15
   self.baseDmg = 8
+  self.blood = 0
+  self.blooding = 0
+  self.blooduration = 0.5
+  blooding = 0
+  blooduration = 0.5
+  dead = 0
 end
 
   function melee_enemy:update(dt)
@@ -33,7 +42,23 @@ end
   local selfx = self.collider:getX()
   local selfy = self.collider:getY()
   local _, subbeat = music.music:getBeat()
-  if self.attacking == 0 then
+	local animX, animY = self.collider:getPosition()
+  if dead == 1 then
+    blooding = blooding + dt
+    if blooding < blooduration then
+      death:update(dt)
+    else
+      dead = 0
+    end
+  end
+  self.blooding = self.blooding + dt
+  if self.blooding > self.blooduration and dead == 0 then
+    self.blooding = 0
+    self.blood = 0
+  else
+    self.animations.blood:update(dt)
+  end
+    if self.attacking == 0 then
     if self.dir == 1 then
       if self.walk == 1 and self.range == 1 then
         self.animation = self.animations.walkLeft
@@ -94,6 +119,13 @@ end
 
 function melee_enemy:draw()
   enemy.draw(self)
+  if self.blood == 1 then
+    self.animations.blood:setPosition(self.collider:getX() - self.w/2 - 5, self.collider:getY() - self.h/4 - 5)
+  	self.animations.blood:draw()
+  end
+  if dead == 1 then
+    death:draw()
+  end
 end
 
 function melee_enemy:setAnimationPos()
@@ -103,6 +135,9 @@ function melee_enemy:setAnimationPos()
 end
 
 function melee_enemy:destroy()
+  self.blood = 1
+  death:setPosition(self.collider:getX() - self.w/2 - 5, self.collider:getY() - self.h/4 - 5)
+  dead = 1
   enemy.destroy(self)
   player.money = player.money + 5
 end
@@ -110,6 +145,7 @@ end
 function melee_enemy:interact(dmg)
   print(dmg)
   enemy.interact(self, dmg)
+  self.blood = 1
 end
 
 return melee_enemy

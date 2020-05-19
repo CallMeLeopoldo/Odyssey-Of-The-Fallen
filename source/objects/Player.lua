@@ -43,13 +43,14 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 		crouch = animation:new(x- w, y, sprites.player, 64, 64, 3, 3, 1),
 		attackRanged = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, attackSpeed/4),
 		attackMelee = animation:new(x-w, y, sprites.player, 64, 64, '1-3', 4, attackSpeed/3),
-		meleeGuitar = animation:new(x, y, sprites.player, 64, 64, 4, 4, 1)
+		meleeGuitar = animation:new(x, y, sprites.player, 64, 64, 4, 4, 1),
+		hearth = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
 	}
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walk, "player")
 
 	-- Other variables required
-	self.accuracy = 1
+	self.accuracy = -1
 	self.lastDirection = 1
 	self.attackTimming = attackSpeed
 	self.lastAttack = attackSpeed
@@ -68,6 +69,9 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.start_time = os.time()
 	self.money = 0
 	self.xis = 0
+  self.accuracyanim = 0.5
+	self.accuracytime = 0
+	self.accuracydoing = 0
 end
 
 function Player:load()
@@ -78,7 +82,14 @@ end
 function Player:update(dt)
 	local primaryDirection = self.lastDirection
 	self.xis = 0
-
+  if self.accuracydoing == 1 then
+		self.accuracytime = self.accuracytime + dt
+		if self.accuracytime > self.accuracyanim then
+			self.accuracytime = 0
+			self.accuracydoing = 0
+			self.animations.hearth:update(dt)
+		end
+	end
 	-- Checking variables
 	Person.update(self, dt)
 
@@ -328,6 +339,11 @@ end
 
 function Player:draw()
 	Person.draw(self)
+	local newX, currentY = self.collider:getX()- self.w/2 + 9, self.collider:getY() - self.h - 4
+	if self.accuracy == 1 and self.accuracydoing == 1 then
+		self.animations.hearth:setPosition(newX, currentY)
+		self.animations.hearth:draw()
+	end
 	if self.lastAttack < self.attackTimming then
 		if self.isMelee and self.lastAttack > (2*self.attackTimming)/3 then
 			self.animations.meleeGuitar.animation:gotoFrame(1)
@@ -343,8 +359,7 @@ end
 
 function Player:calculateAccuracy()
 	local _, subbeat = music.music:getBeat()
-
-
+	self.accuracydoing = 1
 	if subbeat >= 0.875 or subbeat < 0.125 then
 		self.accuracy = 1
 	elseif (subbeat >= 0.7 and subbeat < 0.875) or (subbeat < 0.3 and subbeat >= 0.125) then
