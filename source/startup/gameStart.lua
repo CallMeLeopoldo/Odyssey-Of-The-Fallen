@@ -30,6 +30,8 @@ function gameStart()
 	music = Music:new("audio/synthpop.wav", 100)
 	pauseScreen = Screen:new()
 	currentLevel = nil
+	font = love.graphics.newFont("fonts/kirbyss.ttf", 24)
+	love.graphics.setFont(font)
 
 	require("source.startup.resources")
 

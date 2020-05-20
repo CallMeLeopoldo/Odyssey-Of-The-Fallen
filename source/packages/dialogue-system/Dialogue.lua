@@ -1,14 +1,17 @@
-local class = require("middleclass")
+local class = require("source.packages.middleclass")
 
 local Dialogue = class("Dialogue")
 
 function Dialogue:initialize(messages)
 	self.currentMessage = 1
 	self.messages = messages
+	self.started = false
+	self.ended = false
 end
 
 function Dialogue:startDialogue()
 	inDialogue = true
+	self.started = true
 end
 
 function Dialogue:keypressed(key)
@@ -22,6 +25,8 @@ function Dialogue:keypressed(key)
 end
 
 function Dialogue:draw()
+	if ended then return end
+
 	local width, height = love.graphics.getWidth(), love.graphics.getHeight()
 	love.graphics.setColor(0.055, 0.055, 0.055)
 	love.graphics.rectangle("fill", 25, (4*height/5) - 25, width - 50, height/5)
@@ -35,8 +40,8 @@ end
 
 function Dialogue:destroy()
 	inDialogue = false
+	self.ended = true
 	self.messages = nil
-	self = nil
 end
 
 return Dialogue

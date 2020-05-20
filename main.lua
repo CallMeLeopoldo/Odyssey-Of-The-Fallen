@@ -53,6 +53,8 @@ end
 -- love:update(): Atualiza o estado de jogo após um período de tempo
 
 function love.update(dt)
+	if inDialogue then return end
+
 	g_GameTime = g_GameTime + dt
 	if not pauseScreen.paused and not Shop.inShop then
 		music.music:update(dt)
@@ -77,6 +79,11 @@ function love.update(dt)
 end
 
 function love.keypressed(k)
+	if inDialogue then
+		currentLevel:keypressed(k)
+		return
+	end
+	
 	if (pauseScreen.paused) then
 		pauseScreen:keypressed(k)
 	else
@@ -102,11 +109,14 @@ function love.draw()
 
 	-- Draw map
 	renderer:draw()
-
-	--world:draw()
-	--renderer:draw()
 	camera:detach()
+	
 	beatBar:draw()
 	hud:draw()
+	
+	if inDialogue then
+		currentDialogue:draw()
+	end
+
 
 end

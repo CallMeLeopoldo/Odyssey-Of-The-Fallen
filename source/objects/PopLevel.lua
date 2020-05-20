@@ -3,6 +3,8 @@ local Level = require("source.objects.Level")
 local popBoss = require("source.objects.PopBoss")
 local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
+local dialogue = require("source.packages.dialogue-system.Dialogue")
+local message = require("source.packages.dialogue-system.Message")
 
 local PopLevel = class("PopLevel", Level)
 
@@ -29,7 +31,17 @@ function PopLevel:initialize()
 	table.insert(self.enemies, melee_enemy:new(7500,200,64,64,40,"melee_enemy"))
 	table.insert(self.enemies, melee_enemy:new(8000,200,64,64,40,"melee_enemy"))
 
-
+	local beginBossMessages = {
+		message:new("Mac", "Chelsea!"),
+		message:new("Chelsea", "Hey. Aren’t you that guy who missed THE GIG?"),
+		message:new("Mac", "Yes... But I’m not that guy anymore."),
+		message:new("Chelsea", "What are you doing here?"),
+		message:new("Mac", "I need you for my new band. I’m starting over"),
+		message:new("Chelsea", " I saw what you did to your band. Why would I help you?"),
+		message:new("Mac", "Well..."),
+		message:new("Chelsea", " I need to know you deserve my help.")
+	}
+	self.beginBossDialogue = dialogue:new(beginBossMessages)
 	self.boss = nil
 end
 
@@ -43,10 +55,17 @@ function PopLevel:load()
 	gameLoop:addLoop(self)
 end
 
-function PopLevel:update()
-	if self.boss == nil and player.collider:getX() >= 9032 then
-		self.boss = popBoss:new(9600, 550, player)
-		self.boss:load()
+function PopLevel:update(dt)
+	if self.boss == nil then
+		if self.beginBossDialogue.started == false and player.collider:getX() >= 9032 then
+			self.beginBossDialogue:startDialogue()
+			currentDialogue = self.beginBossDialogue
+		end
+
+		if self.beginBossDialogue.ended then
+			self.boss = popBoss:new(9600, 550, player)
+			self.boss:load()
+		end
 	end
 end
 
@@ -68,6 +87,12 @@ function PopLevel:restart()
 	tlm:restart()
 
 	self:initialize("images/Pop.lua", require("images.Pop"))
+end
+
+function PopLevel:keypressed(k)
+	if inDialogue then
+		self.beginBossDialogue:keypressed(k)
+	end
 end
 
 return PopLevel

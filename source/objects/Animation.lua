@@ -32,7 +32,6 @@ end
 function Animation:destroy()
 	self.animation = nil
 	self = nil
-	print("animation destroyed")
 end
 
 function Animation:setPosition(x, y)

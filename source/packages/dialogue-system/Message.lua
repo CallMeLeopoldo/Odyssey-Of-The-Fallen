@@ -1,4 +1,4 @@
-local class = require("middleclass")
+local class = require("source.packages.middleclass")
 
 local Message = class("Message")
 
