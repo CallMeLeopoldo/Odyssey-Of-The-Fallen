@@ -3,6 +3,8 @@ local class = require("source.packages.middleclass")
 local animation = require("source.objects.Animation")
 local Menu = require("source.objects.ShopMenu")
 local Shop = class("Shop")
+local message = require("source.packages.dialogue-system.Message")
+local dialogue = require("source.packages.dialogue-system.Dialogue")
 
 function Shop:initialize(x,y,w,h)
     self.x, self.y = x,y
@@ -22,7 +24,15 @@ function Shop:initialize(x,y,w,h)
 				if (collider_2.collision_class == "Player" or collider_2.collision_class == "PlayerAttack") then
 					contact:setEnabled(false)
 				end
-		end)
+        end)
+    
+    local shopDialogueMessages = {
+        message:new("Shopkeeper", "Well hello again, Mac. I didn’t think I’d see you again. What do you need now?"),
+        message:new("Mac", "Nothing special, just some things for my next journey"),
+        message:new("Shopkeeper", "What jorney?"),
+        message:new("Mac", "I’m finding the voice for my band.")
+    }
+    self.shopDialogue = dialogue:new(shopDialogueMessages)
 
 end
 
@@ -32,16 +42,20 @@ function Shop:load()
 end
 
 function Shop:update(dt)
+    if self.inShop then return end
+
     if self.collider:enter('Player') then
         print('Collision entered!')
     end
 
     if self.collider:stay('Player') and love.keyboard.isDown("e") then
-        -- Toggle pause
-        if self.inShop then
-            return
+        if not self.shopDialogue.started then
+            self.shopDialogue:startDialogue()
+            currentDialogue = self.shopDialogue
         end
+    end
 
+    if self.shopDialogue.started and not inDialogue then
         self.inShop = true
         if self.menu == nil then
             self.menu = Menu:new(self)

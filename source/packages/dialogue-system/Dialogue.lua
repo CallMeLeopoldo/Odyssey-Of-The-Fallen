@@ -3,6 +3,7 @@ local class = require("source.packages.middleclass")
 local Dialogue = class("Dialogue")
 
 function Dialogue:initialize(messages)
+	print("yo", #messages)
 	self.currentMessage = 1
 	self.messages = messages
 	self.started = false
@@ -15,17 +16,18 @@ function Dialogue:startDialogue()
 end
 
 function Dialogue:keypressed(key)
-	if (key == "x") then
+	if (key == "z") then
 		if self.currentMessage == #self.messages then
 			self:destroy()
 		else
 			self.currentMessage = self.currentMessage + 1
 		end
 	end
+	print(#self.messages)
 end
 
 function Dialogue:draw()
-	if ended then return end
+	if self.ended then return end
 
 	local width, height = love.graphics.getWidth(), love.graphics.getHeight()
 	love.graphics.setColor(0.055, 0.055, 0.055)
@@ -35,13 +37,18 @@ function Dialogue:draw()
 	love.graphics.setColor(0.83,0.83,0.83)
 	love.graphics.printf(self.messages[self.currentMessage].message, 35, (4*height/5) + 9, width - 70, "left")
 	love.graphics.setColor(1, 1, 1)
-	love.graphics.print("X-Continue", width - 185, height - 59)
+	love.graphics.print("Z-Continue", width - 185, height - 59)
 end
 
 function Dialogue:destroy()
 	inDialogue = false
 	self.ended = true
-	self.messages = nil
+end
+
+function Dialogue:restart()
+	self.started = false
+	self.ended = false
+	self.currentMessage = 1
 end
 
 return Dialogue

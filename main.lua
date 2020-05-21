@@ -11,7 +11,7 @@ local ranged_enemy = require("source.objects.ranged_enemy")
 local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
 local Shop = require("source.objects.Shop")
-local PopLevel = require("source.objects.PopLevel")
+local PopLevel = require("source.levels.PopLevel")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 

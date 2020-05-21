@@ -47,7 +47,7 @@ function ShopMenu:update(dt)
     elseif (love.keyboard.isDown("z") or love.keyboard.isDown("return")) then
         --self.items[self.currentChoice + 1][2]()
     elseif (love.keyboard.isDown("x") or love.keyboard.isDown("escape")) then
-        print(self.shop)
+        self.shop.shopDialogue:restart()
         self.shop.inShop = false
         self.shop.menu = nil
         self:remove()

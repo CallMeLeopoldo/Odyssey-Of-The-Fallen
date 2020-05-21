@@ -23,6 +23,7 @@ function PopBoss:initialize(x, y, player)
 	self.counter = 0
 	self.attack = false
 	self.animation = animation:new(self.collider:getX(), self.collider:getY(), sprites.popBoss, 64, 64, 1, 1, 1)
+	self.killed = false
 end
 
 function PopBoss:load()
@@ -149,6 +150,7 @@ end
 
 function PopBoss:destroy()
 	if(self.health <= 0) then
+		self.killed = true
 		RangedEnemy.destroy(self)
 	end
 

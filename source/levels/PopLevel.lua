@@ -42,6 +42,13 @@ function PopLevel:initialize()
 		message:new("Chelsea", " I need to know you deserve my help.")
 	}
 	self.beginBossDialogue = dialogue:new(beginBossMessages)
+
+	local bossWonMessages = {
+		message:new("Mac", "Now, will you join me?"),
+		message:new("Chelsea", "I was wrong. You got what it takes. Let’s do it."),
+	}
+	self.battleWonDialogue = dialogue:new(bossWonMessages)
+
 	self.boss = nil
 end
 
@@ -57,7 +64,7 @@ end
 
 function PopLevel:update(dt)
 	if self.boss == nil then
-		if self.beginBossDialogue.started == false and player.collider:getX() >= 9032 then
+		if not self.beginBossDialogue.started and player.collider:getX() >= 9032 then
 			self.beginBossDialogue:startDialogue()
 			currentDialogue = self.beginBossDialogue
 		end
@@ -66,7 +73,13 @@ function PopLevel:update(dt)
 			self.boss = popBoss:new(9600, 550, player)
 			self.boss:load()
 		end
+	else
+		if self.boss.killed and not self.battleWonDialogue.started then
+			self.battleWonDialogue:startDialogue()
+			currentDialogue = self.battleWonDialogue
+		end
 	end
+
 end
 
 function PopLevel:restart()
