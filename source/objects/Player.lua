@@ -376,9 +376,15 @@ function Player:getPosition()
 end
 
 function Player:restart(x, y)
+	if self.lastDirection == -1 then
+		for _, anim in pairs(self.animations) do
+			anim.animation:flipH()
+		end
+		self.lastDirection = 1
+	end
+	
 	self.collider:setPosition(x, y)
 	self.upperBody:setPosition(x, y)
-	self.lastDirection = 1
 	self.mojo = 0
 	self.maxMojo = 100
 	self.health = 100

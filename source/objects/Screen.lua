@@ -42,17 +42,17 @@ function Screen:draw()
 
 	local ww = love.graphics.getWidth() * 0.5
 	local wh = love.graphics.getHeight() * 0.5
-	local leftMargin = 10
+	local leftMargin = 15
 	local topMargin = 10
 
-	love.graphics.setColor(0, 0, 0)
+	love.graphics.setColor(0.055, 0.055, 0.055)
 	love.graphics.rectangle("fill", ox + ww/2 , wh/2 ,ww, wh)
 
 	local x, y = ox + ww/2 + leftMargin, wh/2 + topMargin
 	for i, button in ipairs(self.buttons) do
 		if (i == self.currentChoice + 1) then
-			love.graphics.setColor(0, 0, 1)
-			love.graphics.rectangle("fill", x-1, y-1, ww + 2 - leftMargin*2, 2 + ((wh-30)/2))
+			love.graphics.setColor(0.669, 0.787, 0.787)
+			love.graphics.rectangle("fill", x-4, y-4, ww + 8 - leftMargin*2, 8 + ((wh-30)/2))
 		end
 
 		love.graphics.setColor(0.4, 0.4, 0.4)
@@ -60,7 +60,7 @@ function Screen:draw()
 		love.graphics.rectangle("fill", x, y, ww - leftMargin*2, (wh - 30) / 2)
 		
 		love.graphics.setColor(1, 1, 1)
-		love.graphics.print(button[1], x, y)
+		love.graphics.printf(button[1], x, y + 50, ww - leftMargin*2, "center")
 
 		y = y + ((wh - 30)/2) + topMargin
 	end
