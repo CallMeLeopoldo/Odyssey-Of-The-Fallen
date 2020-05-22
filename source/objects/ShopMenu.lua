@@ -1,13 +1,14 @@
 local class = require("source.packages.middleclass")
 local Item = require("source.objects.Item")
 local listbox = require("source.packages.listbox")
+
 local ShopMenu = class("Screen")
 
 function ShopMenu:initialize(shop)
 
     local hell = Item:new("Hell's Blazes", "passive", 100,"A worshiping flame from the Underworld itself" )
     local jazz = Item:new("Jazzy Blues", "passive", 150, "It grooves like B.B.King")
-    self.items = { hell, jazz}
+    self.items = { hell, jazz }
     self.currentChoice = 0
     self.shop = shop
 
@@ -26,33 +27,6 @@ function ShopMenu:initialize(shop)
 end
 
 function ShopMenu:load()
-    gameLoop:addLoop(self)
-    renderer:addRenderer(self, 5)
-end
-
-function ShopMenu:update(dt)
-    self.timerPress = self.timerPress - dt
-    if (love.keyboard.isDown("up")) then
-        if (self.lastKeyPressed ~= "up" or self.timerPress <= 0) then
-            self.currentChoice = (self.currentChoice + 1) % #self.items
-            self.lastKeyPressed = "up"
-            self.timerPress = 0.5
-        end
-    elseif (love.keyboard.isDown("down")) then
-        if (self.lastKeyPressed ~= "down" or self.timerPress <= 0) then
-            self.lastKeyPressed = "down"
-            self.currentChoice = (self.currentChoice - 1) % #self.items
-            self.timerPress = 0.5
-        end
-    elseif (love.keyboard.isDown("z") or love.keyboard.isDown("return")) then
-        --self.items[self.currentChoice + 1][2]()
-    elseif (love.keyboard.isDown("x") or love.keyboard.isDown("escape")) then
-        self.shop.shopDialogue:restart()
-        self.shop.inShop = false
-        self.shop.menu = nil
-        self:remove()
-        self = nil
-    end
 end
 
 function ShopMenu:draw()
@@ -66,7 +40,7 @@ function ShopMenu:draw()
 
     local x, y = ww/2 + leftMargin, wh/2 + topMargin
     for i, item in ipairs(self.items) do
-        if (self.currentChoice == i) then
+        if (self.currentChoice + 1 == i) then
             love.graphics.setColor(0, 0, 1)
             love.graphics.rectangle("fill", x-1, y - 1, (ww/3) + 2, (wh/3) + 2)
         end
@@ -90,9 +64,20 @@ function ShopMenu:draw()
     --listbox:draw()
 end
 
+function ShopMenu:keypressed(k)
+    if (love.keyboard.isDown("up")) then
+        self.currentChoice = (self.currentChoice + 1) % #self.items
+    elseif (love.keyboard.isDown("down")) then
+            self.currentChoice = (self.currentChoice - 1) % #self.items
+    elseif (love.keyboard.isDown("z") or love.keyboard.isDown("return")) then
+        --self.items[self.currentChoice + 1][2]()
+    elseif (love.keyboard.isDown("x") or love.keyboard.isDown("escape")) then
+        currentDialogue:restart()
+        inShop = false
+    end
+end
+
 function ShopMenu:remove()
-    gameLoop:removeLoop(self)
-    renderer:removeRenderer(self, 5)
 end
 
 return ShopMenu

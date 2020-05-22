@@ -10,8 +10,8 @@ local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
 local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
-local Shop = require("source.objects.Shop")
 local PopLevel = require("source.levels.PopLevel")
+local Shop = require("source.objects.Shop")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
@@ -32,8 +32,8 @@ function love.load()
 	g:setType("static")
 	g:setCollisionClass("Ground")
 
-	Shop = Shop:new(100, 396, 96,96)
-	Shop:load()
+	shop = Shop:new(100, 396, 96, 96)
+	shop:load()
 
 	player = Player:new(50, 200, 32, 64, 15, 0.5)
 	player:load()
@@ -53,10 +53,10 @@ end
 -- love:update(): Atualiza o estado de jogo após um período de tempo
 
 function love.update(dt)
-	if inDialogue then return end
+	if inDialogue or inShop then return end
 
 	g_GameTime = g_GameTime + dt
-	if not pauseScreen.paused and not Shop.inShop then
+	if not pauseScreen.paused then
 		music.music:update(dt)
 		gameLoop:update(dt)
 		world:update(dt)
@@ -69,8 +69,6 @@ function love.update(dt)
 		else
 			camera:lockX(player.collider:getX())
 		end
-	elseif Shop.inShop then
-		Shop.menu:update(dt)
 	end
 
 	if (player.health <= 0) then
@@ -80,8 +78,12 @@ end
 
 function love.keypressed(k)
 	if inDialogue then
-		currentLevel:keypressed(k)
-		return
+		currentDialogue:keypressed(k)
+	end
+	if inShop then
+		currentMenu:keypressed(k)
+	else
+		shop:keypressed(k)
 	end
 	
 	if (pauseScreen.paused) then
@@ -99,6 +101,7 @@ function love.keypressed(k)
 			end
 		end
 	end
+
 end
 
 --love:draw(): Desenha todos os elementos que estiverem no renderer
@@ -116,6 +119,9 @@ function love.draw()
 	
 	if inDialogue then
 		currentDialogue:draw()
+	end
+	if inShop then
+		currentMenu:draw()
 	end
 
 
