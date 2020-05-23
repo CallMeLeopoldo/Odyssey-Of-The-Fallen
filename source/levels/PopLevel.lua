@@ -103,9 +103,6 @@ function PopLevel:restart()
 end
 
 function PopLevel:keypressed(k)
-	if inDialogue then
-		self.beginBossDialogue:keypressed(k)
-	end
 end
 
 return PopLevel

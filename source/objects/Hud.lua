@@ -13,25 +13,26 @@ end
 
 function HUD:load()
 	gameLoop:addLoop(self)
-	--renderer:addRenderer(self)
 end
 
 function HUD:update(dt)
 end
 
 function HUD:draw()
-	love.graphics.draw(sprites.health_and_mojo, self.x, self.y)
 	love.graphics.draw(sprites.coin, 1100 - self.x, self.y)
 	love.graphics.print(player.money, 1100 - self.x + 36, self.y + 8)
 
-	local size, phealth = 289, self.player.health / self.player.maxHealth
-	love.graphics.setColor(1, 0.2, 0.2)
-	love.graphics.rectangle("fill",  self.x, self.y + 1 , size * phealth, 24.8)
+	-- Health and mojo bars
+	local interfaceQuad = love.graphics.newQuad(0, 0, 158, 53, 288, 53)
+	love.graphics.draw(sprites.ui, interfaceQuad, 15, 30)
 
-	size = 209
+	local phealth = self.player.health / self.player.maxHealth
+	local healthQuad = love.graphics.newQuad(158, 40, 130*phealth, 11, 288, 53)
+	love.graphics.draw(sprites.ui, healthQuad, 42, 70)
+
 	local pmojo = self.player.mojo / self.player.maxMojo
-	love.graphics.setColor(.9, .9, 0)
-	love.graphics.rectangle("fill",  self.x, self.y + 27 , size * pmojo, 15.5)
+	local mojoQuad = love.graphics.newQuad(158, 26, 130*pmojo, 11, 288, 53)
+	love.graphics.draw(sprites.ui, mojoQuad, 42, 56)
 
 	love.graphics.setColor(1, 1, 1)
 

@@ -9,6 +9,7 @@ function gameStart()
 	local Music = require("source.tools.music")
 	local Screen = require("source.objects.Screen")
 	require("source.startup.global")
+	require("source.startup.debug")
 
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
@@ -30,7 +31,7 @@ function gameStart()
 	music = Music:new("audio/synthpop.wav", 100)
 	pauseScreen = Screen:new()
 	currentLevel = nil
-	font = love.graphics.newFont("fonts/kirbyss.ttf", 24)
+	font = love.graphics.newFont("fonts/manaspc.ttf", 24)
 	love.graphics.setFont(font)
 
 	require("source.startup.resources")

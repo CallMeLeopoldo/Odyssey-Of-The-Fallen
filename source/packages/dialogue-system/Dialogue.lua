@@ -3,7 +3,6 @@ local class = require("source.packages.middleclass")
 local Dialogue = class("Dialogue")
 
 function Dialogue:initialize(messages)
-	print("yo", #messages)
 	self.currentMessage = 1
 	self.messages = messages
 	self.started = false
@@ -23,7 +22,10 @@ function Dialogue:keypressed(key)
 			self.currentMessage = self.currentMessage + 1
 		end
 	end
-	print(#self.messages)
+	
+	for _, v in ipairs(self.messages) do
+		print(v.message)
+	end
 end
 
 function Dialogue:draw()
