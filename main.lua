@@ -83,7 +83,7 @@ function love.keypressed(k)
 		currentLevel:keypressed(k)
 		return
 	end
-	
+
 	if (pauseScreen.paused) then
 		pauseScreen:keypressed(k)
 	else
@@ -110,10 +110,10 @@ function love.draw()
 	-- Draw map
 	renderer:draw()
 	camera:detach()
-	
+
 	beatBar:draw()
 	hud:draw()
-	
+
 	if inDialogue then
 		currentDialogue:draw()
 	end

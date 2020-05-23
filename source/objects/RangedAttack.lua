@@ -3,17 +3,25 @@ local animation = require("source.objects.Animation")
 local RangedAttack = class("RangedAttack")
 
 
-function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite)
+function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite, col, line, speed,w,h)
 	self.orientation = orientation
 	self.lifeSpan = 1
 	self.damage = 5 * accuracy
 	self.radius = 15
 	self.collider = world:newCircleCollider(x, y, self.radius)
+	self.animduration = 5
+	self.dur = 0
+	self.alive = true
 
 	local collumn = 0
 	if orientation == 1 then collumn = 1 else collumn = 2 end
+	collumn = col or collumn
+	self.l = line or 1
+	self.s = speed or 1
+	self.w = w or 32
+	self.h = h or 32
 
-	self.animation = animation:new(x-self.radius, y-self.radius, sprite, 32, 32, collumn, 1, 1)
+	self.animation = animation:new(x-self.radius, y-self.radius, sprite, self.w, self.h, col, self.l, self.s)
 	self.movementSpeed = 250
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)
@@ -46,10 +54,13 @@ function RangedAttack:load()
 end
 
 function RangedAttack:update(dt)
+	self.dur = self.dur + dt
 	self.lifeSpan = self.lifeSpan - dt
 	local collided = self:CheckCollisions()
+		if self.alive then self.animation:update(dt) end
 	if collided or self.lifeSpan <= 0 then
 		self:destroy()
+		self.alive = false
 		return
 	end
 

@@ -11,7 +11,8 @@ sprites.goblin = love.graphics.newImage("images/NPC's/goblin/goblin.png")
 sprites.macMelee = love.graphics.newImage("images/MacMelee.png")
 sprites.macMelee2 = love.graphics.newImage("images/MacMelee2.png")
 sprites.cage = love.graphics.newImage("images/cage.png")
-sprites.macRanged = love.graphics.newImage("images/MacRanged.png")
+sprites.macRanged = love.graphics.newImage("images/MacRangednew.png")
+sprites.macRanged2 = love.graphics.newImage("images/MacRangednew2.png")
 sprites.popBoss = love.graphics.newImage("images/PopBoss.png")
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 sprites.popRanged = love.graphics.newImage("images/PopRanged.png")
@@ -19,6 +20,12 @@ sprites.coin = love.graphics.newImage("images/coin.png")
 sprites.blood = love.graphics.newImage("images/blood.png")
 sprites.note = love.graphics.newImage("images/note.png")
 sprites.hearth = love.graphics.newImage("images/hearth.png")
+sprites.MacRangedPerfect = love.graphics.newImage("images/MacRangedPerfect.png")
+sprites.WaveRangedPerfect = love.graphics.newImage("images/MacRangedPerfectwave.png")
+sprites.WaveRanged = love.graphics.newImage("images/MacRangednew.png")
+sprites.MacRangedFail = love.graphics.newImage("images/MacRangedFail.png")
+
+
 
 fonts = {}
 

@@ -41,10 +41,11 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 		walk = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 1, 1/12),
 		stand = animation:new(x - w, y, sprites.player, 64, 64, 1, 3, 1),
 		crouch = animation:new(x- w, y, sprites.player, 64, 64, 3, 3, 1),
-		attackRanged = animation:new(x - w, y, sprites.player, 64, 64, '1-4', 2, attackSpeed/4),
 		attackMelee = animation:new(x-w, y, sprites.player, 64, 64, '1-3', 4, attackSpeed/3),
 		meleeGuitar = animation:new(x, y, sprites.player, 64, 64, 4, 4, 1),
-		hearth = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
+		feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1),
+		attackRangedPerfect = animation:new(x, y, sprites.MacRangedPerfect, 64, 64, '1-6', 1, attackSpeed/6),
+		attackRanged = animation:new(x, y, sprites.MacRangedFail, 64, 64, '1-5', 1, attackSpeed/5)
 	}
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walk, "player")
@@ -72,6 +73,9 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
   self.accuracyanim = 0.5
 	self.accuracytime = 0
 	self.accuracydoing = 0
+	self.rangedanimation = 0
+	self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged, '1-9', 1, 1/9)
+	self.atime = 0
 end
 
 function Player:load()
@@ -87,7 +91,7 @@ function Player:update(dt)
 		if self.accuracytime > self.accuracyanim then
 			self.accuracytime = 0
 			self.accuracydoing = 0
-			self.animations.hearth:update(dt)
+			self.animations.feedback:update(dt)
 		end
 	end
 	-- Checking variables
@@ -287,30 +291,47 @@ function Player:update(dt)
 		self.isMelee = true
 	end
 
-	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) then
+	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) and self.mojo >= 0 then
 		self:calculateAccuracy()
+		local rangedanim = sprites.macRanged
+		if self.lastDirection == 1 then rangedanim = sprites.macRanged else rangedanim = sprites.macRanged2 end
 		self.currentDmg = self.baseDmg * self.accuracy
-		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 50 then
+		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 0 then
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
-				local combo1 = rangedAttack:new(self.collider:getX() + 32, self.collider:getY() - self.height/4, 1, self.accuracy, true, sprites.macRanged)
+				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo1:load()
-				local combo2 = rangedAttack:new(self.collider:getX() - 32, self.collider:getY() - self.height/4, -1, self.accuracy, true, sprites.macRanged)
+				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/4, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo2:load()
-				self.mojo = self.mojo - 50
+				self.mojo = self.mojo - 0
 			else
 				self.combo = 0
-				local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged)
-				ra:load()
+				if self.accuracy == 1 then
+					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				else
+					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
+				end
+				self.ra:load()
 			end
 		else
 			self.combo = 0
-			local ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged)
-			ra:load()
+			if self.accuracy == 1 then
+				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+			else
+				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
+			end
+
+			self.ra:load()
 		end
 		self.lastAttack = 0
-		self.animation = self.animations.attackRanged
+		self.rangedanimation = 1
+		if self.accuracy == 1 then
+			self.animation = self.animations.attackRangedPerfect
+		else
+			self.animation = self.animations.attackRanged
+		end
 		self.isMelee = false
+		self.mojo = self.mojo - 0
 	end
 	end
 
@@ -340,9 +361,9 @@ end
 function Player:draw()
 	Person.draw(self)
 	local newX, currentY = self.collider:getX()- self.w/2 + 9, self.collider:getY() - self.h - 4
-	if self.accuracy == 1 and self.accuracydoing == 1 then
-		self.animations.hearth:setPosition(newX, currentY)
-		self.animations.hearth:draw()
+	if self.accuracydoing == 1 then
+		self.animations.feedback:setPosition(newX, currentY)
+		self.animations.feedback:draw()
 	end
 	if self.lastAttack < self.attackTimming then
 		if self.isMelee and self.lastAttack > (2*self.attackTimming)/3 then
@@ -362,6 +383,7 @@ function Player:calculateAccuracy()
 	self.accuracydoing = 1
 	if subbeat >= 0.875 or subbeat < 0.125 then
 		self.accuracy = 1
+		self.animations.feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
 	elseif (subbeat >= 0.7 and subbeat < 0.875) or (subbeat < 0.3 and subbeat >= 0.125) then
 		self.accuracy = 0.75
 	elseif (subbeat >= 0.6 and subbeat < 0.7) or (subbeat < 0.4 and subbeat >= 0.3) then
