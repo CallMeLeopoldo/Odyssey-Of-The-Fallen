@@ -10,7 +10,7 @@ local PopBoss = class("PopBoss", RangedEnemy)
 local states = { fight = 1, spawn = 2, shield = 3 }
 
 function PopBoss:initialize(x, y, player)
-	
+
 	Enemy.initialize(self, x, y, 64, 64, 30, 100, "PopBoss", 1000)
 
 	self.states = states
@@ -33,7 +33,7 @@ end
 
 function PopBoss:update(dt)
 	self:updateState()
-	
+
 	if self.currentState == self.states.fight or self.currentState == self.states.shield then
 		self:updateFight(dt)
 	elseif self.currentState == self.states.spawn then
@@ -66,11 +66,11 @@ function PopBoss:updateState()
 			table.insert(self.enemies, MeleeEnemy:new(8464 + 300, 300, 64, 64, 30))
 			table.insert(self.enemies, MeleeEnemy:new(9600 - 300, 300, 64, 64, 30))
 			table.insert(self.enemies, RangedEnemy:new(8464 + 100, 300, 64, 64, 30))
-			table.insert(self.enemies, RangedEnemy:new(9600 - 100, 300, 64, 64, 30)) 
+			table.insert(self.enemies, RangedEnemy:new(9600 - 100, 300, 64, 64, 30))
 
 			self.healthLost = 0
 			self.collider:setPosition(9540, 172)
-		
+
 		elseif self.health <= 0 then
 			self:destroy()
 		end
@@ -106,14 +106,14 @@ function PopBoss:updateFight(dt)
 		if self.currentState == self.states.shield then
 			accuracy = 1
 		end
-		
-		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX()) 
+
+		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX())
 		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false, sprites.popRanged)
 		t.movementSpeed = 200
     	t:load()
     	self.counter = 0
 	end
-	
+
 end
 
 function PopBoss:updateSpawn(dt)
@@ -132,7 +132,7 @@ end
 
 function PopBoss:draw()
 	for _, enemy in ipairs(self.enemies) do
-		if not enemy.destroyed then enemy:draw() end  
+		if not enemy.destroyed then enemy:draw() end
 	end
 	self.animation:draw()
 end
@@ -140,7 +140,7 @@ end
 function PopBoss:interact(dmgDealt)
 	if self.shield > 0 then
 		if (dmgDealt > self.shield) then
-			dmgDealt = dmgDealt - self.shield 
+			dmgDealt = dmgDealt - self.shield
 			self.shield = 0
 		end
 	end
@@ -150,6 +150,7 @@ end
 
 function PopBoss:destroy()
 	if(self.health <= 0) then
+		player.nBossesDefeated = player.nBossesDefeated + 1
 		self.killed = true
 		RangedEnemy.destroy(self)
 	end

@@ -68,6 +68,7 @@ end
 -- Callback function for collisions
 function enemy:interact(dmg_dealt)
   print(dmg_dealt)
+  player.nHitsDealt[player.screen] = player.nHitsDealt[player.screen] + 1
 	Person.interact(self, dmg_dealt)
 	if self.health < 0 then
     self.animation = self.animations.die

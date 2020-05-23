@@ -134,6 +134,7 @@ function ranged_enemy:setAnimationPos()
 end
 
 function ranged_enemy:destroy()
+  player.nRangedDefeated[player.screen] = player.nRangedDefeated[player.screen] + 1
   self.blood = 1
   death:setPosition(self.collider:getX() - self.w/2 - 5, self.collider:getY() - self.h/4 - 5)
   dead = 1

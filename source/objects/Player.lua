@@ -76,6 +76,36 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.rangedanimation = 0
 	self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged, '1-9', 1, 1/9)
 	self.atime = 0
+	self.screen = 1
+	self.nMelleAttacks = {}
+	self.nRangedAttacks = {}
+	self.nHitsTaken = {}
+	self.nHitsDealt = {}
+	self.nCombosUsed = {}
+	self.nDucksPerformed = {}
+	self.nDeaths = {}
+	self.nJumps = {}
+	self.nMeleeDefeated = {}
+	self.nRangedDefeated = {}
+	self.nBossesDefeated = 0
+	self.nDialoguesSkipped = {}
+	self.overallaccuracy = 0
+	self.accuracytotal = 0
+	self.accuracyincrement = 0
+	for i=1, 1000 do
+		self.nMelleAttacks[i] = 0
+		self.nRangedAttacks[i] = 0
+		self.nHitsTaken[i] = 0
+		self.nHitsDealt[i] = 0
+		self.nCombosUsed[i] = 0
+		self.nDucksPerformed[i] = 0
+		self.nDeaths[i] = 0
+		self.nJumps[i] = 0
+		self.nMeleeDefeated[i] = 0
+		self.nRangedDefeated[i] = 0
+		self.nDialoguesSkipped[i] = 0
+	end
+
 end
 
 function Player:load()
@@ -119,6 +149,7 @@ function Player:update(dt)
 			local x, y = self.collider:getLinearVelocity()
 
 			if y == 0 then
+				self.nJumps[self.screen] = self.nJumps[self.screen] + 1
 				self:calculateAccuracy()
 				if self.multiplier == 0 then
 					self.start_time = os.time()
@@ -179,6 +210,7 @@ function Player:update(dt)
 	local isCrouching = false
 	if love.keyboard.isDown("down") then
 		self.animation = self.animations.crouch
+		self.nDucksPerformed[self.screen] = self.nDucksPerformed[self.screen] + 1
 		self.upperBody:setCollisionClass("Ignore")
 		isCrouching = true
 	else
@@ -250,6 +282,7 @@ function Player:update(dt)
 	if love.keyboard.isDown("z") and self.lastAttack >= self.attackTimming then
 
 		self:calculateAccuracy()
+		self.nMelleAttacks[self.screen] = self.nMelleAttacks[self.screen] + 1
 		self.currentDmg = self.baseDmg * self.accuracy
 		if self.accuracy == 1 then
 			if self.combo == 0 then
@@ -293,12 +326,14 @@ function Player:update(dt)
 
 	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) and self.mojo >= 0 then
 		self:calculateAccuracy()
+		self.nRangedAttacks[self.screen] = self.nRangedAttacks[self.screen] + 1
 		local rangedanim = sprites.macRanged
 		if self.lastDirection == 1 then rangedanim = sprites.macRanged else rangedanim = sprites.macRanged2 end
 		self.currentDmg = self.baseDmg * self.accuracy
 		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 0 then
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
+				self.nCombosUsed[self.screen] = self.nCombosUsed[self.screen] + 1
 				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo1:load()
 				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/4, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
@@ -348,6 +383,8 @@ function Player:update(dt)
 
 	self.collider:setX(newX)
 	self.collider:setY(currentY)
+	-- Screen Update
+	self:Screen()
 
 	-- Animation updates
 	Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
@@ -376,11 +413,13 @@ end
 -- Callback function for collisions
 function Player:interact(dmg_dealt)
 	Person.interact(self, dmg_dealt)
+	self.nHitsTaken[self.screen] = self.nHitsTaken[self.screen] + 1
 end
 
 function Player:calculateAccuracy()
 	local _, subbeat = music.music:getBeat()
 	self.accuracydoing = 1
+	self.accuracyincrement = self.accuracyincrement + 1
 	if subbeat >= 0.875 or subbeat < 0.125 then
 		self.accuracy = 1
 		self.animations.feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
@@ -391,20 +430,26 @@ function Player:calculateAccuracy()
 	else
 		self.accuracy = 0.25
 	end
+	self.accuracytotal = self.accuracytotal + self.accuracy
 end
 
 function Player:getPosition()
 	return self.collider:getPosition()
 end
 
+function Player:Screen()
+	self.screen = math.ceil(self.collider:getX()/1136)
+end
+
 function Player:restart(x, y)
+	self.nDeaths[self.screen] = self.nDeaths[self.screen] + 1
 	if self.lastDirection == -1 then
 		for _, anim in pairs(self.animations) do
 			anim.animation:flipH()
 		end
 		self.lastDirection = 1
 	end
-	
+
 	self.collider:setPosition(x, y)
 	self.upperBody:setPosition(x, y)
 	self.mojo = 0

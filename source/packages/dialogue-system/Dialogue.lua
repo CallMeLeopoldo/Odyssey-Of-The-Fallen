@@ -16,13 +16,14 @@ end
 
 function Dialogue:keypressed(key)
 	if (key == "z") then
+		player.nDialoguesSkipped[player.screen] = player.nDialoguesSkipped[player.screen] + 1
 		if self.currentMessage == #self.messages then
 			self:destroy()
 		else
 			self.currentMessage = self.currentMessage + 1
 		end
 	end
-	
+
 	for _, v in ipairs(self.messages) do
 		print(v.message)
 	end
