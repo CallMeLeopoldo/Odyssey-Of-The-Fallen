@@ -126,3 +126,7 @@ function love.draw()
 
 
 end
+
+function love.quit()
+	SaveToFile()
+end

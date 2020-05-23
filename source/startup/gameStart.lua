@@ -9,6 +9,7 @@ function gameStart()
 	local Music = require("source.tools.music")
 	local Screen = require("source.objects.Screen")
 	require("source.startup.global")
+	require("source.startup.debug")
 
 	-- Create new world and set it's properties
 	world = windfield.newWorld()
