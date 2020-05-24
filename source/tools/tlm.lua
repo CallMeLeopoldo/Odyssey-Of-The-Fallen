@@ -64,4 +64,10 @@ function Tlm:restart(mapname, luamap)
     end
 end
 
+function Tlm:remove()
+    for _, collider in ipairs(self.worldColliders) do
+        collider:destroy()
+    end
+end
+
 return Tlm

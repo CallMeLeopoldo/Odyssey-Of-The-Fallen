@@ -12,7 +12,6 @@ local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
 local PopLevel = require("source.levels.PopLevel")
 local Shop = require("source.objects.Shop")
-local PopStage = require("source.objects.PopStage")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
 
@@ -33,17 +32,11 @@ function love.load()
 	g:setType("static")
 	g:setCollisionClass("Ground")
 
-	shop = Shop:new(100, 396, 96, 96)
-	shop:load()
-
-	stage = PopStage:new(33694, 40, 260, 261)
-	stage:load()
+	currentLevel = PopLevel:new()
+	currentLevel:load()
 
 	player = Player:new(50, 200, 32, 64, 15, 0.5)
 	player:load()
-
-	currentLevel = PopLevel:new()
-	currentLevel:load()
 
 	camera = Camera(33512, 320)
 
@@ -87,7 +80,7 @@ function love.keypressed(k)
 	if inShop then
 		currentMenu:keypressed(k)
 	else
-		shop:keypressed(k)
+		currentLevel:keypressed(k)
 	end
 
 	if (pauseScreen.paused) then
