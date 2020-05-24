@@ -21,7 +21,7 @@ function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite,
 	self.w = w or 32
 	self.h = h or 32
 
-	self.animation = animation:new(x-self.radius, y-self.radius, sprite, self.w, self.h, col, self.l, self.s)
+	self.animation = animation:new(x-self.radius, y-self.radius, sprite, self.w, self.h, collumn, self.l, self.s)
 	self.movementSpeed = 250
 	self.collider:setObject(self)
 	self.collider:setSleepingAllowed(false)
