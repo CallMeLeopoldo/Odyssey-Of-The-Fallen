@@ -8,9 +8,9 @@ local melee_enemy = class("melee_enemy", enemy)
 function melee_enemy:initialize(x,y,w,h,r,id)
 
   self.animations = {}
-  self.animations.walkRight = animation:new(x , y, sprites.goblin, 64, 64, '1-8', 2, 1/12)
+  self.animations.walkRight = animation:new(x , y, sprites.enemyWalkRight, 29, 49, '1-4', 1, 1/12)
   self.animations.standRight = animation:new(x , y, sprites.goblin, 64, 64, 11, 2, 1/12)
-  self.animations.walkLeft = animation:new(x , y, sprites.goblin, 64, 64, '1-8', 4, 1/12)
+  self.animations.walkLeft = animation:new(x , y, sprites.enemyWalkLeft, 29, 49, '1-4', 1, 1/12)
   self.animations.standLeft = animation:new(x , y, sprites.goblin, 64, 64, 1, 4, 1/12)
   self.animations.attackRight = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 2, 1/12)
   self.animations.attackLeft = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 4, 1/12)

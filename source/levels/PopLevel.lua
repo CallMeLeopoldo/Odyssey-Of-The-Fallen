@@ -64,13 +64,13 @@ end
 
 function PopLevel:update(dt)
 	if self.boss == nil then
-		if not self.beginBossDialogue.started and player.collider:getX() >= 9032 then
+		if not self.beginBossDialogue.started and player.collider:getX() >= 33512 then
 			self.beginBossDialogue:startDialogue()
 			currentDialogue = self.beginBossDialogue
 		end
 
 		if self.beginBossDialogue.ended then
-			self.boss = popBoss:new(9600, 550, player)
+			self.boss = popBoss:new(34000, 550, player)
 			self.boss:load()
 		end
 	else

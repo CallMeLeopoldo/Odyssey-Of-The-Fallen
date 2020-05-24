@@ -22,7 +22,25 @@ function PopBoss:initialize(x, y, player)
 	self.enemies = {}
 	self.counter = 0
 	self.attack = false
-	self.animation = animation:new(self.collider:getX(), self.collider:getY(), sprites.popBoss, 64, 64, 1, 1, 1)
+	self.animation = animation:new(self.collider:getX(), self.collider:getY(), sprites.PopBoss, 64, 64, 1, 1, 1)
+	print("FIRST COMPARISON")
+	print(self.animation == nil)
+
+	self.animations = {
+		walkRight = animation:new(x , y, sprites.PopBossWalkRight, 31, 64, '1-4', 1, 1/12),
+		standRight = animation:new(x , y, sprites.PopBoss, 64, 64, 1, 1, 1/12),
+		walkLeft = animation:new(x , y, sprites.PopBossWalkLeft, 31, 64, '1-4', 1, 1/12),
+		standLeft = animation:new(x , y, sprites.PopBoss, 64, 64, 1, 1, 1/12),
+		attackRight = animation:new(x , y, sprites.PopBossAttack, 32, 64, 1, 1, 1/12),
+		attackLeft = animation:new(x , y, sprites.PopBossAttack, 64, 64, 2, 1, 1/12),
+		shield = animation:new(x , y, sprites.PopBossShield, 50, 70, '1-9', 1, 1/12),
+		spawn = animation:new(x , y, sprites.PopBossSpawn, 37, 64, '1-9', 1, 1/12)
+	}
+	--self.animations.die = animation:new(x , y, sprites.goblin, 64, 64, '1-5', 5, 0.5)
+	self.animations.blood = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/12)
+	--death = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/6
+	--self.animation = self.animations.standLeft
+
 	self.killed = false
 end
 
@@ -36,10 +54,12 @@ function PopBoss:update(dt)
 
 	if self.currentState == self.states.fight or self.currentState == self.states.shield then
 		self:updateFight(dt)
+		self.animation = self.animations.attack
 	elseif self.currentState == self.states.spawn then
+		self.animation = self.animations.spawn
 		self:updateSpawn(dt)
 	end
-
+	self.animation = self.animations.standLeft
 	self.animation.x = self.collider:getX() - 32
 	self.animation.y = self.collider:getY() - 32
 
@@ -50,10 +70,11 @@ function PopBoss:updateState()
 		if  self.health < (self.maxHealth / 3) then
 			self.currentState = self.states.shield
 			self.shield = 20
-			if self.player.collider:getX() >= 9032 then
-				self.collider:setPosition(8664, 300)
+			self.animation = self.animations.shield 
+			if self.player.collider:getX() >= 33512 then
+				self.collider:setPosition(33144, 300)
 			else
-				self.collider:setPosition(9400, 300)
+				self.collider:setPosition(33880, 300)
 			end
 			-- TODO: set animation
 			-- TODO: Make the music faster and adjust the bmps
@@ -63,13 +84,13 @@ function PopBoss:updateState()
 			self.currentState = self.states.spawn
 			self.numberEnemies = 4
 
-			table.insert(self.enemies, MeleeEnemy:new(8464 + 300, 300, 64, 64, 30))
-			table.insert(self.enemies, MeleeEnemy:new(9600 - 300, 300, 64, 64, 30))
-			table.insert(self.enemies, RangedEnemy:new(8464 + 100, 300, 64, 64, 30))
-			table.insert(self.enemies, RangedEnemy:new(9600 - 100, 300, 64, 64, 30))
+			table.insert(self.enemies, MeleeEnemy:new(32944 + 300, 300, 64, 64, 30))
+			table.insert(self.enemies, MeleeEnemy:new(34080 - 300, 300, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(32944 + 100, 300, 64, 64, 30))
+			table.insert(self.enemies, RangedEnemy:new(34080 - 100, 300, 64, 64, 30))
 
 			self.healthLost = 0
-			self.collider:setPosition(9540, 172)
+			self.collider:setPosition(34020, 172)
 
 		elseif self.health <= 0 then
 			self:destroy()
@@ -78,9 +99,9 @@ function PopBoss:updateState()
 		if table.maxn(self.enemies) == 0 then
 			self.currentState = self.states.fight
 			if self.player.collider:getX() >= 9032 then
-				self.collider:setPosition(8664, 300)
+				self.collider:setPosition(33144, 300)
 			else
-				self.collider:setPosition(9400, 300)
+				self.collider:setPosition(33880, 300)
 			end
 			-- TODO: change the attack it makes
 		end
@@ -106,9 +127,10 @@ function PopBoss:updateFight(dt)
 		if self.currentState == self.states.shield then
 			accuracy = 1
 		end
-
+		
+		self.animation = self.animations.PopBossAttack
 		local orientation = (self.player.collider:getX() - self.collider:getX()) / math.abs(self.player.collider:getX() - self.collider:getX())
-		local t = RangedAttack:new(self.collider:getX(), self.collider:getY(), orientation, accuracy, false, sprites.popRanged)
+		local t = RangedAttack:new(self.collider:getX(), self.collider:getY()-30, orientation, accuracy, false, sprites.PopBossRanged, '1-2', 1, 1/9,53,32)
 		t.movementSpeed = 200
     	t:load()
     	self.counter = 0
@@ -134,6 +156,7 @@ function PopBoss:draw()
 	for _, enemy in ipairs(self.enemies) do
 		if not enemy.destroyed then enemy:draw() end
 	end
+	print(self.animation == nil)
 	self.animation:draw()
 end
 

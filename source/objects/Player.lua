@@ -334,15 +334,15 @@ function Player:update(dt)
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
 				self.nCombosUsed[self.screen] = self.nCombosUsed[self.screen] + 1
-				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo1:load()
-				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/4, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/2, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo2:load()
 				self.mojo = self.mojo - 0
 			else
 				self.combo = 0
 				if self.accuracy == 1 then
-					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				else
 					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
 				end
@@ -351,7 +351,7 @@ function Player:update(dt)
 		else
 			self.combo = 0
 			if self.accuracy == 1 then
-				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 			else
 				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
 			end

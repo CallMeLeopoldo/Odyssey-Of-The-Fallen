@@ -46,7 +46,7 @@ function ranged_enemy:update(dt)
   local playerx = player.collider:getX()
   local selfx = self.collider:getX()
   local selfy = self.collider:getY()
-  local _, subbeat = music.music:getBeat()
+  local beat, subbeat = music.music:getBeat()
   if dead == 1 then
     blooding = blooding + dt
     if blooding < blooduration then
@@ -89,6 +89,7 @@ function ranged_enemy:update(dt)
   end
 
   if math.abs(selfx-playerx) < self.aggro then --throws on beat if a little over aggro range
+    if beat % 3 == 0 then
     if (subbeat < 0.05 or subbeat > 0.95) then
       if self.bool == false then
           self.counter = self.counter + 1
@@ -115,6 +116,7 @@ function ranged_enemy:update(dt)
       self.counter = 0
     end
     self.attacking = 0
+  end
   end
 end
 
