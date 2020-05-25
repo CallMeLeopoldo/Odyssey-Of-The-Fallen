@@ -38,7 +38,7 @@ function TutorialLevel:initialize()
 	self.realizationDialogue = dialogue:new(realizationMessages)
 
 	local challengeAcceptedMessages = {
-		
+
 		message:new("Mac", "I won’t sink into this, damn it! I forgot the most important thing. My passion is music andI worked hard for this."),
 		message:new("Mac", "I got pure talent in my hands and I can feel it in this chords. Myguitar tells me the truth."),
 		message:new("Mac", "Oh Lord BB King, get me your guitar licks! May Jimmy Pagebless me those riffs! I’m ready to get my reputation back!"),
@@ -66,7 +66,7 @@ function TutorialLevel:update(dt)
 
 			tlm:load("images/Tutorial.lua", require("images.Tutorial"))
 		end
-
+player:setmojo(100)
 		if not self.lotdDialogue.started then
 			self.lotdDialogue:startDialogue()
 			currentDialogue = self.lotdDialogue
@@ -79,7 +79,7 @@ function TutorialLevel:update(dt)
 			currentDialogue = self.realizationDialogue
 		end
 
-		
+
 		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8700 then
 			self.challengeAcceptedDialogue:startDialogue()
 			currentDialogue = self.challengeAcceptedDialogue
@@ -99,7 +99,7 @@ function TutorialLevel:update(dt)
 end
 
 function TutorialLevel:draw()
-	if not self.introDialogue.ended then 
+	if not self.introDialogue.ended then
 		return
 	else
 		if not self.lotdDialogue.ended then

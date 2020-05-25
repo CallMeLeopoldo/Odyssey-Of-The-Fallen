@@ -473,6 +473,9 @@ function Player:restart(x, y)
 	self.oncombo = false
 	self.money = 0
 end
+function Player:setmojo(a)
+	self.mojo = a
+end
 
 function Player:destroy()
 	renderer:removeRenderer(self)
