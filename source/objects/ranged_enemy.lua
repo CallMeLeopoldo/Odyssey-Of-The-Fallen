@@ -9,18 +9,21 @@ local ranged_enemy = class("ranged_enemy", enemy)
 function ranged_enemy:initialize(x,y,w,h,r,id)
 
   self.animations = {}
-  self.animations.walkRight = animation:new(x , y, sprites.goblin, 64, 64, '1-8', 2, 1/12)
-  self.animations.standRight = animation:new(x , y, sprites.goblin, 64, 64, 11, 2, 1/12)
-  self.animations.walkLeft = animation:new(x , y, sprites.goblin, 64, 64, '1-8', 4, 1/12)
-  self.animations.standLeft = animation:new(x , y, sprites.goblin, 64, 64, 1, 4, 1/12)
-  self.animations.attackRight = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 2, 1/12)
-  self.animations.attackLeft = animation:new(x , y, sprites.goblin, 64, 64, '8-11', 4, 1/12)
+  self.animations.walkRight = animation:new(x , y, sprites.enemyWalkRight, 29, 49, '1-4', 1, 1/12)
+  self.animations.standRight = animation:new(x , y, sprites.enemyBasicAttackRight, 49, 49, 1, 1, 1/12)
+  self.animations.walkLeft = animation:new(x , y, sprites.enemyWalkLeft, 29, 49, '1-4', 1, 1/12)
+  self.animations.standLeft = animation:new(x , y, sprites.enemyBasicAttackLeft, 49, 49, 1, 1, 1/12)
+  self.animations.attackRight = animation:new(x , y, sprites.enemyBasicAttackRight, 49, 49, '1-5', 1, 1/12)
+  self.animations.attackLeft = animation:new(x , y, sprites.enemyBasicAttackLeft, 49, 49, '1-5', 1, 1/12)
   self.animations.die = animation:new(x , y, sprites.goblin, 64, 64, '1-5', 5, 0.5)
   self.animations.blood = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/12)
   death = animation:new(x , y, sprites.blood, 64, 64, '1-4', 2, 1/6)
   self.blood = 0
   self.blooding = 0
   self.blooduration = 0.5
+  self.attacktimer = 0
+  self.attackduration = 0.5
+  self.eunem = 0
   blooding = 0
   blooduration = 0.5
   dead = 0
@@ -62,6 +65,16 @@ function ranged_enemy:update(dt)
   else
     self.animations.blood:update(dt)
   end
+  --cenas
+  if math.abs(selfx - playerx) < (player.r + self.r + 250) then
+    self.range = 0
+    self.attacking = 1
+  else
+    self.range = 1
+    self.attacking = 0
+    self.eunem = 0
+  end
+
   if self.attacking == 0 then
     if self.dir == 1 then
       if self.walk == 1 and self.range == 1 then
@@ -81,42 +94,53 @@ function ranged_enemy:update(dt)
       end
     end
   end
-
-  if math.abs(selfx - playerx) < (player.r + self.r + 250) then
-    self.range = 0
-  else
-    self.range = 1
-  end
-
   if math.abs(selfx-playerx) < self.aggro then --throws on beat if a little over aggro range
     if beat % 3 == 0 then
-    if (subbeat < 0.05 or subbeat > 0.95) then
-      if self.bool == false then
-          self.counter = self.counter + 1
+      if (subbeat < 0.05 or subbeat > 0.95) then
+        self.counter = 1
       end
-
-      self.bool = true
-    end
-    if subbeat > 0.05 and subbeat < 0.95 then
-        self.bool = false
-    end
-
-    if self.counter == 1 then
-      self.attacking = 1
-      if self.dir == -1 then
-        self.animation = self.animations.attackRight
-        self:setAnimationPos()
-
-      else
-        self.animation = self.animations.attackLeft
-        self:setAnimationPos()
-      end
-      local t = throwable:new(selfx - self.dir*(self.r + 12 + 5), selfy - (self.r + 12 + 5), self.isize, self.ix*self.dir, self.iy)
-      t:load()
+    else
       self.counter = 0
     end
-    self.attacking = 0
+  else
+    self.counter = 0
   end
+
+    if self.counter == 1 and self.range == 0 then
+      local px, py = self.collider:getPosition()
+      self.eunem = self.eunem + 1
+      if self.eunem == 1 then
+        local t = throwable:new(selfx - self.dir*(self.r + 12 + 5), selfy - (self.r + 12 + 5), self.isize, self.ix*self.dir, self.iy)
+        t:load()
+      end
+      local s = time
+      self.attacktimer = self.attacktimer + dt
+      if self.dir == -1 then
+        if self.attacktimer < self.attackduration then
+          self.animation = self.animations.attackRight
+          self:setAnimationPos()
+        else
+          self.animation = self.animations.standRight
+          self:setAnimationPos()
+          self.attacking = 0
+          self.attacktimer = 0
+          self.counter = 0
+          self.eunem = 0
+        end
+
+     else
+          if self.attacktimer < self.attackduration then
+             self.animation = self.animations.attackLeft
+             self:setAnimationPos()
+          else
+            self.animation = self.animations.standLeft
+            self:setAnimationPos()
+            self.attacking = 0
+            self.attacktimer = 0
+            self.counter = 0
+            self.eunem = 0
+          end
+     end
   end
 end
 
