@@ -35,8 +35,8 @@ sprites.PopBossShield = love.graphics.newImage("images/PopBossShield.png")
 sprites.PopBossSpawn = love.graphics.newImage("images/PopBossSpawn.png")
 sprites.PopBossAttack = love.graphics.newImage("images/PopBossAttack.png")
 
-
 sprites.stage = love.graphics.newImage("images/Pop_Stage.png")
+sprites.lotd = love.graphics.newImage("images/LordofDarkness.png")
 
 fonts = {}
 

@@ -1,5 +1,5 @@
 local class = require("source.packages.middleclass")
-local Level = require("source.objects.Level")
+local Level = require("source.levels.Level")
 local popBoss = require("source.objects.PopBoss")
 local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
