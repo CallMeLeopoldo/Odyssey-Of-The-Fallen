@@ -1,15 +1,13 @@
 local class = require("source.packages.middleclass")
 local Level = require("source.levels.Level")
-local popBoss = require("source.objects.PopBoss")
-local melee_enemy = require("source.objects.melee_enemy")
-local ranged_enemy = require("source.objects.ranged_enemy")
 local dialogue = require("source.packages.dialogue-system.Dialogue")
 local message = require("source.packages.dialogue-system.Message")
+local Player = require("source.objects.player")
+local PopLevel = require("source.levels.PopLevel")
 
 local TutorialLevel = class("TutorialLevel", Level)
 
 function TutorialLevel:initialize()
-	Player.collider:setPosition(688, 592)
 
 	local introMessages = {
 		message:new("???", "There’s one thing every garage band knows about this rock’n’roll business."),
@@ -62,25 +60,39 @@ function TutorialLevel:update(dt)
 	end
 
 	if self.introDialogue.ended then
+		if player == nil then
+			player = Player:new(688, 592, 32, 64, 15, 0.5)
+			player:load()
+
+			tlm:load("images/Tutorial.lua", require("images.Tutorial"))
+		end
+
 		if not self.lotdDialogue.started then
 			self.lotdDialogue:startDialogue()
 			currentDialogue = self.lotdDialogue
 		end
 	end
 
-	if not self.realizationDialogue.started and Player.collider:getX() >= 3472 then -- to be changed
-		self.realizationDialogue:startDialogue()
-		currentDialogue = self.realizationDialogue
-	end
+	if player ~= nil then
+		if not self.realizationDialogue.started and player.collider:getX() >= 3472 then -- to be changed
+			self.realizationDialogue:startDialogue()
+			currentDialogue = self.realizationDialogue
+		end
 
-	
-	if not self.challengeAcceptedDialogue.started and Player.collider:getX() >= 8700 then -- to be changed
-		self.challengeAcceptedDialogue:startDialogue()
-		currentDialogue = self.challengeAcceptedDialogue
+		
+		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8700 then -- to be changed
+			self.challengeAcceptedDialogue:startDialogue()
+			currentDialogue = self.challengeAcceptedDialogue
+		end
 	end
 
 	if self.challengeAcceptedDialogue.ended then
-		--Eliminate this level and start PopLevel
+		gameLoop:removeLoop(self)
+		renderer:removeRenderer(self)
+		tlm:remove()
+		player.collider:setPosition(50, 200)
+		currentLevel = PopLevel:new()
+		currentLevel:load()
 	end
 end
 
@@ -88,12 +100,10 @@ function TutorialLevel:draw()
 	if not self.introDialogue.ended then 
 		return
 	else
-		if not self.lofdMessages.ended then
+		if not self.lotdDialogue.ended then
 			-- draw lotd
 			love.graphics.draw(sprites.lotd, 50, 400)
 		end
-
-		--draw world using tlm
 	end
 end
 

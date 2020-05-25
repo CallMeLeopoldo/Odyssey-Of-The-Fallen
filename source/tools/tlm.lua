@@ -38,13 +38,17 @@ function Tlm:load(mapname, luamap)
 end
 
 function Tlm:update(dt)
-	self.map:update(dt)
+    if self.map ~= nil then 
+        self.map:update(dt)
+    end
 end
 
 
 -- Desenha os tiles guardados no Tile Manager 
 
 function Tlm:draw()
+    if player == nil then return end
+    
 	-- Draw map
 
 	local tx, ty = 0,0

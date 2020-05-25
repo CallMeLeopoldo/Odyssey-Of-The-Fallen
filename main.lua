@@ -10,7 +10,7 @@ local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
 local popBoss = require("source.objects.PopBoss")
 local Screen = require("source.objects.Screen")
-local PopLevel = require("source.levels.PopLevel")
+local TutorialLevel = require("source.levels.TutorialLevel")
 local Shop = require("source.objects.Shop")
 
 -- love.load(): Carrega todos os objetos que forem indicados, preprando-os para fase de desenho
@@ -31,16 +31,13 @@ function love.load()
 	g = world:newRectangleCollider(33960, 350, 120, 200)
 	g:setType("static")
 	g:setCollisionClass("Ground")
-
-	currentLevel = PopLevel:new()
+	
+	currentLevel = TutorialLevel:new()
 	currentLevel:load()
-
-	player = Player:new(50, 200, 32, 64, 15, 0.5)
-	player:load()
 
 	camera = Camera(33512, 320)
 
-	hud = Hud:new(50, 50, player, music.spb, meleeEnemy, rangedEnemy)
+	hud = Hud:new(50, 50)
 	hud:load()
 
 	beatBar = BeatBar:new(love.graphics.getWidth() / 2, 7*love.graphics.getHeight()/8)
@@ -57,18 +54,21 @@ function love.update(dt)
 		music.music:update(dt)
 		gameLoop:update(dt)
 		world:update(dt)
+		currentLevel:update(dt)
 		tlm:update(dt)
 
-		if(player.collider:getX() < love.graphics.getWidth()/2) then
-			camera:lockX(love.graphics.getWidth()/2)
-		elseif (player.collider:getX() >= 32944) then
-			camera:lockX(33512)
-		else
-			camera:lockX(player.collider:getX())
+		if player ~= nil then
+			if(player.collider:getX() < love.graphics.getWidth()/2) then
+				camera:lockX(love.graphics.getWidth()/2)
+			elseif (player.collider:getX() >= 32944) then
+				camera:lockX(33512)
+			else
+				camera:lockX(player.collider:getX())
+			end
 		end
 	end
-
-	if (player.health <= 0) then
+	
+	if (player ~= nil and player.health <= 0) then
 		restart()
 	end
 end
