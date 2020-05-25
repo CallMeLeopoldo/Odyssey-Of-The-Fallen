@@ -54,7 +54,7 @@ function Shop:update(dt)
 	end
 end
 
-function Shop:keypressed(k) 
+function Shop:keypressed(k)
 	if k == "e" then
 		if self.inContact and not self.shopDialogue.started then
 			self.shopDialogue:startDialogue()

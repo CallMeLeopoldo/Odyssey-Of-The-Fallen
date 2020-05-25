@@ -1,15 +1,24 @@
 local class = require("source.packages.middleclass")
-local Level = require("source.objects.Level")
+local Level = require("source.levels.Level")
 local popBoss = require("source.objects.PopBoss")
 local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
 local dialogue = require("source.packages.dialogue-system.Dialogue")
 local message = require("source.packages.dialogue-system.Message")
+local Shop = require("source.objects.Shop")
+local PopStage = require("source.objects.PopStage")
 
 local PopLevel = class("PopLevel", Level)
 
 function PopLevel:initialize()
 	self.enemies = {}
+
+	self.shops = {}
+
+	self.stage = PopStage:new(33694, 40, 260, 261)
+
+	table.insert(self.shops, Shop:new(100, 396, 96, 96))
+
 
 	table.insert(self.enemies, melee_enemy:new(450,360,64,64,40,"melee_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(1500,300,64,64,25,"ranged_enemy"))
@@ -57,12 +66,19 @@ function PopLevel:load()
 		enemy:load()
 	end
 
+	for _, shop in ipairs(self.shops) do
+		shop:load()
+	end
+
+	self.stage:load()
+
 	tlm:load("images/Pop.lua", require("images.Pop"))
 
 	gameLoop:addLoop(self)
 end
 
 function PopLevel:update(dt)
+	
 	if self.boss == nil then
 		if not self.beginBossDialogue.started and player.collider:getX() >= 33512 then
 			self.beginBossDialogue:startDialogue()
@@ -103,6 +119,12 @@ function PopLevel:restart()
 end
 
 function PopLevel:keypressed(k)
+
+	for _,s in ipairs(self.shops) do
+		print(s)
+		s:keypressed(k)
+	end
+
 end
 
 return PopLevel
