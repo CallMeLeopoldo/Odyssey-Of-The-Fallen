@@ -19,6 +19,7 @@ sprites.macRanged = love.graphics.newImage("images/MacRangednew.png")
 sprites.macRanged2 = love.graphics.newImage("images/MacRangednew2.png")
 sprites.macRangedWalkP = love.graphics.newImage("images/Mac_WalkingAttackPerfect.png")
 sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
+sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
 
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 
@@ -32,6 +33,9 @@ sprites.MacRangedPerfect = love.graphics.newImage("images/MacRangedPerfect.png")
 sprites.WaveRangedPerfect = love.graphics.newImage("images/MacRangedPerfectwave.png")
 sprites.WaveRanged = love.graphics.newImage("images/MacRangednew.png")
 sprites.MacRangedFail = love.graphics.newImage("images/MacRangedFail.png")
+sprites.pfeedback = love.graphics.newImage("images/Letter_Perfect.png")
+sprites.gfeedback = love.graphics.newImage("images/Letter_Great.png")
+sprites.bfeedback = love.graphics.newImage("images/Letter_Fail.png")
 
 sprites.PopBoss = love.graphics.newImage("images/PopBoss.png")
 sprites.PopBossRanged = love.graphics.newImage("images/PopBossRanged.png")

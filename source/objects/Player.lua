@@ -116,6 +116,7 @@ function Player:load()
 end
 
 function Player:update(dt)
+	self.animations.feedback:update(dt)
 	local primaryDirection = self.lastDirection
 	self.xis = 0
   if self.accuracydoing == 1 then
@@ -400,7 +401,9 @@ function Player:update(dt)
 	Person.setAnimationPos(self, newX - self.w, currentY - 3*self.h/4)
 	if primaryDirection ~= self.lastDirection then
 		for _, anim in pairs(self.animations) do
-			anim.animation:flipH()
+			if anim ~= self.animations.feedback then
+				anim.animation:flipH()
+		  end
 		end
 	end
 end
@@ -409,7 +412,7 @@ function Player:draw()
 	Person.draw(self)
 	local newX, currentY = self.collider:getX()- self.w/2 + 9, self.collider:getY() - self.h - 4
 	if self.accuracydoing == 1 then
-		self.animations.feedback:setPosition(newX, currentY)
+		self.animations.feedback:setPosition(newX - 10, currentY)
 		self.animations.feedback:draw()
 	end
 	if self.lastAttack < self.attackTimming then
@@ -432,16 +435,16 @@ function Player:calculateAccuracy()
 	self.accuracyincrement = self.accuracyincrement + 1
 	if subbeat >= 0.875 or subbeat < 0.125 then
 		self.accuracy = 1
-		self.animations.feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
+		self.animations.feedback = animation:new(x, y, sprites.pfeedback, 54, 12, '1-19', 1, 1/38)
 	elseif (subbeat >= 0.7 and subbeat < 0.875) or (subbeat < 0.3 and subbeat >= 0.125) then
 		self.accuracy = 0.75
-		self.animations.feedback = animation:new(x, y, sprites.neutralface, 16, 16, 1, 1, 1)
+		self.animations.feedback = animation:new(x, y, sprites.gfeedback, 47, 16, '1-9', 1, 1/20)
 	elseif (subbeat >= 0.6 and subbeat < 0.7) or (subbeat < 0.4 and subbeat >= 0.3) then
 		self.accuracy = 0.5
-		self.animations.feedback = animation:new(x, y, sprites.neutralface, 16, 16, 1, 1, 1)
+		self.animations.feedback = animation:new(x, y, sprites.gfeedback, 47, 16, '1-9', 1, 1/20)
 	else
 		self.accuracy = 0.25
-		self.animations.feedback = animation:new(x, y, sprites.badface, 16, 16, 1, 1, 1)
+		self.animations.feedback = animation:new(x, y, sprites.bfeedback, 40, 16, '1-9', 1, 1/20)
 	end
 	self.accuracytotal = self.accuracytotal + self.accuracy
 end
