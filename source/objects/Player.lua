@@ -461,4 +461,9 @@ function Player:restart(x, y)
 	self.money = 0
 end
 
+function Player:destroy()
+	renderer:removeRenderer(self)
+	gameLoop:removeLoop(self)
+end
+
 return Player

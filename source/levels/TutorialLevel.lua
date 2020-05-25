@@ -61,7 +61,7 @@ function TutorialLevel:update(dt)
 
 	if self.introDialogue.ended then
 		if player == nil then
-			player = Player:new(688, 592, 32, 64, 15, 0.5)
+			player = Player:new(688, 400, 32, 64, 15, 0.5)
 			player:load()
 
 			tlm:load("images/Tutorial.lua", require("images.Tutorial"))
@@ -74,13 +74,13 @@ function TutorialLevel:update(dt)
 	end
 
 	if player ~= nil then
-		if not self.realizationDialogue.started and player.collider:getX() >= 3472 then -- to be changed
+		if not self.realizationDialogue.started and player.collider:getX() >= 3472 then
 			self.realizationDialogue:startDialogue()
 			currentDialogue = self.realizationDialogue
 		end
 
 		
-		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8700 then -- to be changed
+		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8700 then
 			self.challengeAcceptedDialogue:startDialogue()
 			currentDialogue = self.challengeAcceptedDialogue
 		end
@@ -90,7 +90,9 @@ function TutorialLevel:update(dt)
 		gameLoop:removeLoop(self)
 		renderer:removeRenderer(self)
 		tlm:remove()
-		player.collider:setPosition(50, 200)
+		player:destroy()
+		player = Player:new(50, 400, 32, 64, 15, 0.5)
+		player:load()
 		currentLevel = PopLevel:new()
 		currentLevel:load()
 	end
@@ -102,7 +104,7 @@ function TutorialLevel:draw()
 	else
 		if not self.lotdDialogue.ended then
 			-- draw lotd
-			love.graphics.draw(sprites.lotd, 50, 400)
+			love.graphics.draw(sprites.lotd, 50, 200)
 		end
 	end
 end
