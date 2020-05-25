@@ -324,13 +324,13 @@ function Player:update(dt)
 		self.isMelee = true
 	end
 
-	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) and self.mojo >= 0 then
+	if (love.keyboard.isDown("x") and self.lastAttack >= self.attackTimming) and self.mojo >= 10 then
 		self:calculateAccuracy()
 		self.nRangedAttacks[self.screen] = self.nRangedAttacks[self.screen] + 1
 		local rangedanim = sprites.macRanged
 		if self.lastDirection == 1 then rangedanim = sprites.macRanged else rangedanim = sprites.macRanged2 end
 		self.currentDmg = self.baseDmg * self.accuracy
-		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 0 then
+		if self.combo == 2 and self.accuracy == 1 and self.mojo >= 50 then
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
 				self.nCombosUsed[self.screen] = self.nCombosUsed[self.screen] + 1
@@ -338,7 +338,7 @@ function Player:update(dt)
 				combo1:load()
 				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/2, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 				combo2:load()
-				self.mojo = self.mojo - 0
+				self.mojo = self.mojo - 50
 			else
 				self.combo = 0
 				if self.accuracy == 1 then
@@ -350,6 +350,7 @@ function Player:update(dt)
 			end
 		else
 			self.combo = 0
+			self.mojo = self.mojo - 10
 			if self.accuracy == 1 then
 				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
 			else
@@ -366,7 +367,6 @@ function Player:update(dt)
 			self.animation = self.animations.attackRanged
 		end
 		self.isMelee = false
-		self.mojo = self.mojo - 0
 	end
 	end
 
@@ -425,10 +425,13 @@ function Player:calculateAccuracy()
 		self.animations.feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1)
 	elseif (subbeat >= 0.7 and subbeat < 0.875) or (subbeat < 0.3 and subbeat >= 0.125) then
 		self.accuracy = 0.75
+		self.animations.feedback = animation:new(x, y, sprites.neutralface, 16, 16, 1, 1, 1)
 	elseif (subbeat >= 0.6 and subbeat < 0.7) or (subbeat < 0.4 and subbeat >= 0.3) then
 		self.accuracy = 0.5
+		self.animations.feedback = animation:new(x, y, sprites.neutralface, 16, 16, 1, 1, 1)
 	else
 		self.accuracy = 0.25
+		self.animations.feedback = animation:new(x, y, sprites.badface, 16, 16, 1, 1, 1)
 	end
 	self.accuracytotal = self.accuracytotal + self.accuracy
 end
