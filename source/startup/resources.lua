@@ -17,6 +17,8 @@ sprites.macMelee2 = love.graphics.newImage("images/MacMelee2.png")
 sprites.cage = love.graphics.newImage("images/cage.png")
 sprites.macRanged = love.graphics.newImage("images/MacRangednew.png")
 sprites.macRanged2 = love.graphics.newImage("images/MacRangednew2.png")
+sprites.macRangedWalkP = love.graphics.newImage("images/Mac_WalkingAttackPerfect.png")
+sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
 
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 

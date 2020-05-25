@@ -45,7 +45,9 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 		meleeGuitar = animation:new(x, y, sprites.player, 64, 64, 4, 4, 1),
 		feedback = animation:new(x, y, sprites.hearth, 16, 16, 1, 1, 1),
 		attackRangedPerfect = animation:new(x, y, sprites.MacRangedPerfect, 64, 64, '1-6', 1, attackSpeed/6),
-		attackRanged = animation:new(x, y, sprites.MacRangedFail, 64, 64, '1-5', 1, attackSpeed/5)
+		attackRanged = animation:new(x, y, sprites.MacRangedFail, 64, 64, '1-5', 1, attackSpeed/5),
+		attackRangedWalk = animation:new(x, y, sprites.macRangedWalk, 64, 64, '1-4', 1, attackSpeed/4),
+		attackRangedWalkP = animation:new(x, y, sprites.macRangedWalkP, 64, 64, '1-5', 1, attackSpeed/5)
 	}
 
 	Person.initialize(self, x, y, w, h, r, lowerBody, self.animations.walk, "player")
@@ -362,9 +364,17 @@ function Player:update(dt)
 		self.lastAttack = 0
 		self.rangedanimation = 1
 		if self.accuracy == 1 then
-			self.animation = self.animations.attackRangedPerfect
+			if x == 0 then
+				self.animation = self.animations.attackRangedPerfect
+		 else
+			 self.animation = self.animations.attackRangedWalkP
+		end
 		else
-			self.animation = self.animations.attackRanged
+			if x == 0 then
+				self.animation = self.animations.attackRanged
+			else
+				self.animation = self.animations.attackRangedWalk
+			end
 		end
 		self.isMelee = false
 	end
