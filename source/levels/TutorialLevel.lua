@@ -4,11 +4,15 @@ local dialogue = require("source.packages.dialogue-system.Dialogue")
 local message = require("source.packages.dialogue-system.Message")
 local Player = require("source.objects.player")
 local PopLevel = require("source.levels.PopLevel")
+local melee_enemy = require("source.objects.melee_enemy")
+local ranged_enemy = require("source.objects.ranged_enemy")
 
 local TutorialLevel = class("TutorialLevel", Level)
 
 function TutorialLevel:initialize()
-
+	self.enemies = {}
+	table.insert(self.enemies, melee_enemy:new(6000,400,64,64,40,"melee_enemy"))
+	table.insert(self.enemies, ranged_enemy:new(6500,400,64,64,25,"ranged_enemy"))
 	local introMessages = {
 		message:new("???", "There’s one thing every garage band knows about this rock’n’roll business."),
 		message:new("???", "If you want to succeed on this savage land, you do everything you can to get a spot on THE GIG."),
@@ -61,9 +65,11 @@ function TutorialLevel:update(dt)
 
 	if self.introDialogue.ended then
 		if player == nil then
-			player = Player:new(688, 400, 32, 64, 15, 0.5)
+			player = Player:new(688, 559, 32, 64, 15, 0.5)
 			player:load()
-
+			for _, enemy in ipairs(self.enemies) do
+				enemy:load()
+			end
 			tlm:load("images/Tutorial.lua", require("images.Tutorial"))
 		end
 player:setmojo(100)
@@ -114,6 +120,15 @@ function TutorialLevel:restart()
 	self.lotdDialogue:restart()
 	self.realizationDialogue:restart()
 	self.challengeAcceptedDialogue:restart()
+	for _, enemy in ipairs(self.enemies) do
+		if not enemy.destroyed then
+			enemy:destroy()
+			player.money = 0
+		end
+	end
+
+	self.enemies = nil
+
 end
 
 function TutorialLevel:keypressed(k)
