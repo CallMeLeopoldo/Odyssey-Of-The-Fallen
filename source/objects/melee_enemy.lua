@@ -27,7 +27,7 @@ function melee_enemy:initialize(x,y,w,h,r,id)
   enemy.initialize(self,x, y, w, h, r, self.moveSpeed, self.id, self.aggro, self.animations.standLeft)
 
   self.health = 15
-  self.baseDmg = 8
+  self.baseDmg = 1
   self.blood = 0
   self.blooding = 0
   self.blooduration = 0.5

@@ -3,10 +3,11 @@ local animation = require("source.objects.Animation")
 local RangedAttack = class("RangedAttack")
 
 
-function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite, col, line, speed,w,h)
+function RangedAttack:initialize(x, y, orientation, accuracy, isPlayers, sprite, col, line, speed,w,h,dmg)
 	self.orientation = orientation
 	self.lifeSpan = 1
-	self.damage = 5 * accuracy
+	self.dmg = dmg or 5
+	self.damage = self.dmg * accuracy
 	self.radius = 15
 	self.collider = world:newCircleCollider(x, y, self.radius)
 	self.animduration = 5

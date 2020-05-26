@@ -117,7 +117,7 @@ function ranged_enemy:update(dt)
       self.attacktimer = self.attacktimer + dt
       if self.dir == -1 then
         if self.attacktimer < self.attackduration then
-          self.animation = self.animations.attackRight
+          self.animation = self.animations.standRight
           self:setAnimationPos()
         else
           self.animation = self.animations.standRight
@@ -130,7 +130,7 @@ function ranged_enemy:update(dt)
 
      else
           if self.attacktimer < self.attackduration then
-             self.animation = self.animations.attackLeft
+             self.animation = self.animations.standLeft
              self:setAnimationPos()
           else
             self.animation = self.animations.standLeft

@@ -31,7 +31,7 @@ function love.load()
 	g = world:newRectangleCollider(33960, 350, 120, 200)
 	g:setType("static")
 	g:setCollisionClass("Ground")
-	
+
 	currentLevel = TutorialLevel:new()
 	currentLevel:load()
 
@@ -67,7 +67,7 @@ function love.update(dt)
 			end
 		end
 	end
-	
+
 	if (player ~= nil and player.health <= 0) then
 		restart()
 	end

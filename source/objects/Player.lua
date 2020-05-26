@@ -63,7 +63,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.baseDmg = 10
 	self.health = 100
 	self.multiplier = 0
-	self.moveSpeed = 200
+	self.moveSpeed = 500
 	self.upperBody = upperBody
 	self.height = h
 	self.combo = 0
@@ -182,7 +182,7 @@ function Player:update(dt)
 			end
 		end
 		-- Position updates
-		local velocity = self.xis*dt*300
+		local velocity = self.xis*dt*self.moveSpeed
 		local newX, currentY = self.collider:getX() + velocity , self.collider:getY()
 
 		if currentY > 700 then
@@ -337,15 +337,15 @@ function Player:update(dt)
 			if (subbeat2 >= 0.875 and self.combobeat + beatpos == beatnumb) or (subbeat2 <= 0.125 and self.combobeat + 1 + beatpos == beatnumb) then
 				self.combo = 0
 				self.nCombosUsed[self.screen] = self.nCombosUsed[self.screen] + 1
-				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				local combo1 = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64, 30)
 				combo1:load()
-				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/2, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				local combo2 = rangedAttack:new(self.collider:getX() - self.lastDirection*64, self.collider:getY() - self.height/2, -self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64, 30)
 				combo2:load()
 				self.mojo = self.mojo - 50
 			else
 				self.combo = 0
 				if self.accuracy == 1 then
-					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64, 10)
 				else
 					self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
 				end
@@ -355,7 +355,7 @@ function Player:update(dt)
 			self.combo = 0
 			self.mojo = self.mojo - 10
 			if self.accuracy == 1 then
-				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64)
+				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/2, self.lastDirection, self.accuracy, true, sprites.WaveRangedPerfect, '1-13', 1, 1/9,64,64, 10)
 			else
 				self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, rangedanim, '1-9', 1, 1/9)
 			end
@@ -382,7 +382,7 @@ function Player:update(dt)
 	end
 
 	-- Position Update
-	local velocity = x*dt*300
+	local velocity = x*dt*self.moveSpeed
 	local newX, currentY = self.collider:getX() + velocity, self.collider:getY()
 
 	if currentY > 700 then

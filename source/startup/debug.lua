@@ -3,7 +3,7 @@ function SaveToFile()
 	local file = love.filesystem.newFile("instrumentation.txt")
 	file:open("a")
 	file:write("Run " .. os.date("%c") .. ":\n\n")
-	for i=1, 30 do
+	for i=1, 40 do
 		file:write("Number of Melee Attacks" .. i .. ":" .. player.nMelleAttacks[i] .. "\n")
 		file:write("Number of Ranged Attacks" .. i .. ":" .. player.nRangedAttacks[i] .. "\n")
 		file:write("Number of Hits Taken" .. i .. ":" .. player.nHitsTaken[i] .. "\n")
