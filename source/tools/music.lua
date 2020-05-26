@@ -28,7 +28,7 @@ function Music:load()
 end
 
 function Music:update(dt)
-	self.music:update()
+	self.music:update(dt)
   	--pulse = math.max(0, pulse - dt)
 end
 
