@@ -74,8 +74,8 @@ function TutorialLevel:update(dt)
 				enemy:load()
 			end
 			tlm:load("images/Tutorial.lua", require("images.Tutorial"))
+			player:setmojo(100)
 		end
-player:setmojo(100)
 		if not self.lotdDialogue.started then
 			self.lotdDialogue:startDialogue()
 			currentDialogue = self.lotdDialogue
