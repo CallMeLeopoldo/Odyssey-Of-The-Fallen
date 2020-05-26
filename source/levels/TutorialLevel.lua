@@ -6,10 +6,12 @@ local Player = require("source.objects.player")
 local PopLevel = require("source.levels.PopLevel")
 local melee_enemy = require("source.objects.melee_enemy")
 local ranged_enemy = require("source.objects.ranged_enemy")
+local Music = require("source.tools.music")
 
 local TutorialLevel = class("TutorialLevel", Level)
 
 function TutorialLevel:initialize()
+	music = Music:new("audio/tutorial.mp3", 70)
 	self.enemies = {}
 	table.insert(self.enemies, melee_enemy:new(6000,400,64,64,40,"melee_enemy"))
 	table.insert(self.enemies, ranged_enemy:new(6500,400,64,64,25,"ranged_enemy"))
@@ -55,6 +57,7 @@ end
 function TutorialLevel:load()
 	gameLoop:addLoop(self)
 	renderer:addRenderer(self)
+	music:load()
 end
 
 function TutorialLevel:update(dt)
@@ -86,7 +89,7 @@ player:setmojo(100)
 		end
 
 
-		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8700 then
+		if not self.challengeAcceptedDialogue.started and player.collider:getX() >= 8100 then
 			self.challengeAcceptedDialogue:startDialogue()
 			currentDialogue = self.challengeAcceptedDialogue
 		end
@@ -101,6 +104,9 @@ player:setmojo(100)
 		player:load()
 		currentLevel = PopLevel:new()
 		currentLevel:load()
+		music:remove()
+		music = Music:new("audio/synthpop.wav", 100)
+		music:load() 
 	end
 end
 
@@ -110,7 +116,7 @@ function TutorialLevel:draw()
 	else
 		if not self.lotdDialogue.ended then
 			-- draw lotd
-			love.graphics.draw(sprites.lotd, 50, 200)
+			love.graphics.draw(sprites.lotd, 720, 400)
 		end
 	end
 end
