@@ -381,10 +381,7 @@ function Player:update(dt)
 		self.isMelee = false
 	end
 	end
-if love.keyboard.isDown("lshift") and self.potions >= 1 then
-	self.health = 100
-	self.potions = self.potions - 1
-end
+
 	-- Position Update
 	local velocity = x*dt*self.moveSpeed
 	local newX, currentY = self.collider:getX() + velocity, self.collider:getY()
@@ -487,6 +484,13 @@ end
 function Player:destroy()
 	renderer:removeRenderer(self)
 	gameLoop:removeLoop(self)
+end
+
+function Player:keypressed(k) 
+	if k == "lshift" and self.potions >= 1  and self.health ~= 100 then
+		self.health = 100
+		self.potions = self.potions - 1
+	end
 end
 
 return Player
