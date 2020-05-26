@@ -19,7 +19,6 @@ function love.load()
 	require("source.startup.gameStart")
 	gameStart()
 
-	music:load()
 
 	-- bit = animation:new(250, 450, sprites.bit, 300, 64, '1-2', 1, music.spb)
 	-- bit:load()

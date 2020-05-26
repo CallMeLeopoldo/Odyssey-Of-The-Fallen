@@ -36,4 +36,8 @@ function Music:draw()
 
 end
 
+function Music:remove() 
+	self.music:stop()
+end
+
 return Music

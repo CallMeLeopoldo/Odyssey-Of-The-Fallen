@@ -29,7 +29,6 @@ function gameStart()
 	anim8 = require("source.packages.anim8")
 	renderer = Renderer:create()
 	gameLoop = GameLoop:create()
-	music = Music:new("audio/synthpop.wav", 100)
 	pauseScreen = Screen:new()
 	currentLevel = nil
 	font = love.graphics.newFont("fonts/manaspc.ttf", 24)
