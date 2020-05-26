@@ -165,7 +165,6 @@ function melee_enemy:destroy()
 end
 
 function melee_enemy:interact(dmg)
-  print(dmg)
   enemy.interact(self, dmg)
   self.blood = 1
 end

@@ -67,8 +67,14 @@ function TutorialLevel:update(dt)
 	end
 
 	if self.introDialogue.ended then
+		if not self.lotdDialogue.started then
+			self.lotdDialogue:startDialogue()
+			currentDialogue = self.lotdDialogue
+		end
+
+
 		if player == nil then
-			player = Player:new(688, 559, 32, 64, 15, 0.5)
+			player = Player:new(688, 500, 32, 64, 15, 0.5)
 			player:load()
 			for _, enemy in ipairs(self.enemies) do
 				enemy:load()
@@ -79,6 +85,7 @@ function TutorialLevel:update(dt)
 		if not self.lotdDialogue.started then
 			self.lotdDialogue:startDialogue()
 			currentDialogue = self.lotdDialogue
+			player:setmojo(100)
 		end
 	end
 
@@ -119,6 +126,20 @@ function TutorialLevel:draw()
 			love.graphics.draw(sprites.lotd, 720, 400)
 		end
 	end
+
+	
+	love.graphics.print("Press Left or Right\nto move to the left\nor to the right", 592, 256)
+	love.graphics.print("Press Down\nto duck", 1376, 316)	
+	love.graphics.print("Press Up\nto jump", 2224, 316)	
+	love.graphics.print("Press twice\nrepedeatly on beat\nto do a double jump", 4336, 256)
+	love.graphics.print("Press three times\nrepedeatly on beat\nto do a triple jump", 4832, 256)
+	love.graphics.print("Press Z\nto do a\nmelee attack", 5712, 256)
+	love.graphics.print("You can win MOJO\nwhen hitting an enemy\nwith a melee attack", 5900, 136)		
+	love.graphics.print("Press X\nto do a\nranged attack", 6160, 256)
+	love.graphics.print("A ranged attack\ncosts you MOJO\nKeep track of your MOJO", 6360, 136)			
+	love.graphics.print("As you can see there's a bar below\nThat indicates the song's beat\nMaking attacks on synch with the beat\n will make you deal more damage\n and perform other special abilities", 3552, 250)			
+	love.graphics.print("To heal your wounds\npress LShift\nby using one of your potions", 6960, 256)
+	love.graphics.print("You have a limit of 3 potions\nTo recharge these\ngo into a store", 7160, 136)
 end
 
 function TutorialLevel:restart()

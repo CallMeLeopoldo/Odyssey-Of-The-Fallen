@@ -98,6 +98,8 @@ function love.keypressed(k)
 		end
 	end
 
+	if player ~= nil then player:keypressed(k) end
+
 end
 
 --love:draw(): Desenha todos os elementos que estiverem no renderer

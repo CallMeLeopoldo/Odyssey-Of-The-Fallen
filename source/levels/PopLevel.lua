@@ -6,6 +6,7 @@ local ranged_enemy = require("source.objects.ranged_enemy")
 local dialogue = require("source.packages.dialogue-system.Dialogue")
 local message = require("source.packages.dialogue-system.Message")
 local Shop = require("source.objects.Shop")
+local Music = require("source.tools.music")
 local PopStage = require("source.objects.PopStage")
 
 local PopLevel = class("PopLevel", Level)
@@ -16,6 +17,7 @@ function PopLevel:initialize()
 	self.shops = {}
 
 	self.stage = PopStage:new(33694, 40, 260, 261)
+	self.music = Music:new("audio/synthpop.wav", 100)
 
 	table.insert(self.shops, Shop:new(100, 396, 96, 96))
 
@@ -160,7 +162,6 @@ function PopLevel:load()
 end
 
 function PopLevel:update(dt)
-
 	if self.boss == nil then
 		if not self.beginBossDialogue.started and player.collider:getX() >= 33512 then
 			self.beginBossDialogue:startDialogue()

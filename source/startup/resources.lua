@@ -48,6 +48,7 @@ sprites.PopBossAttack = love.graphics.newImage("images/PopBossAttack.png")
 
 sprites.stage = love.graphics.newImage("images/Pop_Stage.png")
 sprites.lotd = love.graphics.newImage("images/LordofDarkness.png")
+sprites.shopMenu = love.graphics.newImage("images/shopMenu.png")
 
 fonts = {}
 

@@ -30,6 +30,7 @@ function gameStart()
 	renderer = Renderer:create()
 	gameLoop = GameLoop:create()
 	pauseScreen = Screen:new()
+	music = Music:new("audio/tutorial.mp3", 70)
 	currentLevel = nil
 	font = love.graphics.newFont("fonts/manaspc.ttf", 24)
 	love.graphics.setFont(font)

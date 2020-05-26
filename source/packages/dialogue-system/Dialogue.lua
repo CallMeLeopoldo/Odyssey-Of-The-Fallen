@@ -22,10 +22,6 @@ function Dialogue:keypressed(key)
 			self.currentMessage = self.currentMessage + 1
 		end
 	end
-
-	for _, v in ipairs(self.messages) do
-		print(v.message)
-	end
 end
 
 function Dialogue:draw()
