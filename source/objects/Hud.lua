@@ -20,6 +20,9 @@ function HUD:draw()
 
 	love.graphics.draw(sprites.coin, 1100 - self.x, self.y)
 	love.graphics.print(player.money, 1100 - self.x + 36, self.y + 8)
+	love.graphics.draw(sprites.potion, 1100 - self.x, self.y + 50)
+	love.graphics.print(player.potions, 1100 - self.x + 36, self.y + 8 + 50)
+
 
 	-- Health and mojo bars
 	local interfaceQuad = love.graphics.newQuad(0, 0, 158, 53, 288, 53)

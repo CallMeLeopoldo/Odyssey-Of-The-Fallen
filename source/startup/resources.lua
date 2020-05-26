@@ -20,6 +20,7 @@ sprites.macRanged2 = love.graphics.newImage("images/MacRangednew2.png")
 sprites.macRangedWalkP = love.graphics.newImage("images/Mac_WalkingAttackPerfect.png")
 sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
 sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
+sprites.potion = love.graphics.newImage("images/potion.png")
 
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 

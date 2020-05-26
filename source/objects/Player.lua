@@ -76,6 +76,7 @@ function Player:initialize(x, y, w, h, r, attackSpeed)
 	self.accuracytime = 0
 	self.accuracydoing = 0
 	self.rangedanimation = 0
+	self.potions = 0
 	self.ra = rangedAttack:new(self.collider:getX() + self.lastDirection*64, self.collider:getY() - self.height/4, self.lastDirection, self.accuracy, true, sprites.macRanged, '1-9', 1, 1/9)
 	self.atime = 0
 	self.screen = 1
@@ -380,7 +381,10 @@ function Player:update(dt)
 		self.isMelee = false
 	end
 	end
-
+if love.keyboard.isDown("lshift") and self.potions >= 1 then
+	self.health = 100
+	self.potions = self.potions - 1
+end
 	-- Position Update
 	local velocity = x*dt*self.moveSpeed
 	local newX, currentY = self.collider:getX() + velocity, self.collider:getY()
