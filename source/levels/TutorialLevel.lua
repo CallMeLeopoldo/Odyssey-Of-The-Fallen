@@ -74,7 +74,7 @@ function TutorialLevel:update(dt)
 
 
 		if player == nil then
-			player = Player:new(688, 500, 32, 64, 15, 0.5)
+			player = Player:new(9000, 500, 32, 64, 15, 0.5)
 			player:load()
 			for _, enemy in ipairs(self.enemies) do
 				enemy:load()
@@ -112,7 +112,7 @@ function TutorialLevel:update(dt)
 		currentLevel = PopLevel:new()
 		currentLevel:load()
 		music:remove()
-		music = Music:new("audio/synthpop.wav", 100)
+		music = Music:new("audio/synthpop.mp3", 110)
 		music:load() 
 	end
 end

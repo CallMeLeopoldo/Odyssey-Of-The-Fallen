@@ -17,7 +17,7 @@ function PopLevel:initialize()
 	self.shops = {}
 
 	self.stage = PopStage:new(33694, 40, 260, 261)
-	self.music = Music:new("audio/synthpop.wav", 100)
+	self.music = Music:new("audio/synthpop.mp3", 100)
 
 	table.insert(self.shops, Shop:new(100, 396, 96, 96))
 
