@@ -20,10 +20,10 @@ function TutorialLevel:initialize()
 		message:new("???", "If you want to succeed on this savage land, you do everything you can to get a spot on THE GIG."),
 		message:new("???", "That platform reveals the truly talented. hat music heaven is the big shot forevery band."),
 		message:new("???", "And when you get that chance to play on THE GIG, you give everything you got on that holy stage. You just don’t miss it."),
-		message:new("Gadd", " So why would do you, Mac “Master of All Cruelty” Astley, one of the most famous guitar players of these streets, ruin that chance for you and your band? Are you insane?!"),
-		message:new("Cliff", "We called you, we went to your house. Where the hell were you, Mac?Lying in a ditch, completely passed out, on the most important night of our lifes!"),
+		message:new("Gadd", "So why would do you, Mac “Master of All Cruelty” Astley, one of the most famous guitar players of these streets, ruin that chance for you and your band? Are you insane?!"),
+		message:new("Cliff", "We called you, we went to your house. Where the hell were you Mac?! Lying in a ditch, completely passed out, on the most important night of our lifes!"),
 		message:new("Layne", "You had one chance and you let that addiction of yours fuck this up forus, you scumbag. We are tired of your excuses. We can’t trust you anymore."),
-		message:new("Everyone", "You had one chance and you let that addiction of yours fuck this up forus, you scumbag. We are tired of your excuses. We can’t trust you anymore."),
+		message:new("Everyone", "YOU ARE OUT OF THE BAND!"),
 		message:new("Gadd", "And will get that night on THE GIG without you.")
 	}
 	self.introDialogue = dialogue:new(introMessages)
@@ -31,10 +31,10 @@ function TutorialLevel:initialize()
 	local lofdMessages = {
 		message:new("Lord Of The Darkness", "Well, well, well... You really fucked it up this time, didn’t you? I can’t say I’m surprised"),
 		message:new("Lord Of The Darkness", "You never deserved your talent. You never deserved your friends"),
-		message:new("Lord Of The Darkness", "You’re just one more cocky guitar player pretending you’re going to getsomewhere in the music world. MUAHAHA."),
-		message:new("Lord Of The Darkness", "You thought those drugs would solveeverything, didn’t you? Now you’re sinking."),
+		message:new("Lord Of The Darkness", "You’re just one more cocky guitar player pretending you’re going to get somewhere in the music world. MUAHAHA."),
+		message:new("Lord Of The Darkness", "You thought those drugs would solve everything, didn’t you? Now you’re sinking."),
 		message:new("Lord Of The Darkness", "And so is your reputation! Oh Mac, what asight to behold."),
-		message:new("Lord Of The Darkness", "Wait, I’m going to call my other Depression friends. They got to seethis..."),
+		message:new("Lord Of The Darkness", "Wait, I’m going to call my other Depression friends. They got to see this..."),
 	}
 	self.lotdDialogue = dialogue:new(lofdMessages)
 
@@ -46,8 +46,8 @@ function TutorialLevel:initialize()
 	local challengeAcceptedMessages = {
 
 		message:new("Mac", "I won’t sink into this, damn it! I forgot the most important thing. My passion is music andI worked hard for this."),
-		message:new("Mac", "I got pure talent in my hands and I can feel it in this chords. Myguitar tells me the truth."),
-		message:new("Mac", "Oh Lord BB King, get me your guitar licks! May Jimmy Pagebless me those riffs! I’m ready to get my reputation back!"),
+		message:new("Mac", "I got pure talent in my hands and I can feel it in this chords. My guitar tells me the truth."),
+		message:new("Mac", "Oh Lord BB King, get me your guitar licks! May Jimmy Page bless me those riffs! I’m ready to get my reputation back!"),
 		message:new("Mac", "Now, I just have to find a new band... And get on THE GIG again!"),
 	}
 	self.challengeAcceptedDialogue = dialogue:new(challengeAcceptedMessages)

@@ -21,6 +21,7 @@ sprites.macRangedWalkP = love.graphics.newImage("images/Mac_WalkingAttackPerfect
 sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
 sprites.macRangedWalk = love.graphics.newImage("images/Mac_WalkingAttackFail.png")
 sprites.potion = love.graphics.newImage("images/potion.png")
+sprites.ebtn = love.graphics.newImage("images/EButton.png")
 
 sprites.Mac2 = love.graphics.newImage("images/Mac2.png")
 

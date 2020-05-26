@@ -66,6 +66,9 @@ end
 
 function Shop:draw()
 	self.animation:draw()
+	if self.inContact then 
+		love.graphics.draw(sprites.ebtn, self.x, self.y - 150)
+	end
 end
 
 return Shop
