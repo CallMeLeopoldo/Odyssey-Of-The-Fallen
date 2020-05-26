@@ -391,7 +391,9 @@ end
 
 	if currentY > 700 then
 		x = 50
+		self.health = self.health - 10
 		currentY = 400
+		newX = self.collider:getX() - 400
 		self.collider:setY(currentY)
 		self.upperBody:setY(currentY + self.h/2)
 	end
