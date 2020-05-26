@@ -8,6 +8,7 @@ function ShopMenu:initialize(shop)
 
     local hell = Item:new("Hell's Blazes", "passive", 100,"A worshiping flame from the Underworld itself" )
     local jazz = Item:new("Jazzy Blues", "passive", 150, "It grooves like B.B.King")
+
     self.items = { hell, jazz }
     self.currentChoice = 0
     self.shop = shop
@@ -30,13 +31,22 @@ function ShopMenu:load()
 end
 
 function ShopMenu:draw()
-    local ww = love.graphics.getWidth() * 0.5
-    local wh = love.graphics.getHeight() * 0.5
+    font = love.graphics.newFont("fonts/manaspc.ttf", 15)
+    love.graphics.setFont(font)
+
+    local ww = love.graphics.getWidth()
+    local wh = love.graphics.getHeight()
     local leftMargin = 10
     local topMargin = 10
 
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", ww/2 , wh/2 ,ww, wh)
+    local backQuad = love.graphics.newQuad(800, 0, 717, 453, 1517, 510)
+    love.graphics.draw(sprites.shopMenu, backQuad, (ww-717)/2, (wh-453)/2)
+
+    local borderQuad = love.graphics.newQuad(0, 0, 800, 510, 1517, 510)
+    love.graphics.draw(sprites.shopMenu, borderQuad, (ww-800)/2 , (wh-510)/2)
+
+    ww = ww/2
+    wh = wh/2
 
     local x, y = ww/2 + leftMargin, wh/2 + topMargin
     for i, item in ipairs(self.items) do
@@ -58,10 +68,11 @@ function ShopMenu:draw()
     local newy = wh/2 + topMargin
 
     love.graphics.setColor(0.4, 0.4, 0.4)
-    love.graphics.rectangle("fill", newx , newy, ww / 1.8, wh - 2*(topMargin) )
+    love.graphics.rectangle("fill", ww , wh/2, ww/1.8, wh - 2*(topMargin) )
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print(self.items[self.currentChoice+1].description, newx, newy)
-    --listbox:draw()
+    love.graphics.printf(self.items[self.currentChoice+1].name, ww, wh/2, wh/1.8)
+    love.graphics.printf("Description: " .. self.items[self.currentChoice+1].description, ww, wh, ww/1.8)
+    love.graphics.printf("Cost: " .. self.items[self.currentChoice+1].price, ww, wh + 100, ww/1.8)
 end
 
 function ShopMenu:keypressed(k)
